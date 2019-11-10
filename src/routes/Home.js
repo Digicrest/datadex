@@ -1,59 +1,89 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+
+import { InputAdornment, TextField, Icon, Button, Typography  } from '@material-ui/core'
+
+import PokemonCard from '../components/PokemonCard.js'
 
 import PokeAPI from '../apis/pokemon/PokeAPI'
 
-import { Input,InputAdornment, TextField} from '@material-ui/core'
-
 import './css/Home.css'
+const pikachu = require('../resources/dummy_data/pikachu.json')
+const charmander = require('../resources/dummy_data/charmander.json')
+const bulbasaur = require('../resources/dummy_data/bulbasaur.json')
 
 class Home extends Component {
-    getPokemon = async () => {
-        const pikachu = await PokeAPI.getPokemon('')
-        console.log('got: ', pikachu)
+    state = {
+        pokemon: [pikachu, charmander, bulbasaur],
+        filtered_pokemon: [pikachu, charmander, bulbasaur]
     }
 
+    // componentDidMount(){
+    //     this.getPokemon([1,2,3])
+    // }
+
+    // getPokemon = async namesOrIDs => {
+    //     const pokemon = await PokeAPI.getPokemon(namesOrIDs)
+    //     console.log(pokemon)
+    //     return pokemon
+    // }
+    filterByName = e => {
+        const name = e.target.value
+        this.setState({
+            filtered_pokemon: this.state.pokemon.filter(pokemon =>
+                pokemon.name.includes(name.toLowerCase())
+            )
+        })
+    }
+    
     render() {
         return (
             <div id='home'>
                 <div id='header'>
                     <div id='searchbar'>
-                        <Input />
+                        <TextField
+                            id="search-input"
+                            label="Filter By Name"
+                            autoComplete='off'
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start" className='search-icon'>
+                                        <Icon>search</Icon>
+                                    </InputAdornment>
+                                )
+                            }}
+
+                            onChange={ this.filterByName }
+                        />
                     </div>
 
-                    <TextField
-                        id="input-with-icon-textfield"
-                        label="TextField"
-                        InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                
-                            </InputAdornment>
-                        ),
-                        }}
-                    />
+                   
                 </div>
                
                 <div id='content'>
-                    <div id='pokemon-list'>
-                        Pokemon List
+                    <div style={ styles.pokemon_list }>
+                        {this.state.filtered_pokemon.map(pokemon => 
+                            <PokemonCard pokemon={ pokemon } />
+                        )}
                     </div>
 
                     <div id='action-bar'>
-                        Actions
+                        <Typography>Actions</Typography>
                     </div>
                 </div>
-              
-
-                {/* <PokemonCard />
-                <Button variant="contained" color="primary" onClick={ this.getPokemon }>
-                    Fetch
-                </Button> */}
-              
             </div>
         )
     }
 }
 
 export default Home
+
+const styles = {
+    pokemon_list: {
+        width: '85%',
+
+        borderRadius: '15px',
+        backgroundColor: '#FAFAFA',
+        padding: '20px',
+        overflow: 'auto'
+    }
+}

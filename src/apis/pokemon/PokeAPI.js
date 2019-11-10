@@ -11,19 +11,24 @@ class PokeAPI {
         return resourceJSON
     }
 
-    // Take a Pokemon Name or ID and returns detailed information about that Pokemon
-    getPokemon = async pokemonNameOrID => {
-        if (!pokemonNameOrID) {
-            console.error('[PokeAPI] getPokemon() - Invalid Name or ID, if you want to Get All Pokemon use \'getAllPokemon()\'')
+    // Take an array of Pokemon Names or IDs and returns detailed information about each Pokemon
+    // FIXME: Try to Bundle Multiple Requests into a Single Request
+    getPokemon = async pokemonNamesOrIDs => {
+        if (!pokemonNamesOrIDs.length) {
+            console.error('[PokeAPI] getPokemon() - No Names or IDs, if you want to Get All Pokemon use \'getAllPokemon()\'')
             return null
         }
 
-        const url = `${this.base_url}/pokemon/${pokemonNameOrID}`
+        const results = await pokemonNamesOrIDs.map(async nameOrID => {
+            const url = `${this.base_url}/pokemon/${nameOrID}`
        
-        const pokemon = await fetch(url)
-        const pokemonJSON = await pokemon.json()
+            const pokemon = await fetch(url)
+            const pokemonJSON = await pokemon.json()
 
-        return pokemonJSON
+            return pokemonJSON
+        });
+       
+        return results
     }
 }
 
