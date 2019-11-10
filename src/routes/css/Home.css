@@ -1,0 +1,37 @@
+#home {
+    height: 100%;
+    padding: 5px;
+}
+
+#header {
+    height: 10%;
+
+    display: flex;
+    border-radius: 15px;
+    box-shadow: 2px 2px 4px #00000020;
+    margin-bottom: 10px;
+   
+}
+
+#searchbar {
+    padding: 20px;
+    height: fit-content;
+}
+
+
+#content {
+    display: flex;
+    height: 80%;
+}
+
+#pokemon-list {
+    width: 85%;
+    border: 1px solid black;
+    border-radius: 15px;
+}
+
+#action-bar {
+    width: 15%;
+    border: 1px solid purple;
+    border-radius: 15px;
+}

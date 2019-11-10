@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom'
 
 import PokeAPI from '../apis/pokemon/PokeAPI'
 
+import { Input,InputAdornment, TextField} from '@material-ui/core'
+
+import './css/Home.css'
+
 class Home extends Component {
     getPokemon = async () => {
         const pikachu = await PokeAPI.getPokemon('')
@@ -12,14 +16,40 @@ class Home extends Component {
 
     render() {
         return (
-            <div id='app'>
-                Home 
+            <div id='home'>
+                <div id='header'>
+                    <div id='searchbar'>
+                        <Input />
+                    </div>
 
-                <Link to='/About'>
-                    <p>About</p>
-                </Link>
+                    <TextField
+                        id="input-with-icon-textfield"
+                        label="TextField"
+                        InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                
+                            </InputAdornment>
+                        ),
+                        }}
+                    />
+                </div>
+               
+                <div id='content'>
+                    <div id='pokemon-list'>
+                        Pokemon List
+                    </div>
 
-                <button onClick={ this.getPokemon }>Fetch</button>
+                    <div id='action-bar'>
+                        Actions
+                    </div>
+                </div>
+              
+
+                {/* <PokemonCard />
+                <Button variant="contained" color="primary" onClick={ this.getPokemon }>
+                    Fetch
+                </Button> */}
               
             </div>
         )
