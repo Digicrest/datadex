@@ -5,6 +5,12 @@ import Home from './routes/Home'
 import About from './routes/About'
 
 export class App extends Component {
+    
+    componentDidMount() {
+        // When the App is done loading; remove the loading screen
+        document.getElementById('loading-screen').remove()
+    }
+
     render() {
         return (
             <Router>
