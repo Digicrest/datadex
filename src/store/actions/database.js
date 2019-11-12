@@ -1,16 +1,16 @@
 import * as Types from '../types/database'
 
 
-export const add = item => {
+export const cachePokemon = pokemon => {
     return {
-        type: Types.LOCAL_STORAGE_ADD,
-        payload: item
+        type: Types.CACHE_POKEMON,
+        payload: pokemon
     }
 }
 
-export const remove = item => {
+export const uncachePokemon = pokemon => {
     return {
-        type: Types.LOCAL_STORAGE_ADD,
-        payload: item
+        type: Types.UNCACHE_POKEMON,
+        payload: pokemon
     }
 }

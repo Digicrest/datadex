@@ -1,4 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+
+import { cachePokemon } from '../store/actions/database'
+
 import { InputAdornment, TextField, Icon, Button, Typography  } from '@material-ui/core'
 
 import PokeAPI from '../apis/pokemon/PokeAPI'
@@ -7,19 +11,31 @@ import PokemonCard from '../components/PokemonCard.js'
 import './css/Home.css'
 
 class Home extends Component {
-    state = {
-        pokemon: [],
-        filtered_pokemon: []
+    constructor(props) {
+        super(props)
+
+        console.log('constructor has props: ', this.props)
+        this.state = {
+            filtered_pokemon: this.props.cached_pokemon
+        }
     }
 
     componentDidMount() {
-        this.getPokemon([30,  60, 90, 120, 150]).then(pokemon => {
-            this.setState({ pokemon }, () => console.log('Updated State: ', this.state))
-        })
+        const pokemon_ids = [1,2,3,4,5,6,7];
+
+        const cached_ids = this.props.cached_pokemon.map(p => p.id)
+        const uncached_ids = pokemon_ids.filter(id => !cached_ids.includes(id))
+
+        if (uncached_ids.length) {
+            this.getPokemon(uncached_ids).then(fetched_pokemon => {
+                fetched_pokemon.forEach(fp => this.props.cachePokemon(fp))
+            })
+        }
     }
 
     componentDidUpdate(previous_props, previous_state) {
-        if (this.state.pokemon !== previous_state.pokemon) {
+        if (this.props.cached_pokemon !== previous_props.cached_pokemon) {
+            console.log('cached changed')
             this.filterByName('')
         }
     }
@@ -32,8 +48,8 @@ class Home extends Component {
 
     filterByName = name => {
         this.setState({
-            filtered_pokemon: this.state.pokemon.filter(pokemon =>
-                pokemon.name.includes(name.toLowerCase())
+            filtered_pokemon: this.props.cached_pokemon.filter(pokemon =>
+                pokemon.name.toLowerCase().includes(name.toLowerCase())
             )
         })
     }
@@ -76,7 +92,21 @@ class Home extends Component {
     }
 }
 
-export default Home
+const mapStateToProps = state => {
+    console.log('state: ', state)
+    return {
+        cached_pokemon: state.database.pokemon
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        cachePokemon: pokemon => {
+            dispatch(cachePokemon(pokemon))
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
 
 const styles = {
     pokemon_list: {

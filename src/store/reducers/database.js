@@ -5,21 +5,23 @@ import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
 const initialState = {
-    localStorage: []
+    pokemon: []
 }
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
-        case Types.LOCAL_STORAGE_ADD: {
-            console.log('LOCAL_STORAGE_ADD')
-
-            return cloneDeep(state)
+        case Types.CACHE_POKEMON: {
+            let new_state = cloneDeep(state)
+            new_state.pokemon = state.pokemon.concat(action.payload)
+            return new_state
         }
 
-        case Types.LOCAL_STORAGE_REMOVE: {
-            console.log('LOCAL_STORAGE_REMOVE')
+        case Types.UNCACHE_POKEMON: {
+            const index = state.pokemon.map(p => p.id).indexOf(action.payload.id)
 
-            return cloneDeep(state)
+            let new_state = cloneDeep(state)
+            new_state.pokemon.splice(index, 1)
+            return new_state
         }
 
         default: {
