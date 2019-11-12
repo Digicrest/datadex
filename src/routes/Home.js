@@ -1,33 +1,36 @@
 import React, { Component } from 'react'
-
 import { InputAdornment, TextField, Icon, Button, Typography  } from '@material-ui/core'
 
+import PokeAPI from '../apis/pokemon/PokeAPI'
 import PokemonCard from '../components/PokemonCard.js'
 
-import PokeAPI from '../apis/pokemon/PokeAPI'
-
 import './css/Home.css'
-const pikachu = require('../resources/dummy_data/pikachu.json')
-const charmander = require('../resources/dummy_data/charmander.json')
-const bulbasaur = require('../resources/dummy_data/bulbasaur.json')
 
 class Home extends Component {
     state = {
-        pokemon: [pikachu, charmander, bulbasaur],
-        filtered_pokemon: [pikachu, charmander, bulbasaur]
+        pokemon: [],
+        filtered_pokemon: []
     }
 
-    // componentDidMount(){
-    //     this.getPokemon([1,2,3])
-    // }
+    componentDidMount() {
+        this.getPokemon([30,  60, 90, 120, 150]).then(pokemon => {
+            this.setState({ pokemon }, () => console.log('Updated State: ', this.state))
+        })
+    }
 
-    // getPokemon = async namesOrIDs => {
-    //     const pokemon = await PokeAPI.getPokemon(namesOrIDs)
-    //     console.log(pokemon)
-    //     return pokemon
-    // }
-    filterByName = e => {
-        const name = e.target.value
+    componentDidUpdate(previous_props, previous_state) {
+        if (this.state.pokemon !== previous_state.pokemon) {
+            this.filterByName('')
+        }
+    }
+
+    getPokemon = async namesOrIDs => {
+        const pokemon_promises = await PokeAPI.getPokemon(namesOrIDs)
+        const pokemon = await Promise.all(pokemon_promises)
+        return pokemon
+    }
+
+    filterByName = name => {
         this.setState({
             filtered_pokemon: this.state.pokemon.filter(pokemon =>
                 pokemon.name.includes(name.toLowerCase())
@@ -52,17 +55,15 @@ class Home extends Component {
                                 )
                             }}
 
-                            onChange={ this.filterByName }
+                            onChange={ e => this.filterByName(e.target.value) }
                         />
-                    </div>
-
-                   
+                    </div>           
                 </div>
                
                 <div id='content'>
                     <div style={ styles.pokemon_list }>
                         {this.state.filtered_pokemon.map(pokemon => 
-                            <PokemonCard pokemon={ pokemon } />
+                            <PokemonCard key={pokemon.name} pokemon={ pokemon } />
                         )}
                     </div>
 

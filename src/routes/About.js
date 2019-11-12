@@ -25,7 +25,7 @@ export class About extends Component {
             <div>
                 <p>About</p>
 
-                <Link to='/Home'>
+                <Link to='/'>
                     <p>Home</p>
                 </Link>
                 <Button variant="contained" color="primary" onClick={ this.getPokemon }>

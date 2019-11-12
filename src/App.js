@@ -4,6 +4,8 @@ import { Container, List, ListItem, ListItemIcon, ListItemText, Icon } from '@ma
 
 import Home from './routes/Home'
 import About from './routes/About'
+import PokemonDetails from './components/PokemonDetails'
+
 import './App.css'
 
 export class App extends Component {
@@ -40,10 +42,14 @@ export class App extends Component {
                         <Route path='/About'>
                             <About />
                         </Route>
+
+                        <Route 
+                            path='/pokemon/:name' 
+                            render={ props => <PokemonDetails name={ props.match.params.name } /> } 
+                        />
                     </Container>
                 </Router>
             </Container>
-          
         )
     }
 }
