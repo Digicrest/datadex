@@ -6,10 +6,6 @@ import { getTypeColor } from '../apis/pokemon/PokeHelpers'
 import { Container, Card, Typography } from '@material-ui/core'
 
 class PokemonCard extends Component {
-    componentDidMount() {
-        console.log(this.props.pokemon)
-    }
-
     render() {
         const pokemon = this.props.pokemon
         const pokemon_style = { ...styles.pokemon_card, backgroundColor: getTypeColor(pokemon.types) }

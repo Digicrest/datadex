@@ -13,7 +13,7 @@ class PokeAPI {
 
     // Take an array of Pokemon Names or IDs and returns detailed information about each Pokemon
     // FIXME: Try to Bundle Multiple Requests into a Single Request
-    getPokemon = async pokemonNamesOrIDs => {
+    getPokemon = async pokemonNamesOrIDs => {  
         if (!pokemonNamesOrIDs.length) {
             console.error('[PokeAPI] getPokemon() - No Names or IDs, if you want to Get All Pokemon use \'getAllPokemon()\'')
             return null
@@ -22,12 +22,19 @@ class PokeAPI {
         const results = await pokemonNamesOrIDs.map(async nameOrID => {
             const url = `${this.base_url}/pokemon/${nameOrID}`
        
-            const pokemon = await fetch(url)
-            const pokemonJSON = await pokemon.json()
+            const response = await fetch(url)
 
-            return pokemonJSON
-        });
-       
+            if (response.ok) {
+                const pokemonJSON = await response.json()
+                console.log('[PokeAPI] getPokemon(): ', pokemonJSON)
+                return pokemonJSON
+            } else {
+                console.log('Unable to Find Pokemon: ', nameOrID)
+            }
+
+            return []
+        })
+
         return results
     }
 }

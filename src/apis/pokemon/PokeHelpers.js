@@ -3,19 +3,22 @@ export const getTypeColor = types => {
 
     switch(type) {
         case 'electric': 
-            return '#FFEE3380';
+            return '#FFEE33';
 
         case 'fire': 
-            return '#FF000080';
+            return '#FF3333';
 
         case 'grass':
-            return '#00FF0080';
+            return '#00FF00';
 
         case 'poison':
-            return '#FF00FF80';
+            return '#FF00FF';
 
         case 'water':
-            return '#0000FF80';
+            return '#0000FF';
+
+        case 'ice':
+            return '#5555FF';
 
         default: 
             return '#000'

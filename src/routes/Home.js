@@ -14,28 +14,28 @@ class Home extends Component {
     constructor(props) {
         super(props)
 
-        console.log('constructor has props: ', this.props)
         this.state = {
             filtered_pokemon: this.props.cached_pokemon
         }
     }
 
     componentDidMount() {
-        const pokemon_ids = [1,2,3,4,5,6,7];
+        console.log('Home Mount State: ', this.props)
+
+        const pokemon_ids = ['moltres', 'zapdos', 144];
 
         const cached_ids = this.props.cached_pokemon.map(p => p.id)
         const uncached_ids = pokemon_ids.filter(id => !cached_ids.includes(id))
 
         if (uncached_ids.length) {
-            this.getPokemon(uncached_ids).then(fetched_pokemon => {
+            this.getPokemon(uncached_ids).then(fetched_pokemon => 
                 fetched_pokemon.forEach(fp => this.props.cachePokemon(fp))
-            })
+            )
         }
     }
 
     componentDidUpdate(previous_props, previous_state) {
         if (this.props.cached_pokemon !== previous_props.cached_pokemon) {
-            console.log('cached changed')
             this.filterByName('')
         }
     }
@@ -93,7 +93,6 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log('state: ', state)
     return {
         cached_pokemon: state.database.pokemon
     }

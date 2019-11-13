@@ -1,18 +1,19 @@
 import * as Types from '../types/database'
 import cloneDeep from 'lodash.clonedeep'
 
+import storage from 'redux-persist/lib/storage/index'
 import { persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
 
 const initialState = {
     pokemon: []
 }
 
 const reducer = (state = initialState, action) => {
-    switch(action.type) {
-        case Types.CACHE_POKEMON: {
+    switch(action.type) {        
+        case Types.CACHE_POKEMON: { 
             let new_state = cloneDeep(state)
             new_state.pokemon = state.pokemon.concat(action.payload)
+
             return new_state
         }
 
@@ -21,6 +22,7 @@ const reducer = (state = initialState, action) => {
 
             let new_state = cloneDeep(state)
             new_state.pokemon.splice(index, 1)
+
             return new_state
         }
 
@@ -32,7 +34,7 @@ const reducer = (state = initialState, action) => {
 
 const persistConfig = {
     key: 'database',
-    storage
+    storage: storage
 }
 
 export default persistReducer(persistConfig, reducer);
