@@ -13,12 +13,6 @@ export class About extends Component {
             search_result: 'Fetch Result...'
         }
     }
-
-    getPokemon = async () => {
-        const pikachu = await PokeAPI.getPokemon('pikachu')
-        console.log(pikachu)
-        this.setState({ search_result: JSON.stringify(pikachu) })
-    }
              
     render() {
         return (

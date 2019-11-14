@@ -29,7 +29,7 @@ class PokeAPI {
                 console.log('[PokeAPI] getPokemon(): ', pokemonJSON)
                 return pokemonJSON
             } else {
-                console.log('Unable to Find Pokemon: ', nameOrID)
+                console.log('[PokeAPI] getPokemon(): Unable to Find Pokemon: ', nameOrID)
             }
 
             return []

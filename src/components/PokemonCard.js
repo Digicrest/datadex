@@ -17,6 +17,7 @@ class PokemonCard extends Component {
                         <div style={styles.id_name_container}>
                             <Typography variant='h5' style={styles.pokemon_id}>#{ pokemon.id.toString().padStart(3, 0) }</Typography>
                             <Typography variant='h5' style={styles.pokemon_name}>{ pokemon.name }</Typography>
+                            <Typography style={styles.pokemon_name}>{ pokemon.name }</Typography>
                         </div>
 
                         <div style={ styles.types }>
@@ -64,6 +65,10 @@ const styles = {
     
     pokemon_name: {
         textTransform: 'capitalize'
+    },
+    pokemon_name_jp: {
+        fontStyle: 'italic',
+        opacity: 0.6
     },
     
     types: {

@@ -20,10 +20,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        console.log('Home Mount State: ', this.props)
-
-        const pokemon_ids = ['moltres', 'zapdos', 144];
-
+        const pokemon_ids = [1, 4, 7];
         const cached_ids = this.props.cached_pokemon.map(p => p.id)
         const uncached_ids = pokemon_ids.filter(id => !cached_ids.includes(id))
 
