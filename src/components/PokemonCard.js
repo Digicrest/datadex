@@ -17,7 +17,6 @@ class PokemonCard extends Component {
                         <div style={styles.id_name_container}>
                             <Typography variant='h5' style={styles.pokemon_id}>#{ pokemon.id.toString().padStart(3, 0) }</Typography>
                             <Typography variant='h5' style={styles.pokemon_name}>{ pokemon.name }</Typography>
-                            <Typography style={styles.pokemon_name}>{ pokemon.name }</Typography>
                         </div>
 
                         <div style={ styles.types }>
@@ -42,15 +41,13 @@ const styles = {
     pokemon_card: {
         height: '20%',
         minHeight: '100px',
-        margin: '10px',
-        borderRadius: '20px',
+        borderRadius: '10px',
+        
         display: 'flex',
         flexDirection: 'row',
     },
 
-    left: { 
-        flex: 3
-    },
+   
     
     id_name_container: {
         display: 'flex',
@@ -76,17 +73,24 @@ const styles = {
     },
     type: {
         fontSize: '10pt',
-        border: '2px solid #00000070',
+        border: '1px solid #00000020',
         borderRadius: '10px',
         padding: '5px',
-        marginRight: '10px'
+        marginRight: '10px',
+        backgroundColor: '#FFFFFF50'
     },
 
+    left: { 
+        width: '70%',
+    },
     right: { 
-        flex: 1,
+        width: '30%',
         borderTopLeftRadius:' 50%',
         borderBottomLeftRadius: '50%',
-        backgroundColor: '#FFFFFF95'
+        backgroundColor: '#FFFFFF95',
+        
+        borderLeft: '2px solid #00000080',
+
     },
 
     pokemon_image: {

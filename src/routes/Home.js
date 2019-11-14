@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { cachePokemon } from '../store/actions/database'
 
-import { InputAdornment, TextField, Icon, Button, Typography  } from '@material-ui/core'
+import { InputAdornment, TextField, Icon, Typography, Container } from '@material-ui/core'
 
 import PokeAPI from '../apis/pokemon/PokeAPI'
 import PokemonCard from '../components/PokemonCard.js'
@@ -75,9 +75,13 @@ class Home extends Component {
                
                 <div id='content'>
                     <div style={ styles.pokemon_list }>
-                        {this.state.filtered_pokemon.map(pokemon => 
-                            <PokemonCard key={pokemon.name} pokemon={ pokemon } />
-                        )}
+                        {this.state.filtered_pokemon.map(pokemon => {
+                            return (
+                                <div style={ styles.list_item }>
+                                    <PokemonCard key={pokemon.name} pokemon={ pokemon } />
+                                </div>
+                            )
+                        })}
                     </div>
 
                     <div id='action-bar'>
@@ -107,10 +111,17 @@ export default connect(mapStateToProps, mapDispatchToProps)(Home)
 const styles = {
     pokemon_list: {
         width: '85%',
-
+        display: 'flex',
+        flexWrap: 'wrap',
         borderRadius: '15px',
         backgroundColor: '#FAFAFA',
         padding: '20px',
-        overflow: 'auto'
+        overflow: 'auto',
+        margin: 0
+    },
+
+    list_item: {
+        width: '50%'
+
     }
 }

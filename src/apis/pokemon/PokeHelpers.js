@@ -1,26 +1,17 @@
-export const getTypeColor = types => {
-    const type = types.length > 1 ? types[1].type.name : types[0].type.name
-
-    switch(type) {
-        case 'electric': 
-            return '#FFEE33';
-
-        case 'fire': 
-            return '#FF3333';
-
-        case 'grass':
-            return '#00FF00';
-
-        case 'poison':
-            return '#FF00FF';
-
-        case 'water':
-            return '#0000FF';
-
-        case 'ice':
-            return '#5555FF';
-
-        default: 
-            return '#000'
+const colors = {
+    types: {
+        electric: '#FFEE33',
+        fire:     '#FF3333',
+        grass:    '#00FF00',
+        bug:      '#229922',
+        poison:   '#FF00FF',
+        water:    '#0000FF',
+        ice:      '#5555FF'
     }
 }
+
+export const getTypeColor = types => {
+    const type = types.length > 1 ? types[1].type.name : types[0].type.name
+    return colors.types[type]
+}
+

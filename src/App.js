@@ -21,8 +21,8 @@ export class App extends Component {
                 <Router>
                     {/* Navigation Bar */}
                     <List className='sidebar'>
-                        {['Home', 'About'].map((routeName, index) => (
-                            <Link key={routeName} to={'/' + routeName} className='nav-link'>
+                        {['/', '/About'].map((routeName, index) => (
+                            <Link key={routeName} to={routeName} className='nav-link'>
                                 <ListItem button>
                                     <ListItemIcon>
                                         <Icon>mail</Icon>
@@ -35,7 +35,7 @@ export class App extends Component {
 
                     {/* Content */}
                     <Container className='content'>
-                        <Route path='/Home'>
+                        <Route exact path='/'>
                             <Home />
                         </Route>
 
