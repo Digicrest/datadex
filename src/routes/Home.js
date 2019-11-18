@@ -20,7 +20,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        const pokemon_ids = [1, 4, 7];
+        const pokemon_ids = [9,10,11,12,13,14,15,16];
         const cached_ids = this.props.cached_pokemon.map(p => p.id)
         const uncached_ids = pokemon_ids.filter(id => !cached_ids.includes(id))
 
@@ -54,7 +54,7 @@ class Home extends Component {
     render() {
         return (
             <div id='home'>
-                <div id='header'>
+                <div style={ styles.header }>
                     <div id='searchbar'>
                         <TextField
                             id="search-input"
@@ -73,7 +73,7 @@ class Home extends Component {
                     </div>           
                 </div>
                
-                <div id='content'>
+                <div style={ styles.content }>
                     <div style={ styles.pokemon_list }>
                         {this.state.filtered_pokemon.map(pokemon => {
                             return (
@@ -84,7 +84,7 @@ class Home extends Component {
                         })}
                     </div>
 
-                    <div id='action-bar'>
+                    <div style={ styles.action_bar }>
                         <Typography>Actions</Typography>
                     </div>
                 </div>
@@ -109,12 +109,31 @@ const mapDispatchToProps = dispatch => {
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
 
 const styles = {
+    
+    header: {
+        height: '10%',
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: '20px',
+        borderRadius: '15px',
+        borderLeft: '2px solid red',
+        borderRight: '2px solid red',
+        marginBottom: '10px'
+    },
+
+
+    content: {
+        display: 'flex',
+        // height: '80%',
+        maxHeight: '80%',
+    },
+
     pokemon_list: {
         width: '85%',
         display: 'flex',
         flexWrap: 'wrap',
         borderRadius: '15px',
-        backgroundColor: '#FAFAFA',
+        backgroundColor: '#EFEFEF',
         padding: '20px',
         overflow: 'auto',
         margin: 0
@@ -122,6 +141,15 @@ const styles = {
 
     list_item: {
         width: '50%'
+    },
 
+    action_bar: {
+        marginLeft: '5%',
+        width: '15%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        border: '1px solid purple',
+        borderRadius: '15px'
     }
 }
