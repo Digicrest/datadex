@@ -1,22 +1,47 @@
 #home {
     height: 100vh;
-    padding: 5px;
 }
 
-
-#searchbar {
+#pokemon-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    border-radius: 15px;
     padding: 20px;
-    height: fit-content;
+    overflow: auto;
+    margin: 0;
+    border: 1px solid #00000040;
 }
 
-#search-input {
-    opacity: 0.7;
-    color: red;
+#pokemon-list::-webkit-scrollbar {
+    display: none;
 }
 
-.search-icon {
-    color: red;
+#header {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    border-radius: 15px;
+    border-left: 2px solid red;
+    border-right: 2px solid red;
+    margin-bottom: 10px
 }
 
+#content {
+    display: flex;
+    max-height: 80%;
+}
 
+.list-item {
+    width: 45%
+}
 
+#action-bar {
+    margin-left: 10px;
+    padding: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #00000020;
+    border-radius: 15px
+}

@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 
 import { cachePokemon } from '../store/actions/database'
 
-import { InputAdornment, TextField, Icon, Typography, Container } from '@material-ui/core'
+import { InputAdornment, TextField, Icon, Typography } from '@material-ui/core'
 
 import PokeAPI from '../apis/pokemon/PokeAPI'
-import PokemonCard from '../components/PokemonCard.js'
-
+import PokemonCard from '../components/PokemonCard'
+import SearchBar from '../components/SearchBar'
 import './css/Home.css'
 
 class Home extends Component {
@@ -54,37 +54,22 @@ class Home extends Component {
     render() {
         return (
             <div id='home'>
-                <div style={ styles.header }>
-                    <div id='searchbar'>
-                        <TextField
-                            id="search-input"
-                            label="Filter By Name"
-                            autoComplete='off'
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start" className='search-icon'>
-                                        <Icon>search</Icon>
-                                    </InputAdornment>
-                                )
-                            }}
-
-                            onChange={ e => this.filterByName(e.target.value) }
-                        />
-                    </div>           
+                <div id='header'>
+                    <SearchBar onChange={e => this.filterByName(e.target.value)} />      
                 </div>
                
-                <div style={ styles.content }>
-                    <div style={ styles.pokemon_list }>
+                <div id='content'>
+                    <div id='pokemon-list'>
                         {this.state.filtered_pokemon.map(pokemon => {
                             return (
-                                <div style={ styles.list_item }>
+                                <div className='list-item'>
                                     <PokemonCard key={pokemon.name} pokemon={ pokemon } />
                                 </div>
                             )
                         })}
                     </div>
 
-                    <div style={ styles.action_bar }>
+                    <div id='action-bar'>
                         <Typography>Actions</Typography>
                     </div>
                 </div>
@@ -106,50 +91,5 @@ const mapDispatchToProps = dispatch => {
         }
     }
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
-
-const styles = {
-    
-    header: {
-        height: '10%',
-        display: 'flex',
-        alignItems: 'center',
-        paddingLeft: '20px',
-        borderRadius: '15px',
-        borderLeft: '2px solid red',
-        borderRight: '2px solid red',
-        marginBottom: '10px'
-    },
-
-
-    content: {
-        display: 'flex',
-        // height: '80%',
-        maxHeight: '80%',
-    },
-
-    pokemon_list: {
-        width: '85%',
-        display: 'flex',
-        flexWrap: 'wrap',
-        borderRadius: '15px',
-        backgroundColor: '#EFEFEF',
-        padding: '20px',
-        overflow: 'auto',
-        margin: 0
-    },
-
-    list_item: {
-        width: '50%'
-    },
-
-    action_bar: {
-        marginLeft: '5%',
-        width: '15%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        border: '1px solid purple',
-        borderRadius: '15px'
-    }
-}

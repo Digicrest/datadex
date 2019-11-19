@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Container, Card, Typography } from '@material-ui/core'
 
 import { getTypeColor } from '../apis/pokemon/PokeHelpers'
@@ -17,4 +18,11 @@ class PokemonDetails extends Component {
     }
 }
 
-export default PokemonDetails
+
+const mapStateToProps = state => {
+    return {
+        pokemon: state.database.pokemon
+    }
+}
+
+export default connect(mapStateToProps)(PokemonDetails)
