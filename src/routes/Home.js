@@ -15,13 +15,13 @@ class Home extends Component {
         super(props)
 
         this.state = {
-            filtered_pokemon: this.props.cached_pokemon
+            filtered_pokemon: this.props.pokemon
         }
     }
 
     componentDidMount() {
-        const pokemon_ids = [9,10,11,12,13,14,15,16];
-        const cached_ids = this.props.cached_pokemon.map(p => p.id)
+        const pokemon_ids = new Array(10).fill(0).map((n, i) => Math.floor(Math.random() * 800) + 1);
+        const cached_ids = this.props.pokemon.map(p => p.id)
         const uncached_ids = pokemon_ids.filter(id => !cached_ids.includes(id))
 
         if (uncached_ids.length) {
@@ -32,7 +32,7 @@ class Home extends Component {
     }
 
     componentDidUpdate(previous_props, previous_state) {
-        if (this.props.cached_pokemon !== previous_props.cached_pokemon) {
+        if (this.props.pokemon !== previous_props.pokemon) {
             this.filterByName('')
         }
     }
@@ -45,7 +45,7 @@ class Home extends Component {
 
     filterByName = name => {
         this.setState({
-            filtered_pokemon: this.props.cached_pokemon.filter(pokemon =>
+            filtered_pokemon: this.props.pokemon.filter(pokemon =>
                 pokemon.name.toLowerCase().includes(name.toLowerCase())
             )
         })
@@ -62,8 +62,8 @@ class Home extends Component {
                     <div id='pokemon-list'>
                         {this.state.filtered_pokemon.map(pokemon => {
                             return (
-                                <div className='list-item'>
-                                    <PokemonCard key={pokemon.name} pokemon={ pokemon } />
+                                <div key={pokemon.name} className='list-item'>
+                                    <PokemonCard pokemon={ pokemon } />
                                 </div>
                             )
                         })}
@@ -80,7 +80,7 @@ class Home extends Component {
 
 const mapStateToProps = state => {
     return {
-        cached_pokemon: state.database.pokemon
+        pokemon: state.database.pokemon
     }
 }
 
