@@ -8,12 +8,20 @@ import { Container, Card } from '@material-ui/core'
 import './css/PokemonCard.css'
 
 class PokemonCard extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            palette: getTypeColor(this.props.pokemon.types)
+        }
+    }
+
     render() {
         const pokemon = this.props.pokemon
         
         return (
             <Link to={`/pokemon/${pokemon.name}`} style={{ textDecoration: 'none' }}>
-                <Card className='pokemon-card' style={{ backgroundColor: getTypeColor(pokemon.types) }}>
+                <Card className='pokemon-card' style={{ backgroundColor: this.state.palette.color }}>
                     <div className='highlight'></div>
                     <Container className='left'>
                         <div className='id-name-container'>

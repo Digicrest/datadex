@@ -27,6 +27,8 @@ class Home extends Component {
         if (uncached_ids.length) {
             this.getPokemon(uncached_ids).then(fetched_pokemon => 
                 fetched_pokemon.forEach(pokemon => {
+
+                    // TODO: Might want to write them all to a JSON file instead of using local storage.
                     // Only keep the object roperties necessary for the home screen (name, id, types and front_default sprite)
                     // Trying to keep the entire returned object in local storage fills up the Chrome Quota (25MB) after just 45 Pokemon
                     const { id, name, types } = pokemon
@@ -62,7 +64,8 @@ class Home extends Component {
         return (
             <div id='home'>
                 <div id='header'>
-                    <SearchBar onChange={e => this.filterByName(e.target.value)} />      
+                    <SearchBar onChange={e => this.filterByName(e.target.value)} />
+                       
                 </div>
                
                 <div id='content'>
