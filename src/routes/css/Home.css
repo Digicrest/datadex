@@ -34,15 +34,22 @@
 }
 
 .list-item {
-    width: 45%
+    width: 50%
 }
 
 #action-bar {
     margin-left: 10px;
     padding: 25px;
+    
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+
+    justify-content: flex-end;
     align-items: center;
     border: 1px solid #00000020;
     border-radius: 15px
+}
+
+.action-button {
+    margin-bottom: 10px !important;
 }

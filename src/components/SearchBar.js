@@ -18,8 +18,8 @@ export class SearchBar extends Component {
                       </InputAdornment>
                   )
               }}
-
               onChange={ this.props.onChange }
+              defaultValue={ this.props.defaultValue }
           />
       </div>     
     )

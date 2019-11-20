@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { setConfig } from '../store/actions/config'
 import { cachePokemon } from '../store/actions/database'
 
-import { InputAdornment, TextField, Icon, Typography } from '@material-ui/core'
+import { Fab, Icon, Typography } from '@material-ui/core'
 
 import PokeAPI from '../apis/pokemon/PokeAPI'
 import PokemonCard from '../components/PokemonCard'
@@ -20,8 +20,8 @@ class Home extends Component {
         }
     }
 
-    componentDidMount() {
-        const pokemon_ids = new Array(10).fill(0).map((n, i) => Math.floor(Math.random() * 800) + 1);
+    temporaryGetMorePokemon = () => {
+        const pokemon_ids = new Array(2).fill(0).map((n, i) => Math.floor(Math.random() * 800) + 1);
         const cached_ids = this.props.pokemon.map(p => p.id)
         const uncached_ids = pokemon_ids.filter(id => !cached_ids.includes(id))
 
@@ -41,10 +41,16 @@ class Home extends Component {
         }
     }
 
-    componentDidUpdate(previous_props, previous_state) {
-        if (this.props.pokemon !== previous_props.pokemon) {
+    componentDidMount() {
+        this.temporaryGetMorePokemon()
+
+        if (this.props.search_term.length) {
             this.filterByName(this.props.search_term)
         }
+    }
+
+    componentDidUpdate(previous_props, previous_state) {
+       
     }
 
     getPokemon = async namesOrIDs => {
@@ -55,7 +61,7 @@ class Home extends Component {
 
     filterByName = name => {
         this.props.setConfig('search_term', name)
-
+      
         this.setState({
             filtered_pokemon: this.props.pokemon.filter(pokemon =>
                 pokemon.name.toLowerCase().includes(name)
@@ -67,23 +73,27 @@ class Home extends Component {
         return (
             <div id='home'>
                 <div id='header'>
-                    <SearchBar onChange={e => this.filterByName(e.target.value)} />
-                       
+                    <SearchBar defaultValue={ this.props.search_term } onChange={e => this.filterByName(e.target.value)} />       
                 </div>
                
                 <div id='content'>
                     <div id='pokemon-list'>
                         {this.state.filtered_pokemon.map(pokemon => {
                             return (
-                                <div key={pokemon.id} className='list-item'>
-                                    <PokemonCard pokemon={ pokemon } />
+                                <div className='list-item'>
+                                    <PokemonCard key={pokemon.id} pokemon={ pokemon } />
                                 </div>
                             )
                         })}
                     </div>
 
                     <div id='action-bar'>
-                        <Typography>Actions</Typography>
+                        <Fab variant="round" className='action-button' style={{ color: '#05F' }}>
+                            <Icon>sort</Icon>
+                        </Fab>
+                        <Fab variant="round" className='action-button' style={{ color: '#F00' }}>
+                            <Icon>delete</Icon>
+                        </Fab>
                     </div>
                 </div>
             </div>
