@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import { setConfig } from '../store/actions/config'
 import { cachePokemon } from '../store/actions/database'
 
 import { InputAdornment, TextField, Icon, Typography } from '@material-ui/core'
@@ -42,7 +43,7 @@ class Home extends Component {
 
     componentDidUpdate(previous_props, previous_state) {
         if (this.props.pokemon !== previous_props.pokemon) {
-            this.filterByName('')
+            this.filterByName(this.props.search_term)
         }
     }
 
@@ -53,9 +54,11 @@ class Home extends Component {
     }
 
     filterByName = name => {
+        this.props.setConfig('search_term', name)
+
         this.setState({
             filtered_pokemon: this.props.pokemon.filter(pokemon =>
-                pokemon.name.toLowerCase().includes(name.toLowerCase())
+                pokemon.name.toLowerCase().includes(name)
             )
         })
     }
@@ -90,7 +93,8 @@ class Home extends Component {
 
 const mapStateToProps = state => {
     return {
-        pokemon: state.database.pokemon
+        pokemon: state.database.pokemon,
+        search_term: state.config.search_term
     }
 }
 
@@ -98,6 +102,10 @@ const mapDispatchToProps = dispatch => {
     return {
         cachePokemon: pokemon => {
             dispatch(cachePokemon(pokemon))
+        },
+
+        setConfig: (prop, val) => {
+            dispatch(setConfig(prop, val))
         }
     }
 }
