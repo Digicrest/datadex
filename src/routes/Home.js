@@ -26,7 +26,14 @@ class Home extends Component {
 
         if (uncached_ids.length) {
             this.getPokemon(uncached_ids).then(fetched_pokemon => 
-                fetched_pokemon.forEach(fp => this.props.cachePokemon(fp))
+                fetched_pokemon.forEach(pokemon => {
+                    // Only keep the object roperties necessary for the home screen (name, id, types and front_default sprite)
+                    // Trying to keep the entire returned object in local storage fills up the Chrome Quota (25MB) after just 45 Pokemon
+                    const { id, name, types } = pokemon
+                    const sprite = pokemon.sprites.front_default
+
+                    this.props.cachePokemon({ id, name, types, sprite })
+                })
             )
         }
     }
@@ -62,7 +69,7 @@ class Home extends Component {
                     <div id='pokemon-list'>
                         {this.state.filtered_pokemon.map(pokemon => {
                             return (
-                                <div key={pokemon.name} className='list-item'>
+                                <div key={pokemon.id} className='list-item'>
                                     <PokemonCard pokemon={ pokemon } />
                                 </div>
                             )

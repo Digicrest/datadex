@@ -29,7 +29,7 @@ class PokemonCard extends Component {
                     </Container>
 
                     <div className='right'>
-                        <img src={ pokemon.sprites.front_default } alt={ pokemon.name } className='pokemon-image' />
+                        <img src={ pokemon.sprite } alt={ pokemon.name } className='pokemon-image' />
                     </div>
                 </Card>
             </Link>
