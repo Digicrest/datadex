@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { setConfig } from '../store/actions/config'
 import { cachePokemon } from '../store/actions/database'
 
-import { Fab, Icon, Typography } from '@material-ui/core'
+import { Fab, Icon, Button } from '@material-ui/core'
 
 import PokeAPI from '../apis/pokemon/PokeAPI'
 import PokemonCard from '../components/PokemonCard'
@@ -16,7 +16,16 @@ class Home extends Component {
         super(props)
 
         this.state = {
-            filtered_pokemon: this.props.pokemon
+            filtered_pokemon: this.props.pokemon,
+
+            filters: {
+                name: '',
+                id: '',
+                types: {
+                    primary: '',
+                    secondary: ''
+                }
+            }
         }
     }
 
@@ -26,7 +35,7 @@ class Home extends Component {
         const uncached_ids = pokemon_ids.filter(id => !cached_ids.includes(id))
 
         if (uncached_ids.length) {
-            this.getPokemon(uncached_ids).then(fetched_pokemon => 
+            this.getPokemon(uncached_ids).then(fetched_pokemon =>
                 fetched_pokemon.forEach(pokemon => {
 
                     // TODO: Might want to write them all to a JSON file instead of using local storage.
@@ -43,14 +52,16 @@ class Home extends Component {
 
     componentDidMount() {
         this.temporaryGetMorePokemon()
-
-        if (this.props.search_term.length) {
-            this.filterByName(this.props.search_term)
-        }
     }
 
     componentDidUpdate(previous_props, previous_state) {
-       
+        // If our filters have change; refilter
+        if (this.state.filters !== previous_state.filters) {
+            console.log('filters changed')
+            this.setState({
+                filtered_pokemon: this.filter()
+            })
+        }
     }
 
     getPokemon = async namesOrIDs => {
@@ -59,39 +70,63 @@ class Home extends Component {
         return pokemon
     }
 
-    filterByName = name => {
-        this.props.setConfig('search_term', name)
-      
-        this.setState({
-            filtered_pokemon: this.props.pokemon.filter(pokemon =>
-                pokemon.name.toLowerCase().includes(name)
-            )
-        })
+    // by name or id
+    sort = () => {
+
     }
-    
+
+    filterByID = id => this.setState({ filters: { ...this.state.filters, id } })
+    filterByName = name => this.setState({ filters: { ...this.state.filters, name } })
+    filterByTypes = types => this.setState({ filters: { ...this.state.filters, types } })
+
+    filter = () => {
+        console.log('Applying filters on: ', this.props.pokemon)
+        return this.props.pokemon
+            // By Name
+            .filter(pokemon => pokemon.name.toLowerCase().includes(this.state.filters.name.toLowerCase()))
+            
+            // By Type
+            .filter(pokemon => {
+                console.log('Filtering: ', pokemon)
+                const types = this.state.filters.types
+                return types.primary
+                        ? types.secondary
+                            ? types.primary === pokemon.types[0].type.name && pokemon.types[1] && types.secondary === pokemon.types[1].type.name
+                            : types.primary === pokemon.types[0].type.name
+                        : true
+            })
+    }
+
+
+
     render() {
         return (
             <div id='home'>
                 <div id='header'>
-                    <SearchBar defaultValue={ this.props.search_term } onChange={e => this.filterByName(e.target.value)} />       
+                    <SearchBar defaultValue={this.props.search_term} onChange={e => this.filterByName(e.target.value)} />
                 </div>
-               
+
                 <div id='content'>
                     <div id='pokemon-list'>
                         {this.state.filtered_pokemon.map(pokemon => {
                             return (
                                 <div className='list-item'>
-                                    <PokemonCard key={pokemon.id} pokemon={ pokemon } />
+                                    <PokemonCard key={pokemon.id} pokemon={pokemon} />
                                 </div>
                             )
                         })}
                     </div>
+                    
+                    <Button onClick={() => this.filterByTypes({ primary: 'fire', secondary: '' })}>
+                        Test Filter by Fire Type
+                    </Button>
+
 
                     <div id='action-bar'>
-                        <Fab variant="round" className='action-button' style={{ color: '#05F' }}>
+                        <Fab variant="round" className='action-button' style={{ color: '#05F' }} onClick={this.sort}>
                             <Icon>sort</Icon>
                         </Fab>
-                        <Fab variant="round" className='action-button' style={{ color: '#F00' }}>
+                        <Fab variant="round" className='action-button' style={{ color: '#F00' }} onClick={this.removeFilters}>
                             <Icon>delete</Icon>
                         </Fab>
                     </div>
