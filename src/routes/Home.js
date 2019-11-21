@@ -1,15 +1,27 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import cloneDeep from 'lodash.clonedeep'
 import { setConfig } from '../store/actions/config'
 import { cachePokemon } from '../store/actions/database'
 
-import { Fab, Icon, Button } from '@material-ui/core'
+import { Fab, Icon, Select, MenuItem, Button } from '@material-ui/core'
 
 import PokeAPI from '../apis/pokemon/PokeAPI'
 import PokemonCard from '../components/PokemonCard'
 import SearchBar from '../components/SearchBar'
+
 import './css/Home.css'
+import { types } from '../apis/pokemon/PokeHelpers'
+
+const init_filters = {
+    name: '',
+    id: '',
+    types: {
+        primary: '',
+        secondary: ''
+    }
+};
 
 class Home extends Component {
     constructor(props) {
@@ -18,14 +30,7 @@ class Home extends Component {
         this.state = {
             filtered_pokemon: this.props.pokemon,
 
-            filters: {
-                name: '',
-                id: '',
-                types: {
-                    primary: '',
-                    secondary: ''
-                }
-            }
+            filters: cloneDeep(init_filters)
         }
     }
 
@@ -57,7 +62,6 @@ class Home extends Component {
     componentDidUpdate(previous_props, previous_state) {
         // If our filters have change; refilter
         if (this.state.filters !== previous_state.filters) {
-            console.log('filters changed')
             this.setState({
                 filtered_pokemon: this.filter()
             })
@@ -77,7 +81,10 @@ class Home extends Component {
 
     filterByID = id => this.setState({ filters: { ...this.state.filters, id } })
     filterByName = name => this.setState({ filters: { ...this.state.filters, name } })
-    filterByTypes = types => this.setState({ filters: { ...this.state.filters, types } })
+    filterByTypes = types => {
+        console.log('recieved types: ', types)
+        this.setState({ filters: { ...this.state.filters, types: { ...this.state.types, ...types } } })
+    }
 
     filter = () => {
         console.log('Applying filters on: ', this.props.pokemon)
@@ -87,7 +94,6 @@ class Home extends Component {
             
             // By Type
             .filter(pokemon => {
-                console.log('Filtering: ', pokemon)
                 const types = this.state.filters.types
                 return types.primary
                         ? types.secondary
@@ -97,30 +103,39 @@ class Home extends Component {
             })
     }
 
-
+    removeFilters = () => {
+        this.setState({
+            filters: cloneDeep(init_filters)
+        })
+    }
 
     render() {
         return (
             <div id='home'>
                 <div id='header'>
                     <SearchBar defaultValue={this.props.search_term} onChange={e => this.filterByName(e.target.value)} />
+
+                    <div id='type-selectors'>
+                        <Select className='type-selector' onChange={ e => this.filterByTypes({ primary: e.nativeEvent.target.textContent })}>
+                            { types.map(type => <MenuItem key={ type }>{type}</MenuItem> )}    
+                        </Select>
+
+                        <Select className='type-selector' onChange={ e => this.filterByTypes({ secondary: e.nativeEvent.target.textContent })}>
+                            { types.map(type => <MenuItem key={ type }>{type}</MenuItem> )}    
+                        </Select>
+                    </div>
                 </div>
 
                 <div id='content'>
                     <div id='pokemon-list'>
                         {this.state.filtered_pokemon.map(pokemon => {
                             return (
-                                <div className='list-item'>
-                                    <PokemonCard key={pokemon.id} pokemon={pokemon} />
+                                <div key={pokemon.id} className='list-item'>
+                                    <PokemonCard  pokemon={pokemon} />
                                 </div>
                             )
                         })}
                     </div>
-                    
-                    <Button onClick={() => this.filterByTypes({ primary: 'fire', secondary: '' })}>
-                        Test Filter by Fire Type
-                    </Button>
-
 
                     <div id='action-bar'>
                         <Fab variant="round" className='action-button' style={{ color: '#05F' }} onClick={this.sort}>

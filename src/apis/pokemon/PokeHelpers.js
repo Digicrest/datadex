@@ -1,5 +1,13 @@
+// Every Pokemon Type
+export const types = [ 
+    'bug', 'dark', 'dragon', 'electric','fairy', 
+    'fighting', 'fire', 'flying','ghost', 'grass', 
+    'ground', 'ice', 'normal', 'poison', 'psychic', 
+    'rock', 'steel','water'
+];
+
 //  Colors are from Bulbapedia
-const colors = {
+export const palette = {
     types: {
         bug:        { color: '#A8B820', light: '#C6D16E', dark: '#6D7815' },
         dark:       { color: '#705848', light: '#A29288', dark: '#49392F' },
@@ -24,6 +32,6 @@ const colors = {
 
 export const getTypeColor = types => {
     const type = types.length > 1 ? types[1].type.name : types[0].type.name
-    return colors.types[type]
+    return palette.types[type]
 }
 
