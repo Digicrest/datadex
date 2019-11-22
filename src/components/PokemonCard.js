@@ -11,8 +11,11 @@ class PokemonCard extends Component {
     constructor(props) {
         super(props)
 
+        const pokemon = props.pokemon
         this.state = {
-            palette: getTypeColor(this.props.pokemon.types)
+            backgroundColor: pokemon.types.length > 1 
+                ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).color}, ${getTypeColor(pokemon.types[1].type.name).color});`
+                : getTypeColor(pokemon.types[0].type.name)
         }
     }
 
@@ -20,8 +23,9 @@ class PokemonCard extends Component {
         const pokemon = this.props.pokemon
         
         return (
-            <Link to={`/pokemon/${pokemon.name}`} style={{ textDecoration: 'none' }}>
-                <Card className='pokemon-card' style={{ backgroundColor: this.state.palette.color }}>
+            <Link id={`${pokemon.name}-card`} to={`/pokemon/${pokemon.name}`} style={{ textDecoration: 'none' }} >
+               
+                <Card className='pokemon-card' style={{ backgroundColor: this.state.backgroundColor }}>
                     <div className='highlight'></div>
                     <Container className='left'>
                         <div className='id-name-container'>

@@ -133,9 +133,9 @@ class Home extends Component {
                             return <button className='type-button' 
                             onClick={ e => this.filterByTypes({ primary: e.nativeEvent.target.textContent })}
                             style={{ 
-                                backgroundColor: getTypeColor([type]).light + 70,
+                                backgroundColor: getTypeColor(type).light + 70,
                                 borderWidth: '1px',
-                                borderColor: getTypeColor([type]).dark
+                                borderColor: getTypeColor(type).dark
                             }}>{ type }</button>
                         })}
                     </div>

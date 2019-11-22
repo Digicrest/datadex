@@ -30,12 +30,8 @@ export const palette = {
     }
 }
 
-export const getTypeColor = types => {
-    if (types[0].hasOwnProperty('type')) {
-        const type = types.length > 1 ? types[1].type.name : types[0].type.name
-        return palette.types[type]
-    } else {
-        return palette.types[types[0]]
-    }
+export const getTypeColor = type => {
+    console.log('type::: ', type)
+    return palette.types[type]
 }
 

@@ -26,10 +26,11 @@ class PokemonDetails extends Component {
         const { pokemon } = this.state
 
         return (
-            <Container id='pokemon-details' style={{ backgroundColor: getTypeColor(pokemon.types) }}>
-                <Typography>{ pokemon.name }</Typography>
-                <Typography>{ JSON.stringify(pokemon, 0, 2) }</Typography>
-            </Container>
+            <p>{pokemon.name}</p>
+            // <Container id='pokemon-details' style={{ backgroundColor: getTypeColor(pokemon.types) }}>
+            //     <Typography>{ pokemon.name }</Typography>
+            //     <Typography>{ JSON.stringify(pokemon, 0, 2) }</Typography>
+            // </Container>
         )
     }
 
