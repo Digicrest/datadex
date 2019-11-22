@@ -12,7 +12,7 @@ import PokemonCard from '../components/PokemonCard'
 import SearchBar from '../components/SearchBar'
 
 import './css/Home.css'
-import { types } from '../apis/pokemon/PokeHelpers'
+import { types, getTypeColor } from '../apis/pokemon/PokeHelpers'
 
 const init_filters = {
     name: '',
@@ -113,16 +113,31 @@ class Home extends Component {
         return (
             <div id='home'>
                 <div id='header'>
-                    <SearchBar defaultValue={this.props.search_term} onChange={e => this.filterByName(e.target.value)} />
+                    <div id='header-top'>
+                        <SearchBar defaultValue={this.props.search_term} onChange={e => this.filterByName(e.target.value)} />
 
-                    <div id='type-selectors'>
-                        <Select className='type-selector' onChange={ e => this.filterByTypes({ primary: e.nativeEvent.target.textContent })}>
-                            { types.map(type => <MenuItem key={ type }>{type}</MenuItem> )}    
-                        </Select>
+                        {/* <div id='type-selectors'>
+                            <Select className='type-selector' onChange={ e => this.filterByTypes({ primary: e.nativeEvent.target.textContent })}>
+                                { types.map(type => <MenuItem key={ type }>{type}</MenuItem> )}    
+                            </Select>
 
-                        <Select className='type-selector' onChange={ e => this.filterByTypes({ secondary: e.nativeEvent.target.textContent })}>
-                            { types.map(type => <MenuItem key={ type }>{type}</MenuItem> )}    
-                        </Select>
+                            <Select className='type-selector' onChange={ e => this.filterByTypes({ secondary: e.nativeEvent.target.textContent })}>
+                                { types.map(type => <MenuItem key={ type }>{type}</MenuItem> )}    
+                            </Select>
+                        </div> */}
+                    </div>
+                    
+
+                    <div className='type-buttons'>
+                        { types.map(type => {
+                            return <button className='type-button' 
+                            onClick={ e => this.filterByTypes({ primary: e.nativeEvent.target.textContent })}
+                            style={{ 
+                                backgroundColor: getTypeColor([type]).light + 70,
+                                borderWidth: '1px',
+                                borderColor: getTypeColor([type]).dark
+                            }}>{ type }</button>
+                        })}
                     </div>
                 </div>
 

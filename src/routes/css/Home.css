@@ -20,12 +20,16 @@
 
 #header {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     padding-left: 20px;
     border-radius: 15px;
     border-left: 2px solid red;
     border-right: 2px solid red;
     margin-bottom: 10px
+}
+
+#header-top {
+    display: flex;
 }
 
 #content {
@@ -55,21 +59,20 @@
 }
 
 
-#type-selectors {
-    width: 25%;
-    display: flex;
-    justify-content: space-evenly;
-    /* padding-top: 10px; */
-    /* border: 3px solid red; */
-}
-.type-selector {
-    /* width: 80%; */
-    text-decoration: none;
-    border-style: none;
 
-    border: 1px solid #00000030;
-    border-radius: 10%;
-    margin: 5px;
-    width: 50%;
-    /* margin: 20px; */
+
+.type-buttons {
+    /* display: block; */
+    align-self: center;
+}
+
+.type-button {
+    padding: 5px;
+    width: 10%;
+    margin: 2px;
+    border-radius: 15px;
+}
+
+.type-button:focus {
+    outline: none;
 }
