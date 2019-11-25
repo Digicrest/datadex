@@ -19,7 +19,6 @@ export class SearchBar extends Component {
                   )
               }}
               onChange={ this.props.onChange }
-              defaultValue={ this.props.defaultValue }
           />
       </div>     
     )

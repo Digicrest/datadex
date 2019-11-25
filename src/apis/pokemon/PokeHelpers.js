@@ -31,7 +31,6 @@ export const palette = {
 }
 
 export const getTypeColor = type => {
-    console.log('type::: ', type)
     return palette.types[type]
 }
 

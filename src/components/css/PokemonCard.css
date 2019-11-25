@@ -74,6 +74,11 @@
     animation: jump 0.75s infinite;
 }
 
+.pokemon-card:hover .pokemon-name, 
+.pokemon-card:hover .pokemon-id {
+    font-weight: bold;
+}
+
 @keyframes jump {
     0% {
         transform: translate3d(0, 0, 0);

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import { getTypeColor } from '../apis/pokemon/PokeHelpers'
-
 import { Container, Card } from '@material-ui/core'
 
 import './css/PokemonCard.css'
@@ -13,9 +12,9 @@ class PokemonCard extends Component {
 
         const pokemon = props.pokemon
         this.state = {
-            backgroundColor: pokemon.types.length > 1 
-                ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).color}, ${getTypeColor(pokemon.types[1].type.name).color});`
-                : getTypeColor(pokemon.types[0].type.name)
+            background: pokemon.types.length > 1 
+                ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).color}, ${getTypeColor(pokemon.types[1].type.name).color})`
+                : getTypeColor(pokemon.types[0].type.name).color
         }
     }
 
@@ -25,7 +24,7 @@ class PokemonCard extends Component {
         return (
             <Link id={`${pokemon.name}-card`} to={`/pokemon/${pokemon.name}`} style={{ textDecoration: 'none' }} >
                
-                <Card className='pokemon-card' style={{ backgroundColor: this.state.backgroundColor }}>
+                <Card className='pokemon-card' style={{ background: this.state.background }}>
                     <div className='highlight'></div>
                     <Container className='left'>
                         <div className='id-name-container'>
