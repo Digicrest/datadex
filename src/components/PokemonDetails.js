@@ -108,6 +108,18 @@ class PokemonDetails extends Component {
                     <div className='details-description'>
                         <p>{ pokemon.description }</p> 
                     </div>
+
+                    {/* moves */}
+                        {/* group by game / learn method */}
+
+                        {/* Learned By */}
+                            {/* [ Level Up ] , [ Egg ], [ Disc ], [ Tutor ] */}
+                            {/* ^^^^ these are buttons that change the page of moves being shown; not filters; just component toggles */}
+
+                        {/* Filter By */}
+                            {/* Select Game */}
+                            {/* Select Gen */}
+                            {/* selecting these should filter the move set to only those obtainable */}
                 </div>
             </Container>
         )
