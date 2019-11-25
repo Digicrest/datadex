@@ -12,31 +12,45 @@ class PokeAPI {
     }
 
     // Take an array of Pokemon Names or IDs and returns detailed information about each Pokemon
-    // FIXME: Try to Bundle Multiple Requests into a Single Request
-    getPokemon = async pokemonNamesOrIDs => {  
+    // REFACTOR: Try to Bundle Multiple Requests into a Single Request
+
+
+    // WHY THE FUCK are you returning a promise
+    getAllPokemon = async pokemonNamesOrIDs => {  
         if (!pokemonNamesOrIDs.length) {
             console.error('[PokeAPI] getPokemon() - No Names or IDs, if you want to Get All Pokemon use \'getAllPokemon()\'')
             return null
         }
 
-        const results = await pokemonNamesOrIDs.map(async nameOrID => {
-            const url = `${this.base_url}/pokemon/${nameOrID}`
-       
-            const response = await fetch(url)
+        // if we pass through just a single name or id; wrap in array
+        if (typeof pokemonNamesOrIDs !== 'object'){
+            pokemonNamesOrIDs = [pokemonNamesOrIDs]
+        }
 
-            if (response.ok) {
-                const pokemonJSON = await response.json()
-                console.log('[PokeAPI] getPokemon(): ', pokemonJSON)
-                return pokemonJSON
-            } else {
-                console.log('[PokeAPI] getPokemon(): Unable to Find Pokemon: ', nameOrID)
-            }
-
-            return []
-        })
+        const results = await pokemonNamesOrIDs.map(nameOrID => this.getPokemon(nameOrID))
 
         return results
     }
+
+
+
+    getPokemon = async nameOrID => {
+        const url = `${this.base_url}/pokemon/${nameOrID}`
+   
+        const response = await fetch(url)
+
+        if (response.ok) {
+            const pokemonJSON = await response.json()
+            console.log('[PokeAPI] getPokemon(): ', pokemonJSON)
+            return pokemonJSON
+        } else {
+            console.log('[PokeAPI] getPokemon(): Unable to Find Pokemon: ', nameOrID)
+        }
+
+        return []
+    }
 }
+
+
 
 export default new PokeAPI()

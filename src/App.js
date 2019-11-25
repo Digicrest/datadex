@@ -21,13 +21,13 @@ export class App extends Component {
                 <Router>
                     {/* Navigation Bar */}
                     <List className='sidebar'>
-                        {['/', '/About'].map((routeName, index) => (
-                            <Link key={routeName} to={routeName} className='nav-link'>
+                        {['', 'About'].map((routeName, index) => (
+                            <Link key={routeName} to={'/' + routeName} className='nav-link'>
                                 <ListItem button>
                                     <ListItemIcon>
-                                        <Icon>mail</Icon>
+                                        <Icon>{}</Icon>
                                     </ListItemIcon>
-                                    <ListItemText primary={routeName} />
+                                    <ListItemText primary={routeName || 'Home'} />
                                 </ListItem>
                             </Link>
                         ))}

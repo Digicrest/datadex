@@ -46,8 +46,10 @@ class Home extends Component {
                 fetched_pokemon.forEach(pokemon => {
 
                     // TODO: Might want to write them all to a JSON file instead of using local storage.
-                    // Only keep the object roperties necessary for the home screen (name, id, types and front_default sprite)
-                    // Trying to keep the entire returned object in local storage fills up the Chrome Quota (25MB) after just 45 Pokemon
+                    // Only keep the object properties necessary for the home screen 
+                    // (name, id, types and front_default sprite)
+                    // Trying to keep the entire returned object in local storage fills 
+                    // up the Chrome Quota (25MB) after just 45 Pokemon
                     const { id, name, types } = pokemon
                     const sprite = pokemon.sprites.front_default
 
@@ -71,7 +73,7 @@ class Home extends Component {
     }
 
     getPokemon = async namesOrIDs => {
-        const pokemon_promises = await PokeAPI.getPokemon(namesOrIDs)
+        const pokemon_promises = await PokeAPI.getAllPokemon(namesOrIDs)
         const pokemon = await Promise.all(pokemon_promises)
         return pokemon
     }
