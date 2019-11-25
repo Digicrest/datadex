@@ -23,6 +23,8 @@ const init_filters = {
     }
 };
 
+
+
 class Home extends Component {
     constructor(props) {
         super(props)
@@ -132,7 +134,23 @@ class Home extends Component {
 
                 <div id='content'>
                     <div id='pokemon-list'>
-                        {this.state.filtered_pokemon.map(pokemon => {
+
+                        {/* Filter Overview */}
+                        <div id='active-filters'>
+                            <p>{ this.state.filtered_pokemon.length } Pokemon</p>
+
+                            { Object.keys(this.state.filters)
+                                .filter(key => 
+                                    typeof this.state.filters[key] === 'string'
+                                        ? this.state.filters[key].length > 0
+                                        : this.state.filters[key].primary.length > 0
+                                )
+                                .map(active_filter => <p>{active_filter}</p>)
+                            }
+                        </div>
+                        
+                        {/* Pokemon Grid */}
+                        { this.state.filtered_pokemon.map(pokemon => {
                             return (
                                 <div key={pokemon.id} className='list-item'>
                                     <PokemonCard  pokemon={pokemon} />
