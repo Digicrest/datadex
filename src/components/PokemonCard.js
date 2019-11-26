@@ -24,7 +24,7 @@ class PokemonCard extends Component {
         return (
             <Link id={`${pokemon.name}-card`} to={`/pokemon/${pokemon.name}`} style={{ textDecoration: 'none' }} >
                
-                <Card className='pokemon-card' style={{ background: this.state.background }}>
+                <Card className='pokemon-card' style={{ background: this.state.background,  ...this.props.style }}>
                     <div className='highlight'></div>
                     <Container className='left'>
                         <div className='id-name-container'>
@@ -40,7 +40,7 @@ class PokemonCard extends Component {
                     </Container>
 
                     <div className='right'>
-                        <img src={ pokemon.sprite } alt={ pokemon.name } className='pokemon-image' />
+                        <img src={ pokemon.sprite || pokemon.sprites.front_default } alt={ pokemon.name } className='pokemon-image' />
                     </div>
                 </Card>
             </Link>

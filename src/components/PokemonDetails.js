@@ -8,6 +8,7 @@ import Loader from '../components/Loader'
 import './css/PokemonDetails.css'
 
 import PokeAPI from '../apis/pokemon/PokeAPI'
+import PokemonCard from './PokemonCard'
 
 class PokemonDetails extends Component {
     constructor(props) {
@@ -25,10 +26,11 @@ class PokemonDetails extends Component {
     setStyles = () => {
         const {pokemon} = this.state
         this.detailPageStyle = {
-            background: pokemon.types.length > 1 
-                ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).light}, ${getTypeColor(pokemon.types[1].type.name).color})`
-                : getTypeColor(pokemon.types[0].type.name).light,
+            // background: pokemon.types.length > 1 
+            //     ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).light}, ${getTypeColor(pokemon.types[1].type.name).color})`
+            //     : getTypeColor(pokemon.types[0].type.name).light,
 
+            backgroundColor: getTypeColor(pokemon.types[0].type.name).light,
             borderRadius: 10
         }
     }
@@ -57,6 +59,37 @@ class PokemonDetails extends Component {
         }
     }
 
+    _AlternativePokemonCard = () => {
+        const { pokemon } = this.state;
+
+        return (
+            <>
+                {/* name */}
+                <p className='details-pokemon-name'>{pokemon.name}</p>   
+
+                {/* sprites */}
+                <div id='details-sprites' style={{
+                    background: pokemon.types.length > 1 
+                        ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).color}, ${getTypeColor(pokemon.types[1].type.name).color})`
+                        : getTypeColor(pokemon.types[0].type.name).color 
+                }}>
+                    <img src={ pokemon.sprites.front_default } />
+                    <img src={ pokemon.sprites.back_default } />
+                </div>
+
+                {/* types */}
+                <div className='details-types'>
+                    { pokemon.types.map((type, i) => 
+                        <p key={i} className='details-type' style={{ 
+                            backgroundColor: getTypeColor(pokemon.types[i].type.name).light,
+                            color: getTypeColor(pokemon.types[i].type.name).dark 
+                        }}>{ type.type.name.toUpperCase() }</p>
+                    )}
+                </div>
+             </>
+        )
+    }
+
     _FullPokemon = () => {
         const { pokemon } = this.state;
 
@@ -64,25 +97,9 @@ class PokemonDetails extends Component {
         const _overview = () => {
             return (
                 <div className='section details-overview'>
-                    {/* name */}
-                    <p className='details-pokemon-name'>{pokemon.name}</p>   
 
-                    {/* sprites */}
-                    <div id='details-sprites' style={{
-                        background: pokemon.types.length > 1 
-                            ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).color}, ${getTypeColor(pokemon.types[1].type.name).color})`
-                            : getTypeColor(pokemon.types[0].type.name).color 
-                    }}>
-                        <img src={ pokemon.sprites.front_default } />
-                        <img src={ pokemon.sprites.back_default } />
-                    </div>
-    
-                    {/* types */}
-                    <div className='details-types'>
-                        { pokemon.types.map((type, i) => 
-                            <p key={i} className='details-type'>{ type.type.name.toUpperCase() }</p>
-                        )}
-                    </div>
+                    <PokemonCard pokemon={ pokemon } style={{ maxWidth: '50%', margin: 'auto', marginBottom: 20 }}/>
+                    { this._AlternativePokemonCard() }
                     
                     {/* stats */}
                     <div className='details-stats'>
@@ -109,6 +126,31 @@ class PokemonDetails extends Component {
                         <p>{ pokemon.description }</p> 
                     </div>
 
+
+                    <div className="details-abilities">
+                        <p className="abilities-text">abilities</p>
+                        { pokemon.abilities.map((ability, i) => {
+                            return (
+                                <div className='details-ability' key={i}>
+                                    {ability.is_hidden && <p>Hidden</p>}
+                                    <p>{ ability.ability.name }</p>
+                                </div>
+                            )
+                        })}
+                    </div>
+
+
+                    <div className="base-stats">
+                        <div className="stat-toggles">
+                            <button className="toggle">Base Stats</button>
+                            <button className="toggle">Min</button>
+                            <button className="toggle">Max</button>
+                        </div>
+                    </div>
+
+                    <div className="evolution-chain">
+                        <p>evolution chain</p>
+                    </div>
                     {/* moves */}
                         {/* group by game / learn method */}
 
