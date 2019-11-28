@@ -13,9 +13,6 @@ class PokeAPI {
 
     // Take an array of Pokemon Names or IDs and returns detailed information about each Pokemon
     // REFACTOR: Try to Bundle Multiple Requests into a Single Request
-
-
-    // WHY THE FUCK are you returning a promise
     getAllPokemon = async pokemonNamesOrIDs => {  
         if (!pokemonNamesOrIDs.length) {
             console.error('[PokeAPI] getPokemon() - No Names or IDs, if you want to Get All Pokemon use \'getAllPokemon()\'')
@@ -31,8 +28,6 @@ class PokeAPI {
 
         return results
     }
-
-
 
     getPokemon = async nameOrID => {
         const url = `${this.base_url}/pokemon/${nameOrID}`

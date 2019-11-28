@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, Card, Typography } from '@material-ui/core'
-
+import PokeSprite from 'react-poke-sprites'
 import { getTypeColor } from '../apis/pokemon/PokeHelpers'
 import Loader from '../components/Loader'
 
@@ -16,6 +16,7 @@ class PokemonDetails extends Component {
 
         this.state = {
             pokemon: null,
+            gif: null,
             fetching: false,
             haveAPIDetails: false
         }
@@ -35,18 +36,27 @@ class PokemonDetails extends Component {
         }
     }
 
-    componentDidMount() {
-       
+    getAPIDetails = async () => {
         const indexOfPokemon = this.props.pokemon.map(pokemon => pokemon.name).indexOf(this.props.name)
         const pokemon = this.props.pokemon[indexOfPokemon]
 
-        this.setState({ pokemon, fetching: true }, async () => {
-            const fetched_pokemon = await PokeAPI.getPokemon(pokemon.id)
-            const species = await PokeAPI.get(fetched_pokemon.species.url)
+        const fetched_pokemon = await PokeAPI.getPokemon(pokemon.id)
+        const species = await PokeAPI.get(fetched_pokemon.species.url)
 
-            const description = species.flavor_text_entries.filter(fte => fte.language.name === 'en')[0].flavor_text
-            this.setState({ fetching: false, pokemon: { ...fetched_pokemon, description } }, this.setStyles)
-        })
+        this.setState({ 
+            fetching: false, 
+            pokemon: { 
+                ...fetched_pokemon, 
+                description: species.flavor_text_entries.filter(fte => fte.language.name === 'en')[0].flavor_text
+            }
+        }, this.setStyles)
+    }
+
+    componentDidMount() {
+        const indexOfPokemon = this.props.pokemon.map(pokemon => pokemon.name).indexOf(this.props.name)
+        const pokemon = this.props.pokemon[indexOfPokemon]
+
+        this.setState({ pokemon, fetching: true }, this.getAPIDetails)
     }
 
     componentDidUpdate(previous_props, previous_state) {
@@ -59,7 +69,7 @@ class PokemonDetails extends Component {
         }
     }
 
-    _AlternativePokemonCard = () => {
+    _GifCard = () => {
         const { pokemon } = this.state;
 
         return (
@@ -73,8 +83,13 @@ class PokemonDetails extends Component {
                         ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).color}, ${getTypeColor(pokemon.types[1].type.name).color})`
                         : getTypeColor(pokemon.types[0].type.name).color 
                 }}>
-                    <img src={ pokemon.sprites.front_default } />
-                    <img src={ pokemon.sprites.back_default } />
+                    {
+                        // Gifs Only Available for Pokemon up to X/Y
+                        pokemon.id < 720
+                            ? <PokeSprite pokemon={ pokemon.id } className="lugia-class" />
+                            : <img src={ pokemon.sprites.front_default } />
+                    }
+                   
                 </div>
 
                 {/* types */}
@@ -99,7 +114,7 @@ class PokemonDetails extends Component {
                 <div className='section details-overview'>
 
                     <PokemonCard pokemon={ pokemon } style={{ maxWidth: '50%', margin: 'auto', marginBottom: 20 }}/>
-                    { this._AlternativePokemonCard() }
+                    { this._GifCard() }
                     
                     {/* stats */}
                     <div className='details-stats'>
@@ -126,7 +141,6 @@ class PokemonDetails extends Component {
                         <p>{ pokemon.description }</p> 
                     </div>
 
-
                     <div className="details-abilities">
                         <p className="abilities-text">abilities</p>
                         { pokemon.abilities.map((ability, i) => {
@@ -138,7 +152,6 @@ class PokemonDetails extends Component {
                             )
                         })}
                     </div>
-
 
                     <div className="base-stats">
                         <div className="stat-toggles">
