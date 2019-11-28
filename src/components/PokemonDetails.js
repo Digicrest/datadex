@@ -80,13 +80,13 @@ class PokemonDetails extends Component {
                 {/* sprites */}
                 <div id='details-sprites' style={{
                     background: pokemon.types.length > 1 
-                        ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).color}, ${getTypeColor(pokemon.types[1].type.name).color})`
-                        : getTypeColor(pokemon.types[0].type.name).color 
+                        ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).light}, ${getTypeColor(pokemon.types[1].type.name).light})`
+                        : getTypeColor(pokemon.types[0].type.name).light 
                 }}>
                     {
                         // Gifs Only Available for Pokemon up to X/Y
                         pokemon.id < 720
-                            ? <PokeSprite pokemon={ pokemon.id } className="lugia-class" />
+                            ? <PokeSprite pokemon={ pokemon.id } />
                             : <img src={ pokemon.sprites.front_default } />
                     }
                    
@@ -142,12 +142,12 @@ class PokemonDetails extends Component {
                     </div>
 
                     <div className="details-abilities">
-                        <p className="abilities-text">abilities</p>
+                        <p className="details-abilities-text">abilities</p>
                         { pokemon.abilities.map((ability, i) => {
                             return (
-                                <div className='details-ability' key={i}>
-                                    {ability.is_hidden && <p>Hidden</p>}
-                                    <p>{ ability.ability.name }</p>
+                                <div className={`details-ability ${ability.is_hidden && 'details-ability-hidden'}`} key={i}>
+                                    {ability.is_hidden && <p >Hidden</p>}
+                                    <p className='details-ability-name'>{ ability.ability.name }</p>
                                 </div>
                             )
                         })}
