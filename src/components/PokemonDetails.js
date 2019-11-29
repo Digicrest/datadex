@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Container, Card, Typography } from '@material-ui/core'
+import { Container, Card, Typography, Icon } from '@material-ui/core'
 import PokeSprite from 'react-poke-sprites'
 import { getTypeColor } from '../apis/pokemon/PokeHelpers'
 import Loader from '../components/Loader'
@@ -18,7 +18,11 @@ class PokemonDetails extends Component {
             pokemon: null,
             gif: null,
             fetching: false,
-            haveAPIDetails: false
+            haveAPIDetails: false,
+
+
+
+            showFullAbility: null
         }
 
         this.detailPageStyle = { }
@@ -105,6 +109,13 @@ class PokemonDetails extends Component {
         )
     }
 
+    showFullAbility = (ability) => {
+        console.log('etargetval', ability)
+        // this.setState({ 
+            // showFullAbility: e.target.value
+        // })
+    }
+
     _FullPokemon = () => {
         const { pokemon } = this.state;
 
@@ -145,8 +156,8 @@ class PokemonDetails extends Component {
                         <p className="details-abilities-text">abilities</p>
                         { pokemon.abilities.map((ability, i) => {
                             return (
-                                <div className={`details-ability ${ability.is_hidden && 'details-ability-hidden'}`} key={i}>
-                                    {ability.is_hidden && <p >Hidden</p>}
+                                <div className={`details-ability ${ability.is_hidden && 'details-ability-hidden'}`} key={i} onClick={ () => this.showFullAbility(ability) }>
+                                    {ability.is_hidden && <Icon className='details-ability-hidden-icon'>search</Icon>}
                                     <p className='details-ability-name'>{ ability.ability.name }</p>
                                 </div>
                             )
