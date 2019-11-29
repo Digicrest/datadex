@@ -22,7 +22,7 @@ class PokemonDetails extends Component {
 
 
 
-            showFullAbility: null
+            shownAbility: null
         }
 
         this.detailPageStyle = { }
@@ -109,11 +109,24 @@ class PokemonDetails extends Component {
         )
     }
 
-    showFullAbility = (ability) => {
-        console.log('etargetval', ability)
-        // this.setState({ 
-            // showFullAbility: e.target.value
-        // })
+    showFullAbility = async ability => {
+        const apiAbility = await PokeAPI.get(ability.ability.url)
+
+        this.setState({ 
+            shownAbility: apiAbility
+        })
+    }
+
+    _FullAbility = () => {
+        console.log(this.state.shownAbility)
+        return (
+            <div>
+                <p>{ this.state.shownAbility.name.split('-').join(' ') }</p>
+                <p>{ this.state.shownAbility.flavor_text_entries.filter(entry => entry.language.name === 'en')[0].flavor_text }</p>
+
+                <button     onClick={ closeAbility } />
+            </div>
+        )
     }
 
     _FullPokemon = () => {
@@ -144,7 +157,10 @@ class PokemonDetails extends Component {
 
         return (
             <Container>
-                { _overview() }
+                { this.state.shownAbility 
+                    ? this._FullAbility()
+                    : _overview() 
+                }
 
                 <div className='section details-content'>
                     {/* description */}
