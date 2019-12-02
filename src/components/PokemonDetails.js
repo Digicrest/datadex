@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import cloneDeep from 'lodash.clonedeep'
 import { connect } from 'react-redux'
 import { Container, Card, Typography, Icon } from '@material-ui/core'
 import PokeSprite from 'react-poke-sprites'
@@ -21,7 +22,7 @@ class PokemonDetails extends Component {
             haveAPIDetails: false,
 
 
-
+            fetchedAbilities: [],
             shownAbility: null
         }
 
@@ -109,22 +110,36 @@ class PokemonDetails extends Component {
         )
     }
 
-    showFullAbility = async ability => {
-        const apiAbility = await PokeAPI.get(ability.ability.url)
+    closeAbility = () => {
+        if (this.state.fetchedAbilities.filter(fetched_ability => fetched_ability.name === this.state.shownAbility.name).length) {
+            this.setState({ shownAbility: null })
+        } else {
+            this.setState({
+                fetchedAbilities: this.state.fetchedAbilities.concat(cloneDeep(this.state.shownAbility)),
+                shownAbility: null
+            })
+        }
+    }
 
-        this.setState({ 
-            shownAbility: apiAbility
-        })
+    showFullAbility = async ability => {
+        const already_fetched = this.state.fetchedAbilities.filter(fetched_ability => fetched_ability.name === ability.ability.name)
+        
+        if (already_fetched.length) {
+            this.setState({ shownAbility: already_fetched[0] })
+        } else {
+            const apiAbility = await PokeAPI.get(ability.ability.url)
+            this.setState({ 
+                shownAbility: apiAbility,
+                fetchedAbilities: this.state.fetchedAbilities.concat(apiAbility)
+            })
+        }
     }
 
     _FullAbility = () => {
-        console.log(this.state.shownAbility)
         return (
             <div>
                 <p>{ this.state.shownAbility.name.split('-').join(' ') }</p>
                 <p>{ this.state.shownAbility.flavor_text_entries.filter(entry => entry.language.name === 'en')[0].flavor_text }</p>
-
-                <button     onClick={ closeAbility } />
             </div>
         )
     }
@@ -157,10 +172,8 @@ class PokemonDetails extends Component {
 
         return (
             <Container>
-                { this.state.shownAbility 
-                    ? this._FullAbility()
-                    : _overview() 
-                }
+                { _overview() }
+                
 
                 <div className='section details-content'>
                     {/* description */}
@@ -175,9 +188,14 @@ class PokemonDetails extends Component {
                                 <div className={`details-ability ${ability.is_hidden && 'details-ability-hidden'}`} key={i} onClick={ () => this.showFullAbility(ability) }>
                                     {ability.is_hidden && <Icon className='details-ability-hidden-icon'>search</Icon>}
                                     <p className='details-ability-name'>{ ability.ability.name }</p>
+                                   
                                 </div>
                             )
                         })}
+
+                        <Card>
+                            { this.state.shownAbility && this._FullAbility() }
+                        </Card>
                     </div>
 
                     <div className="base-stats">
