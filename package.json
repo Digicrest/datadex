@@ -6,6 +6,7 @@
     "@material-ui/core": "^4.6.0",
     "@material-ui/icons": "^4.5.1",
     "lodash.clonedeep": "^4.5.0",
+    "mocha": "^6.2.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-poke-sprites": "0.0.8",
