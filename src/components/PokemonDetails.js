@@ -26,17 +26,16 @@ class PokemonDetails extends Component {
             shownAbility: null
         }
 
-        this.detailPageStyle = { }
+        this.styles = { }
     }
 
     setStyles = () => {
-        const {pokemon} = this.state
-        this.detailPageStyle = {
-            // background: pokemon.types.length > 1 
-            //     ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).light}, ${getTypeColor(pokemon.types[1].type.name).color})`
-            //     : getTypeColor(pokemon.types[0].type.name).light,
+        const { pokemon } = this.state
 
-            backgroundColor: getTypeColor(pokemon.types[0].type.name).light,
+        this.styles = {
+            colors: pokemon.types.length > 1 
+                ? [getTypeColor(pokemon.types[0].type.name), getTypeColor(pokemon.types[1].type.name)]
+                : [getTypeColor(pokemon.types[0].type.name)],
             borderRadius: 10
         }
     }
@@ -76,6 +75,7 @@ class PokemonDetails extends Component {
 
     _GifCard = () => {
         const { pokemon } = this.state;
+        const colors = this.styles.colors;
 
         return (
             <>
@@ -83,19 +83,12 @@ class PokemonDetails extends Component {
                 <p className='details-pokemon-name'>{pokemon.name}</p>   
 
                 {/* sprites */}
-                <div id='details-sprites' style={{
-                    background: pokemon.types.length > 1 
-                        ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).light}, ${getTypeColor(pokemon.types[1].type.name).light})`
-                        : getTypeColor(pokemon.types[0].type.name).light 
-                }}>
-                    {
-                        // Gifs Only Available for Pokemon up to X/Y
-                        pokemon.id < 720
-                            ? <PokeSprite pokemon={ pokemon.id } />
-                            : <img src={ pokemon.sprites.front_default } />
-                    }
-                   
-                </div>
+                <div id='details-sprites' style={{ background: colors.length > 1 ? `linear-gradient(${colors[0].light}, ${colors[1].light})` : colors[0].light  }}> {
+                    // Gifs Only Available for Pokemon up to X/Y
+                    pokemon.id < 720
+                        ? <PokeSprite pokemon={ pokemon.id } />
+                        : <img src={ pokemon.sprites.front_default } />
+                }</div>
 
                 {/* types */}
                 <div className='details-types'>
@@ -146,7 +139,8 @@ class PokemonDetails extends Component {
 
     _FullPokemon = () => {
         const { pokemon } = this.state;
-
+        const colors = this.styles.colors;
+        
         // Top - Section ( Name, Sprites, Types)
         const _overview = () => {
             return (
@@ -167,7 +161,14 @@ class PokemonDetails extends Component {
                         })}
                     </div>
                         
-                    <Slider step={1} min={1} max={100} />
+                    <Slider 
+                        min={1} 
+                        max={100} 
+                        step={1}
+                        onChange={(val) => console.log(val)}
+                        className='details-level-slider'
+                        style={{ color: colors[0].color }}
+                    />
                 </div>
             )
         }
@@ -235,7 +236,7 @@ class PokemonDetails extends Component {
         const { pokemon } = this.state
         return (
             this.state.pokemon
-            ?   <Container id='details-pokemon' style={ this.detailPageStyle }>
+            ?   <Container id='details-pokemon' style={{ backgroundColor: this.styles.colors ? this.styles.colors[0].light : '#FFF' }}>
                     { this.state.fetching
                         ? <Loader />
                         : this.state.haveAPIDetails
