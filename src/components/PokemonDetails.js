@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import { connect } from 'react-redux'
-import { Container, Card, Typography, Icon } from '@material-ui/core'
+import { Container, Card, Typography, Icon, Slider } from '@material-ui/core'
 import PokeSprite from 'react-poke-sprites'
 import { getTypeColor } from '../apis/pokemon/PokeHelpers'
 import Loader from '../components/Loader'
@@ -166,6 +166,8 @@ class PokemonDetails extends Component {
                             )
                         })}
                     </div>
+                        
+                    <Slider step={1} min={1} max={100} />
                 </div>
             )
         }
