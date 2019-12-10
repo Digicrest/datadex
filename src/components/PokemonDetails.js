@@ -11,6 +11,28 @@ import './css/PokemonDetails.css'
 import PokeAPI from '../apis/pokemon/PokeAPI'
 import PokemonCard from './PokemonCard'
 
+
+
+
+const something = () => {
+    // 1. slow = \frac{5x^3}{4}
+    // 2. medium = x^3
+    // 3. fast = \frac{4x^3}{5}
+    // 4. medium-slow = \frac{6x^3}{5} - 15x^2 + 100x - 140
+    // 5. slow-then-very-fast = 
+    //     "\begin{cases}
+    // \frac{ x^3 \left( 100 - x \right) }{50},    & \text{if } x \leq 50  \\
+    // \frac{ x^3 \left( 150 - x \right) }{100},   & \text{if } 50 < x \leq 68  \\
+    // \frac{ x^3 \left( 1274 + (x \bmod 3)^2 - 9 (x \bmod 3) - 20 \left\lfloor \frac{x}{3} \right\rfloor \right) }{1000}, & \text{if } 68 < x \leq 98  \\
+    // \frac{ x^3 \left( 160 - x \right) }{100},   & \text{if } x > 98  \\
+    // \end{cases}"
+}
+
+
+
+
+
+
 class PokemonDetails extends Component {
     constructor(props) {
         super(props)
@@ -46,12 +68,14 @@ class PokemonDetails extends Component {
 
         const fetched_pokemon = await PokeAPI.getPokemon(pokemon.id)
         const species = await PokeAPI.get(fetched_pokemon.species.url)
+        const growth = await PokeAPI.get(species.growth_rate.url)
 
         this.setState({ 
             fetching: false, 
             pokemon: { 
                 ...fetched_pokemon, 
                 description: species.flavor_text_entries.filter(fte => fte.language.name === 'en')[0].flavor_text
+                
             }
         }, this.setStyles)
     }
@@ -168,6 +192,8 @@ class PokemonDetails extends Component {
                         onChange={(val) => console.log(val)}
                         className='details-level-slider'
                         style={{ color: colors[0].color }}
+                        defaultValue={1}
+                        valueLabelDisplay="auto"
                     />
                 </div>
             )
