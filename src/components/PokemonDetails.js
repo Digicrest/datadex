@@ -41,11 +41,13 @@ class PokemonDetails extends Component {
         this.state = {
             pokemon: null,
             gif: null,
+            
             fetching: false,
             haveAPIDetails: false,
-
-
+            species: null,
+            growth: null,
             fetchedAbilities: [],
+            
             shownAbility: null
         }
 
@@ -65,19 +67,28 @@ class PokemonDetails extends Component {
 
     getAPIDetails = async () => {
         const indexOfPokemon = this.props.pokemon.map(pokemon => pokemon.name).indexOf(this.props.name)
+        
         const pokemon = this.props.pokemon[indexOfPokemon]
-
         const fetched_pokemon = await PokeAPI.getPokemon(pokemon.id)
         const species = await PokeAPI.get(fetched_pokemon.species.url)
         const growth = await PokeAPI.get(species.growth_rate.url)
+        const evolution = await PokeAPI.get(species.evolution_chain.url)
+
+        console.log('Pokemon: ', pokemon)
+        console.log('fetched_pokemon: ', fetched_pokemon)
+        console.log('species: ', species)
+        console.log('evolution: ', evolution)
+        console.log('growth: ', growth)
 
         this.setState({ 
             fetching: false, 
             pokemon: { 
-                ...fetched_pokemon, 
-                description: species.flavor_text_entries.filter(fte => fte.language.name === 'en')[0].flavor_text
-                
-            }
+                ...fetched_pokemon,
+                description: species.flavor_text_entries.filter(fte => fte.language.name === 'en')[0].flavor_text 
+            },
+            species,
+            evolution,
+            growth,
         }, this.setStyles)
     }
 
@@ -153,6 +164,16 @@ class PokemonDetails extends Component {
         }
     }
 
+
+    _EvolutionChain = () => {
+        console.log('_EvolutionChain: ', this.state.evolution)
+        return (
+            <div className="evolution-chain">
+                <p>{this.state.pokemon.name} -> {this.state.evolution.chain.evolves_to[0].species.name}</p>
+            </div>
+        )
+    }
+
     _FullAbility = () => {
         return (
             <div>
@@ -204,7 +225,6 @@ class PokemonDetails extends Component {
             <Container>
                 { _overview() }
                 
-
                 <div className='section details-content'>
                     {/* description */}
                     <div className='details-description'>
@@ -236,9 +256,7 @@ class PokemonDetails extends Component {
                         </div>
                     </div>
 
-                    <div className="evolution-chain">
-                        <p>evolution chain</p>
-                    </div>
+                   
                     {/* moves */}
                         {/* group by game / learn method */}
 
@@ -250,6 +268,11 @@ class PokemonDetails extends Component {
                             {/* Select Game */}
                             {/* Select Gen */}
                             {/* selecting these should filter the move set to only those obtainable */}
+
+                    {/* Evolution Line */}
+                    { this.state.evolution && this._EvolutionChain() }
+
+                    {/* Damage Chart */}
                 </div>
             </Container>
         )
@@ -264,7 +287,7 @@ class PokemonDetails extends Component {
         return (
             this.state.pokemon
             ?   <Container id='details-pokemon' style={{ backgroundColor: this.styles.colors ? this.styles.colors[0].light : '#FFF' }}>
-                    { this.state.fetching
+                    { !this.state.haveAPIDetails && this.state.fetching
                         ? <Loader />
                         : this.state.haveAPIDetails
                             ? this._FullPokemon()
