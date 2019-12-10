@@ -14,6 +14,7 @@ import PokemonCard from './PokemonCard'
 
 
 
+// TODO: Pass in growth-rate switch on it to the relevant formula and return each base stat ran through calc
 const something = () => {
     // 1. slow = \frac{5x^3}{4}
     // 2. medium = x^3
