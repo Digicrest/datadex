@@ -56,6 +56,12 @@
         justify-content: space-evenly;
     }
 
+    .details-stats-2 {
+        border: 3px solid red;
+        padding: 5px;
+    }
+
+
     .details-stat {
         display: flex;
         flex-direction: column;

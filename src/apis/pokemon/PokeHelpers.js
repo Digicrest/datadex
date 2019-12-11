@@ -27,6 +27,15 @@ export const palette = {
         rock:       { color: '#B8A038', light: '#D1C17D', dark: '#786824' },
         steel:      { color: '#B8B8D0', light: '#D1D1E0', dark: '#787887' },
         water:      { color: '#6890F0', light: '#9DB7F5', dark: '#445E9C' }
+    },
+
+    stats: {
+        'hp':               { color: '#32E36D' },
+        'attack':           { color: '#E32727' },
+        'speed':            { color: '#FFE417' },
+        'defense':          { color: '#4387E0' },
+        'special-attack':   { color: '#E35627' },
+        'special-defense':  { color: '#5E43E0' }
     }
 }
 
@@ -34,3 +43,6 @@ export const getTypeColor = type => {
     return palette.types[type]
 }
 
+export const getStatColor = stat => {
+    return palette.stats[stat]
+}

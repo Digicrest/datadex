@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import { connect } from 'react-redux'
-import { Container, Card, Typography, Icon, Slider } from '@material-ui/core'
+import { Container, Card, Icon, Slider } from '@material-ui/core'
 import PokeSprite from 'react-poke-sprites'
-import { getTypeColor } from '../apis/pokemon/PokeHelpers'
-import Loader from '../components/Loader'
-
-import './css/PokemonDetails.css'
 
 import PokeAPI from '../apis/pokemon/PokeAPI'
-import PokemonCard from './PokemonCard'
+import { getTypeColor, getStatColor } from '../apis/pokemon/PokeHelpers'
+
+import PokemonCard from './PokemonCard.jsx'
+
+import ProgressBar from './ProgressBar.jsx'
+import Loader from './Loader.jsx'
 
 
+import './css/PokemonDetails.css'
 
 
 // TODO: Pass in growth-rate switch on it to the relevant formula and return each base stat ran through calc
@@ -169,7 +171,8 @@ class PokemonDetails extends Component {
         console.log('_EvolutionChain: ', this.state.evolution)
         return (
             <div className="evolution-chain">
-                <p>{this.state.pokemon.name} -> {this.state.evolution.chain.evolves_to[0].species.name}</p>
+                <p>Evolution Chain Here</p>
+                {/* <p>{this.state.pokemon.name} -> {this.state.evolution.chain.evolves_to[0].species.name}</p> */}
             </div>
         )
     }
@@ -186,7 +189,6 @@ class PokemonDetails extends Component {
     _FullPokemon = () => {
         const { pokemon } = this.state;
         const colors = this.styles.colors;
-        
         // Top - Section ( Name, Sprites, Types)
         const _overview = () => {
             return (
@@ -206,7 +208,25 @@ class PokemonDetails extends Component {
                             )
                         })}
                     </div>
+                    
+                    <div className='details-stats-2'>
                         
+                        { pokemon.stats.map((stat, i) => { 
+                            return ( 
+                                <ProgressBar key={ i }
+                                    // containerWidth={50}
+                                    // containerHeight=,
+                                    count={stat.base_stat}
+                                    maxCount={255}
+                                    fillColor={getStatColor(stat.stat.name).color}
+                                    finishColor={colors[0].color}
+                                    emptyColor='#FFF'
+                                    label={stat.stat.name.split('-').join(' ')}
+                                />
+                            )
+                        })}
+                    </div>
+
                     <Slider 
                         min={1} 
                         max={100} 
