@@ -50,7 +50,8 @@ class PokemonDetails extends Component {
             growth: null,
             fetchedAbilities: [],
             
-            shownAbility: null
+            shownAbility: null,
+            showStatBars: false
         }
 
         this.styles = { }
@@ -193,50 +194,61 @@ class PokemonDetails extends Component {
         const _overview = () => {
             return (
                 <div className='section details-overview'>
-
                     <PokemonCard pokemon={ pokemon } style={{ maxWidth: '50%', margin: 'auto', marginBottom: 20 }}/>
                     { this._GifCard() }
                     
-                    {/* stats */}
-                    <div className='details-stats'>
-                        { pokemon.stats.map((stat, i) => {
-                            return (
-                                <div className='details-stat' key={i}>
-                                    <p>{ stat.stat.name.split('-').join(' ') }</p>
-                                    <p style={{ fontWeight: 'bold' }}>{ stat.base_stat }</p>
-                                </div>
-                            )
-                        })}
-                    </div>
-                    
-                    <div className='details-stats-2'>
-                        
-                        { pokemon.stats.map((stat, i) => { 
-                            return ( 
-                                <ProgressBar key={ i }
-                                    // containerWidth={50}
-                                    // containerHeight=,
-                                    count={stat.base_stat}
-                                    maxCount={255}
-                                    fillColor={getStatColor(stat.stat.name).color}
-                                    finishColor={colors[0].color}
-                                    emptyColor='#FFF'
-                                    label={stat.stat.name.split('-').join(' ')}
-                                />
-                            )
-                        })}
+                    <div style={{ display: 'flex' }}>
+                        { !this.state.showStatBars 
+                            ? <Icon style={{ marginRight: 30 }} onClick={() => this.setState({ showStatBars: true })}>view_list</Icon>
+                            : <Icon style={{ marginRight: 30 }} onClick={() => this.setState({ showStatBars: false })}>short_text</Icon>
+                        }
+
+                        <Slider 
+                            min={1} 
+                            max={100} 
+                            step={1}
+                            onChange={(val) => console.log(val)}
+                            className='details-level-slider'
+                            style={{ color: colors[0].color }}
+                            defaultValue={1}
+                            valueLabelDisplay="auto"
+                        />
                     </div>
 
-                    <Slider 
-                        min={1} 
-                        max={100} 
-                        step={1}
-                        onChange={(val) => console.log(val)}
-                        className='details-level-slider'
-                        style={{ color: colors[0].color }}
-                        defaultValue={1}
-                        valueLabelDisplay="auto"
-                    />
+                    {/* stats */}
+                    { this.state.showStatBars && 
+                        <div className='details-stats-bars'>
+                            { pokemon.stats.map((stat, i) => { 
+                                return ( 
+                                    <ProgressBar key={ i }
+                                        containerWidth={50}
+                                        // containerHeight={200}
+                                        count={stat.base_stat}
+                                        maxCount={255}
+                                        fillColor={getStatColor(stat.stat.name).color}
+                                        finishColor={colors[0].color}
+                                        emptyColor={getStatColor(stat.stat.name).dark}
+                                        label={stat.stat.name.split('-').join(' ')}
+                                    />
+                                )
+                            })}
+                        </div>
+                    }
+
+                    { !this.state.showStatBars && 
+                        <div className='details-stats-text'>
+                            { pokemon.stats.map((stat, i) => {
+                                return (
+                                    <div className='details-stat' key={i}>
+                                        <p>{ stat.stat.name.split('-').join(' ') }</p>
+                                        <p style={{ fontWeight: 'bold' }}>{ stat.base_stat }</p>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    }
+
+                   
                 </div>
             )
         }
@@ -258,7 +270,6 @@ class PokemonDetails extends Component {
                                 <div className={`details-ability ${ability.is_hidden && 'details-ability-hidden'}`} key={i} onClick={ () => this.showFullAbility(ability) }>
                                     {ability.is_hidden && <Icon className='details-ability-hidden-icon'>search</Icon>}
                                     <p className='details-ability-name'>{ ability.ability.name }</p>
-                                   
                                 </div>
                             )
                         })}

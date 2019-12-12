@@ -30,12 +30,12 @@ export const palette = {
     },
 
     stats: {
-        'hp':               { color: '#32E36D' },
-        'attack':           { color: '#E32727' },
-        'speed':            { color: '#FFE417' },
-        'defense':          { color: '#4387E0' },
-        'special-attack':   { color: '#E35627' },
-        'special-defense':  { color: '#5E43E0' }
+        'hp':               { color: '#32E36D', dark: '#1d803e' },
+        'attack':           { color: '#E32727', dark: '#7d1414' },
+        'speed':            { color: '#FFE417', dark: '#a19010' },
+        'defense':          { color: '#4387E0', dark: '#234878' },
+        'special-attack':   { color: '#E35627', dark: '#752c14' },
+        'special-defense':  { color: '#5E43E0', dark: '#2f226b' }
     }
 }
 
