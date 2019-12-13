@@ -1,3 +1,38 @@
+const getAffectingNatures = statName => {
+    switch(statName) {
+        case 'hp': return {
+            decrease: [ ],
+            increase: [ ]
+        }
+        case 'attack': return {
+            decrease: [ 'bold', 'modest', 'calm', 'timid' ],
+            increase: [ 'lonely', 'adamant', 'naughty', 'brave' ]
+        }
+        case 'defense': return {
+            decrease: [ 'lonely', 'mild', 'gentle', 'hasty' ],
+            increase: [ 'bold', 'impish', 'lax', 'relaxed' ]
+        }
+        case 'special-attack': return {
+            decrease: [ 'adamant', 'impish', 'careful', 'jolly' ],
+            increase: [ 'modest', 'mild', 'rash', 'quiet' ]
+        }
+        case 'special-defense': return {
+            decrease: [ 'rash', 'naughty', 'lax', 'naive' ],
+            increase: [ 'calm', 'sassy', 'gentle', 'careful' ]
+        }
+        case 'speed': return {
+            decrease: [ 'brave', 'relaxed', 'quiet', 'sassy' ],
+            increase: [ 'timid', 'hasty', 'jolly', 'naive' ]
+        }
+
+        default: {
+            console.error('How did you get here? ¯\\_(ツ)_/¯')
+        }
+    }
+}
+
+
+
 // Every Pokemon Type
 export const types = [ 
     'bug', 'dark', 'dragon', 'electric','fairy', 
@@ -46,3 +81,26 @@ export const getTypeColor = type => {
 export const getStatColor = stat => {
     return palette.stats[stat]
 }
+
+
+/*
+    Maximum IV is 31.
+    Maximum EV is 255, which is 63 stat points.
+    Nature adds on an extra 10%, (not for HP).
+    So you get: ( BaseStat × 2 + 5 + 31 + 63 ) × 1.1 with 10 instead of 5 for HP. Then you round it down afterwards.
+
+    FORMULA FOR HP:
+    BaseStat × 2 + 204
+
+    FORMULA FOR OTHER STATS:
+    ( BaseStat × 2 + 99 ) × 1.1
+*/
+
+export const statProjection = () => {
+    // const gainedFromEV = Math.floor(stat.evs / 4)
+    // const gainedFromIV = stat.iv
+
+    // const gainedFromNature = getAffectingNatures(stat.name) // -> 
+
+}
+
