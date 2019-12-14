@@ -51,9 +51,15 @@
         margin-right: 10px;
     }
 
-    .details-stats {
+    .details-stats-text {
         display: flex;
         justify-content: space-evenly;
+    }
+
+    .details-stats-bars {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .details-stat {
@@ -70,11 +76,8 @@
     }
 
     .details-level-slider {
-        /* color: red;
-        background-color: pink;
-        border: 2px solid red; */
+       
     }
-
 
 /* BODY - CONTENT */
     .details-content {

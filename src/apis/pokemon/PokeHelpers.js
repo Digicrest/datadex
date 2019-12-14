@@ -1,3 +1,38 @@
+const getAffectingNatures = statName => {
+    switch(statName) {
+        case 'hp': return {
+            decrease: [ ],
+            increase: [ ]
+        }
+        case 'attack': return {
+            decrease: [ 'bold', 'modest', 'calm', 'timid' ],
+            increase: [ 'lonely', 'adamant', 'naughty', 'brave' ]
+        }
+        case 'defense': return {
+            decrease: [ 'lonely', 'mild', 'gentle', 'hasty' ],
+            increase: [ 'bold', 'impish', 'lax', 'relaxed' ]
+        }
+        case 'special-attack': return {
+            decrease: [ 'adamant', 'impish', 'careful', 'jolly' ],
+            increase: [ 'modest', 'mild', 'rash', 'quiet' ]
+        }
+        case 'special-defense': return {
+            decrease: [ 'rash', 'naughty', 'lax', 'naive' ],
+            increase: [ 'calm', 'sassy', 'gentle', 'careful' ]
+        }
+        case 'speed': return {
+            decrease: [ 'brave', 'relaxed', 'quiet', 'sassy' ],
+            increase: [ 'timid', 'hasty', 'jolly', 'naive' ]
+        }
+
+        default: {
+            console.error('How did you get here? ¯\\_(ツ)_/¯')
+        }
+    }
+}
+
+
+
 // Every Pokemon Type
 export const types = [ 
     'bug', 'dark', 'dragon', 'electric','fairy', 
@@ -27,10 +62,45 @@ export const palette = {
         rock:       { color: '#B8A038', light: '#D1C17D', dark: '#786824' },
         steel:      { color: '#B8B8D0', light: '#D1D1E0', dark: '#787887' },
         water:      { color: '#6890F0', light: '#9DB7F5', dark: '#445E9C' }
+    },
+
+    stats: {
+        'hp':               { color: '#32E36D', dark: '#1d803e' },
+        'attack':           { color: '#E32727', dark: '#7d1414' },
+        'speed':            { color: '#FFE417', dark: '#a19010' },
+        'defense':          { color: '#4387E0', dark: '#234878' },
+        'special-attack':   { color: '#E35627', dark: '#752c14' },
+        'special-defense':  { color: '#5E43E0', dark: '#2f226b' }
     }
 }
 
 export const getTypeColor = type => {
     return palette.types[type]
+}
+
+export const getStatColor = stat => {
+    return palette.stats[stat]
+}
+
+
+/*
+    Maximum IV is 31.
+    Maximum EV is 255, which is 63 stat points.
+    Nature adds on an extra 10%, (not for HP).
+    So you get: ( BaseStat × 2 + 5 + 31 + 63 ) × 1.1 with 10 instead of 5 for HP. Then you round it down afterwards.
+
+    FORMULA FOR HP:
+    BaseStat × 2 + 204
+
+    FORMULA FOR OTHER STATS:
+    ( BaseStat × 2 + 99 ) × 1.1
+*/
+
+export const statProjection = () => {
+    // const gainedFromEV = Math.floor(stat.evs / 4)
+    // const gainedFromIV = stat.iv
+
+    // const gainedFromNature = getAffectingNatures(stat.name) // -> 
+
 }
 

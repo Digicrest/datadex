@@ -8,11 +8,12 @@ import { cachePokemon } from '../store/actions/database'
 import { Fab, Icon, Select, MenuItem, Button } from '@material-ui/core'
 
 import PokeAPI from '../apis/pokemon/PokeAPI'
-import PokemonCard from '../components/PokemonCard'
-import SearchBar from '../components/SearchBar'
+import { types, getTypeColor } from '../apis/pokemon/PokeHelpers'
+
+import PokemonCard from '../components/PokemonCard.jsx'
+import SearchBar from '../components/SearchBar.jsx'
 
 import './css/Home.css'
-import { types, getTypeColor } from '../apis/pokemon/PokeHelpers'
 
 const init_filters = {
     name: '',
@@ -22,8 +23,6 @@ const init_filters = {
         secondary: ''
     }
 };
-
-
 
 class Home extends Component {
     constructor(props) {

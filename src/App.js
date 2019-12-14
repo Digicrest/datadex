@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 import { Container, List, ListItem, ListItemIcon, ListItemText, Icon } from '@material-ui/core'
 
-import Home from './routes/Home'
-import About from './routes/About'
-import PokemonDetails from './components/PokemonDetails'
+import Home from './routes/Home.jsx'
+import About from './routes/About.jsx'
+import PokemonDetails from './components/PokemonDetails.jsx'
 
 import './App.css'
 
