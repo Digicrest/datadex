@@ -51,7 +51,8 @@ class PokemonDetails extends Component {
             fetchedAbilities: [],
             
             shownAbility: null,
-            showStatBars: false
+            shownStatValues: [],
+            showStatBars: false,
         }
 
         this.styles = { }
@@ -92,6 +93,7 @@ class PokemonDetails extends Component {
             species,
             evolution,
             growth,
+            shownStatValues: fetched_pokemon.stats.slice()
         }, this.setStyles)
     }
 
@@ -187,9 +189,69 @@ class PokemonDetails extends Component {
         )
     }
 
+
+    addToAllStats = (value) => {
+
+        this.setState({
+            pokemon: {
+                ...this.state.pokemon,
+                stats: this.state.pokemon.stats.map(s => {
+                    s.base_stat += 1;
+                    return s
+                })
+            }
+        })
+    }
+    
+
+    _stats = displayType => {
+        const { pokemon, shownStatValues } = this.state
+        const colors = this.styles.colors
+
+        switch (displayType) {
+            case 'bars': {
+                return (
+                    <div className='details-stats-bars'>
+                        { shownStatValues.map((stat, i) => { 
+                            return ( 
+                                <ProgressBar key={ i }
+                                    containerWidth={50}
+                                    // containerHeight={200}
+                                    count={stat.base_stat}
+                                    maxCount={255}
+                                    fillColor={getStatColor(stat.stat.name).color}
+                                    finishColor={colors[0].color}
+                                    emptyColor={getStatColor(stat.stat.name).dark}
+                                    label={stat.stat.name.split('-').join(' ')}
+                                />
+                            )
+                        })}
+                    </div>
+                )
+            }
+
+            case 'text': {
+                return (
+                    <div className='details-stats-text'>
+                        { shownStatValues.map((stat, i) => {
+                            return (
+                                <div className='details-stat' key={i}>
+                                    <p>{ stat.stat.name.split('-').join(' ') }</p>
+                                    <p style={{ fontWeight: 'bold' }}>{ stat.base_stat }</p>
+                                </div>
+                            )
+                        })}
+                    </div>
+                )
+            }
+        }
+    }
+
+
     _FullPokemon = () => {
         const { pokemon } = this.state;
         const colors = this.styles.colors;
+
         // Top - Section ( Name, Sprites, Types)
         const _overview = () => {
             return (
@@ -207,8 +269,9 @@ class PokemonDetails extends Component {
                             min={1} 
                             max={100} 
                             step={1}
-                            onChange={(val) => console.log(val)}
                             className='details-level-slider'
+                            onChange={(evt, val) => this.addToAllStats(val)}
+                            // onChange={() => console.log('changed')}
                             style={{ color: colors[0].color }}
                             defaultValue={1}
                             valueLabelDisplay="auto"
@@ -216,39 +279,10 @@ class PokemonDetails extends Component {
                     </div>
 
                     {/* stats */}
-                    { this.state.showStatBars && 
-                        <div className='details-stats-bars'>
-                            { pokemon.stats.map((stat, i) => { 
-                                return ( 
-                                    <ProgressBar key={ i }
-                                        containerWidth={50}
-                                        // containerHeight={200}
-                                        count={stat.base_stat}
-                                        maxCount={255}
-                                        fillColor={getStatColor(stat.stat.name).color}
-                                        finishColor={colors[0].color}
-                                        emptyColor={getStatColor(stat.stat.name).dark}
-                                        label={stat.stat.name.split('-').join(' ')}
-                                    />
-                                )
-                            })}
-                        </div>
+                    { this.state.showStatBars 
+                        ? this._stats('bars')
+                        : this._stats('text')
                     }
-
-                    { !this.state.showStatBars && 
-                        <div className='details-stats-text'>
-                            { pokemon.stats.map((stat, i) => {
-                                return (
-                                    <div className='details-stat' key={i}>
-                                        <p>{ stat.stat.name.split('-').join(' ') }</p>
-                                        <p style={{ fontWeight: 'bold' }}>{ stat.base_stat }</p>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    }
-
-                   
                 </div>
             )
         }
@@ -258,7 +292,7 @@ class PokemonDetails extends Component {
                 { _overview() }
                 
                 <div className='section details-content'>
-                    {/* description */}
+
                     <div className='details-description'>
                         <p>{ pokemon.description }</p> 
                     </div>
