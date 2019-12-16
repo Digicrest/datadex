@@ -51,8 +51,9 @@ class PokemonDetails extends Component {
             fetchedAbilities: [],
             
             shownAbility: null,
-            shownStatValues: [],
-            showStatBars: false,
+            level: 1,
+
+            showStatBars: false
         }
 
         this.styles = { }
@@ -92,8 +93,7 @@ class PokemonDetails extends Component {
             },
             species,
             evolution,
-            growth,
-            shownStatValues: fetched_pokemon.stats.slice()
+            growth
         }, this.setStyles)
     }
 
@@ -205,19 +205,19 @@ class PokemonDetails extends Component {
     
 
     _stats = displayType => {
-        const { pokemon, shownStatValues } = this.state
+        const { pokemon } = this.state
         const colors = this.styles.colors
 
         switch (displayType) {
             case 'bars': {
                 return (
                     <div className='details-stats-bars'>
-                        { shownStatValues.map((stat, i) => { 
+                        { pokemon.stats.map((stat, i) => { 
                             return ( 
                                 <ProgressBar key={ i }
                                     containerWidth={50}
                                     // containerHeight={200}
-                                    count={stat.base_stat}
+                                    count={stat.base_stat + this.state.level}
                                     maxCount={255}
                                     fillColor={getStatColor(stat.stat.name).color}
                                     finishColor={colors[0].color}
@@ -233,11 +233,11 @@ class PokemonDetails extends Component {
             case 'text': {
                 return (
                     <div className='details-stats-text'>
-                        { shownStatValues.map((stat, i) => {
+                        { pokemon.stats.map((stat, i) => {
                             return (
                                 <div className='details-stat' key={i}>
                                     <p>{ stat.stat.name.split('-').join(' ') }</p>
-                                    <p style={{ fontWeight: 'bold' }}>{ stat.base_stat }</p>
+                                    <p style={{ fontWeight: 'bold' }}>{ stat.base_stat + this.state.level }</p>
                                 </div>
                             )
                         })}
@@ -259,30 +259,30 @@ class PokemonDetails extends Component {
                     <PokemonCard pokemon={ pokemon } style={{ maxWidth: '50%', margin: 'auto', marginBottom: 20 }}/>
                     { this._GifCard() }
                     
-                    <div style={{ display: 'flex' }}>
-                        { !this.state.showStatBars 
-                            ? <Icon style={{ marginRight: 30 }} onClick={() => this.setState({ showStatBars: true })}>view_list</Icon>
-                            : <Icon style={{ marginRight: 30 }} onClick={() => this.setState({ showStatBars: false })}>short_text</Icon>
+                    <div className='details-stats'>
+                        <div style={{ display: 'flex'}}>
+                            { !this.state.showStatBars 
+                                ? <Icon style={{ marginRight: 30 }} onClick={() => this.setState({ showStatBars: true })}>view_list</Icon>
+                                : <Icon style={{ marginRight: 30 }} onClick={() => this.setState({ showStatBars: false })}>short_text</Icon>
+                            }
+
+                            <Slider 
+                                min={1} 
+                                max={100} 
+                                step={1}
+                                className='details-level-slider'
+                                onChange={(evt, val) => this.setState({ level: val })}
+                                // onChange={() => console.log('changed')}
+                                style={{ color: colors[0].color }}
+                                defaultValue={1}
+                                valueLabelDisplay="auto"
+                            />
+                        </div>
+                        { this.state.showStatBars 
+                            ? this._stats('bars')
+                            : this._stats('text')
                         }
-
-                        <Slider 
-                            min={1} 
-                            max={100} 
-                            step={1}
-                            className='details-level-slider'
-                            onChange={(evt, val) => this.addToAllStats(val)}
-                            // onChange={() => console.log('changed')}
-                            style={{ color: colors[0].color }}
-                            defaultValue={1}
-                            valueLabelDisplay="auto"
-                        />
                     </div>
-
-                    {/* stats */}
-                    { this.state.showStatBars 
-                        ? this._stats('bars')
-                        : this._stats('text')
-                    }
                 </div>
             )
         }
