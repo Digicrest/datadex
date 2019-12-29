@@ -11,7 +11,7 @@
 
 /* OVERVIEW */
     .details-overview {
-      
+
     }
 
     #details-pokemon {
@@ -51,6 +51,13 @@
         margin-right: 10px;
     }
 
+
+    .details-stats {
+        padding: 5px 10px 10px 10px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 4px #00000020;
+    }
+
     .details-stats-text {
         display: flex;
         justify-content: space-evenly;
@@ -65,11 +72,10 @@
     .details-stat {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        line-height: 0;
         justify-content: center;
+        text-align: center;
         width: 15%;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         opacity: 0.6;
         font-weight: 400;
         text-transform: capitalize;
