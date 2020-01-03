@@ -1,27 +1,28 @@
 import React from 'react'
 import './css/ProgressBar.css'
 
-export function ProgressBar() {
-    return (
-        <div className='ProgressBar-Wrapper' style={{
-            width: this.props.containerWidth ? `${this.props.containerWidth}%` : '100%', 
-            
-        }}>
-            { this.props.label && <p className='ProgressBar-Label'>{ this.props.label }</p>}  
+export function ProgressBar(props) {
+    const wrapperStyle = {
+        width: props.containerWidth ? `${props.containerWidth}%` : '100%', 
+    };
+    const outerStyle = {
+        backgroundColor: props.emptyColor || '#A0A0A0',
+        width: '100%',
+        height: props.containerHeight || 20,
+    };
+    const innerStyle = { 
+        width: `${props.count / props.maxCount * 100}%` || '25%',
+        backgroundColor: (props.count / props.maxCount * 100 >= 100) 
+            ? (props.finishColor || '#AAFFAA')
+            : (props.fillColor || '#AA55AA'),
+    };
 
-            <div className='outer' style={{
-                backgroundColor: this.props.emptyColor || '#A0A0A0',
-                width: '100%',
-                height: this.props.containerHeight || 20,
-            }}>
-                <div className='inner' style={{ 
-                    width: `${this.props.count / this.props.maxCount * 100}%` || '25%',
-                    backgroundColor: (this.props.count / this.props.maxCount * 100 >= 100) 
-                        ? (this.props.finishColor || '#AAFFAA')
-                        : (this.props.fillColor || '#AA55AA'),
-                }}>    
-                
-                </div>
+    return (
+        <div className='ProgressBar-Wrapper' style={ wrapperStyle }>
+            { props.label && <p className='ProgressBar-Label'>{ props.label }</p> }  
+
+            <div className='outer' style={ outerStyle }>
+                <div className='inner' style={ innerStyle }></div>
             </div>
         </div>
     )

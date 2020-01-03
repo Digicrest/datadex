@@ -12,16 +12,14 @@ import './css/PokemonDetails.css'
 
 function PokemonDetails(props) {
     const [pokemon, setPokemon] = useState({ stats: [] })
-    const [level, setLevel] = useState(1)
-
-    const [gif, setGif] = useState(null)
-
-    const [fetching, setFetching] = useState(true)
     const [fetchedAbilities, setFetchedAbilities] = useState([])
+    const [fetching, setFetching] = useState(false)
+    const [showStatBars, setShowStatBars] = useState(false)
+    const [shownAbility, setShownAbility] = useState(null)
+    const [level, setLevel] = useState(1)
+    const [gif, setGif] = useState(null)
     const [evolution, setEvolution] = useState(null)
     const [species, setSpecies] = useState(null)
-    const [shownAbility, setShownAbility] = useState(null)
-    const [showStatBars, setShowStatBars] = useState(false)
     const [styles, setStyles] = useState({})
 
     const getAPIDetails = async () => {
@@ -129,13 +127,15 @@ function PokemonDetails(props) {
 
     const _FullPokemon = () => {
         console.log('fullpokemon()')
+        
         const colors = styles.colors;
+        console.log('fullpokemon() - colors:: ', colors)
 
         return (
             <Container>
                 <div className='section details-overview'>
                     <PokemonCard pokemon={ pokemon } style={{ maxWidth: '50%', margin: 'auto', marginBottom: 20 }} />
-                    {_GifCard()}
+                    { _GifCard() }
         
                     <div className='details-stats'>
                         <div style={{ display: 'flex' }}>
@@ -156,21 +156,25 @@ function PokemonDetails(props) {
                             />
                         </div>
 
+                        
+                        {
+
+                        }
                         { showStatBars
-                            ? <div className='details-stats-bars'>
-                                { pokemon.stats.map((stat, i) =>
-                                    <ProgressBar key={i}
-                                        containerWidth={50}
-                                        count={stat.base_stat + level}
-                                        maxCount={255}
-                                        fillColor={getStatColor(stat.stat.name).color}
-                                        finishColor={colors[0].color}
-                                        emptyColor={getStatColor(stat.stat.name).dark}
-                                        label={stat.stat.name.split('-').join(' ')}
-                                    />
-                                )}
-                            </div>
-                            : <div className='details-stats-text'>
+                            ?   <div className='details-stats-bars'>
+                                    { pokemon.stats.map((stat, i) =>
+                                        <ProgressBar key={i}
+                                            containerWidth={50}
+                                            count={stat.base_stat + level}
+                                            maxCount={255}
+                                            fillColor={getStatColor(stat.stat.name).color}
+                                            finishColor={colors[0].color}
+                                            emptyColor={getStatColor(stat.stat.name).dark}
+                                            label={stat.stat.name.split('-').join(' ')}
+                                        />
+                                    )}
+                                </div>
+                            :   <div className='details-stats-text'>
                                 { pokemon.stats.map((stat, i) =>
                                     <div className='details-stat' key={i}>
                                         <p>{stat.stat.name.split('-').join(' ')}</p>
@@ -240,10 +244,7 @@ function PokemonDetails(props) {
 
     return (
         <Container id='details-pokemon' style={{ backgroundColor: styles.colors ? styles.colors[0].light : '#FFF' }}>
-            { fetching 
-                ? <Loader />
-                : _FullPokemon()
-            }
+            { fetching  ? <Loader /> : _FullPokemon() }
         </Container>
     )
 }
