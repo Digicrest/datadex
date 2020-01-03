@@ -4,7 +4,7 @@ import cloneDeep from 'lodash.clonedeep'
 import { connect } from 'react-redux'
 import { getTypeColor, getStatColor } from '../apis/pokemon/PokeHelpers'
 
-import { Container, Icon, Slider } from '@material-ui/core'
+import { Container, Card, Icon, Slider } from '@material-ui/core'
 
 import PokeSprite from 'react-poke-sprites'
 import PokeAPI from '../apis/pokemon/PokeAPI'
@@ -14,50 +14,43 @@ import Loader from './Loader.jsx'
 
 import './css/PokemonDetails.css'
 
+
 function PokemonDetails(props) {
     const id = props.pokemon.map(pokemon => pokemon.name).indexOf(props.name)
-
+    
     const [pokemon, setPokemon] = useState({ ...props.pokemon[id], stats: [] })
+    const [evolution, setEvolution] = useState(null)
+    const [species, setSpecies] = useState(null)
+
     const [fetchedAbilities, setFetchedAbilities] = useState([])
     const [fetching, setFetching] = useState(false)
+
     const [showStatBars, setShowStatBars] = useState(false)
     const [shownAbility, setShownAbility] = useState(null)
     const [level, setLevel] = useState(1)
-    const [evolution, setEvolution] = useState(null)
-    const [species, setSpecies] = useState(null)
-    const [styles, setStyles] = useState({})
+
+    const styles = {
+        colors: pokemon.types.length > 1
+            ? [getTypeColor(pokemon.types[0].type.name), getTypeColor(pokemon.types[1].type.name)]
+            : [getTypeColor(pokemon.types[0].type.name)],
+        borderRadius: 10
+    };
 
     const getAPIDetails = async () => {
-        console.log('getAPIDetails')
-
         const fetched_pokemon   = await PokeAPI.getPokemon(pokemon.id)
         const species           = await PokeAPI.get(fetched_pokemon.species.url)
         const evolution         = await PokeAPI.get(species.evolution_chain.url)
 
         setFetching(false)
-        console.log('setFetching -> ', fetching)
-
         setPokemon(fetched_pokemon)
-        console.log('setPokemon -> ', fetched_pokemon)
-        
         setEvolution(evolution)
-        console.log('setEvolution -> ', evolution)
-        
         setSpecies(species)
-        console.log('setSpecies -> ', species)
-        
     }
 
+    // Equivalent to ComponentDidMount; Runs Once and since it has no Dependencies it will never fire again.
     useEffect(() => {
         setFetching(true)
         getAPIDetails()
-        
-        setStyles({
-            colors: pokemon.types.length > 1
-                ? [getTypeColor(pokemon.types[0].type.name), getTypeColor(pokemon.types[1].type.name)]
-                : [getTypeColor(pokemon.types[0].type.name)],
-            borderRadius: 10
-        })
     }, [])
 
     const _GifCard = () => {
@@ -179,24 +172,28 @@ function PokemonDetails(props) {
                     </div>
                 </div>
                 
-                {/* 
+                
                 <div className='section details-content'>
                     <div className='details-description'>
-                        <p>
-                            { species.flavor_text_entries.filter(fte => fte.language.name === 'en')[0].flavor_text }
-                        </p>
+                        { species
+                            ? <p>{ species.flavor_text_entries.filter(fte => fte.language.name === 'en')[0].flavor_text }</p>
+                            : <Loader />
+                        }
                     </div>
 
                     <div className="details-abilities">
                         <p className="details-abilities-text">abilities</p>
-                        { pokemon.abilities.map((ability, i) => {
-                            return (
-                                <div className={`details-ability ${ability.is_hidden && 'details-ability-hidden'}`} key={i} onClick={() => showFullAbility(ability)}>
-                                    { ability.is_hidden && <Icon className='details-ability-hidden-icon'>search</Icon> }
-                                    <p className='details-ability-name'>{ability.ability.name}</p>
-                                </div>
-                            )
-                        })}
+                        
+                        { pokemon.abilities 
+                            ? pokemon.abilities.map((ability, i) => {
+                                return (
+                                    <div className={`details-ability ${ability.is_hidden && 'details-ability-hidden'}`} key={i} onClick={() => showFullAbility(ability)}>
+                                        { ability.is_hidden && <Icon className='details-ability-hidden-icon'>search</Icon> }
+                                        <p className='details-ability-name'>{ability.ability.name}</p>
+                                    </div>
+                                )
+                       
+                        })      : <Loader />}
 
                         <Card>
                             { shownAbility && <div>
@@ -212,7 +209,7 @@ function PokemonDetails(props) {
                             <button className="toggle">Max</button>
                         </div>
                     </div> 
-                */}
+               
 
                     {/* moves */}
                     {/* group by game / learn method */}
@@ -232,7 +229,7 @@ function PokemonDetails(props) {
                     </div> */}
 
                     {/* Damage Chart */}
-                {/* </div> */}
+                </div>
             </Container>
         )
     }

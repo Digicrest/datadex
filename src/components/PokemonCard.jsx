@@ -7,7 +7,6 @@ import { Container, Card } from '@material-ui/core'
 import './css/PokemonCard.css'
 function PokemonCard(props) {
     const pokemon = props.pokemon
-    console.log('pokemoncard:: ', pokemon)
     const [background] = useState(pokemon.types.length > 1 
         ? `linear-gradient(${getTypeColor(pokemon.types[0].type.name).color}, ${getTypeColor(pokemon.types[1].type.name).color})`
         : getTypeColor(pokemon.types[0].type.name).color)
