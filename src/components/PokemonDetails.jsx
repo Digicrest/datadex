@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import cloneDeep from 'lodash.clonedeep'
 import { connect } from 'react-redux'
-import { Container, Card, Icon, Slider } from '@material-ui/core'
+import { Container, Card, Typography, Icon, Slider } from '@material-ui/core'
 import PokeSprite from 'react-poke-sprites'
 import PokeAPI from '../apis/pokemon/PokeAPI'
 import { getTypeColor, getStatColor } from '../apis/pokemon/PokeHelpers'
