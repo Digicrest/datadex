@@ -1,38 +1,42 @@
 import React, { useState, useEffect } from 'react'
+
 import cloneDeep from 'lodash.clonedeep'
 import { connect } from 'react-redux'
-import { Container, Card, Typography, Icon, Slider } from '@material-ui/core'
+import { getTypeColor, getStatColor } from '../apis/pokemon/PokeHelpers'
+
+import { Container, Icon, Slider } from '@material-ui/core'
+
 import PokeSprite from 'react-poke-sprites'
 import PokeAPI from '../apis/pokemon/PokeAPI'
-import { getTypeColor, getStatColor } from '../apis/pokemon/PokeHelpers'
 import PokemonCard from './PokemonCard.jsx'
 import ProgressBar from './ProgressBar.jsx'
 import Loader from './Loader.jsx'
+
 import './css/PokemonDetails.css'
 
 function PokemonDetails(props) {
-    const [pokemon, setPokemon] = useState({ stats: [] })
+    const id = props.pokemon.map(pokemon => pokemon.name).indexOf(props.name)
+
+    const [pokemon, setPokemon] = useState({ ...props.pokemon[id], stats: [] })
     const [fetchedAbilities, setFetchedAbilities] = useState([])
     const [fetching, setFetching] = useState(false)
     const [showStatBars, setShowStatBars] = useState(false)
     const [shownAbility, setShownAbility] = useState(null)
     const [level, setLevel] = useState(1)
-    const [gif, setGif] = useState(null)
     const [evolution, setEvolution] = useState(null)
     const [species, setSpecies] = useState(null)
     const [styles, setStyles] = useState({})
 
     const getAPIDetails = async () => {
         console.log('getAPIDetails')
-        const indexOfPokemon = props.pokemon.map(pokemon => pokemon.name).indexOf(props.name)
-        const pokemonID = props.pokemon[indexOfPokemon].id
 
-        const fetched_pokemon   = await PokeAPI.getPokemon(pokemonID)
+        const fetched_pokemon   = await PokeAPI.getPokemon(pokemon.id)
         const species           = await PokeAPI.get(fetched_pokemon.species.url)
         const evolution         = await PokeAPI.get(species.evolution_chain.url)
 
         fetched_pokemon.description = species.flavor_text_entries.filter(fte => fte.language.name === 'en')[0].flavor_text
-
+        console.log('pokemon::: ', pokemon)
+        console.log('fetched_pokemon:: ', fetched_pokemon)
         setFetching(false)
         setPokemon(fetched_pokemon)
         setEvolution(evolution)
@@ -40,11 +44,6 @@ function PokemonDetails(props) {
     }
 
     useEffect(() => {
-        const indexOfPokemon = props.pokemon.map(pokemon => pokemon.name).indexOf(props.name)
-        const pokemon = props.pokemon[indexOfPokemon]
-        
-        setPokemon(pokemon)
-        console.log('pokemon set to: ', pokemon)
         setFetching(true)
         getAPIDetails()
         
@@ -57,39 +56,38 @@ function PokemonDetails(props) {
     }, [])
 
     const _GifCard = () => {
-        console.log('_GIFCard')
+        if (styles.types) {
+            return (
+                <>
+                    {/* name */}
+                    <p className='details-pokemon-name'>{ pokemon.name }</p>
+    
+                    {/* sprites */}
+                    <div id='details-sprites' style={{ 
+                        background: styles.colors.length > 1 
+                            ? `linear-gradient(${styles.colors[0].light}, ${styles.colors[1].light})` 
+                            : styles.colors[0].light
+                     }}> {
+                        // Gifs Only Available for Pokemon up to X/Y
+                        pokemon.id < 720
+                            ? <PokeSprite pokemon={pokemon.id} />
+                            : <img src={pokemon.sprites.front_default} />
+                    }</div>
+    
+                    {/* types */}
+                    <div className='details-types'>
+                        { pokemon.types.map((type, i) =>
+                            <p key={i} className='details-type' style={{
+                                backgroundColor: getTypeColor(type.type.name).light,
+                                color: getTypeColor(type.type.name).dark
+                            }}>{type.type.name.toUpperCase()}</p>
+                        )}
+                    </div>
+                </>
+            )
+        }
 
-        console.log('styles:: ', styles)
-        const colors = styles.colors;
-
-        return (
-            <>
-                {/* name */}
-                <p className='details-pokemon-name'>{pokemon.name}</p>
-
-                {/* sprites */}
-                <div id='details-sprites' style={{ 
-                    background: colors.length > 1 
-                    ? `linear-gradient(${colors[0].light}, ${colors[1].light})` 
-                    : colors[0].light
-                 }}> {
-                    // Gifs Only Available for Pokemon up to X/Y
-                    pokemon.id < 720
-                        ? <PokeSprite pokemon={pokemon.id} />
-                        : <img src={pokemon.sprites.front_default} />
-                }</div>
-
-                {/* types */}
-                <div className='details-types'>
-                    {pokemon.types.map((type, i) =>
-                        <p key={i} className='details-type' style={{
-                            backgroundColor: getTypeColor(pokemon.types[i].type.name).light,
-                            color: getTypeColor(pokemon.types[i].type.name).dark
-                        }}>{type.type.name.toUpperCase()}</p>
-                    )}
-                </div>
-            </>
-        )
+        return <Loader />   
     }
 
     const closeAbility = () => {
@@ -127,10 +125,7 @@ function PokemonDetails(props) {
 
     const _FullPokemon = () => {
         console.log('fullpokemon()')
-        
-        const colors = styles.colors;
-        console.log('fullpokemon() - colors:: ', colors)
-
+    
         return (
             <Container>
                 <div className='section details-overview'>
@@ -150,16 +145,11 @@ function PokemonDetails(props) {
                                 step={1}
                                 className='details-level-slider'
                                 onChange={(evt, val) => setLevel(val)}
-                                style={{ color: colors[0].color }}
                                 defaultValue={1}
                                 valueLabelDisplay="auto"
                             />
                         </div>
 
-                        
-                        {
-
-                        }
                         { showStatBars
                             ?   <div className='details-stats-bars'>
                                     { pokemon.stats.map((stat, i) =>
@@ -168,7 +158,7 @@ function PokemonDetails(props) {
                                             count={stat.base_stat + level}
                                             maxCount={255}
                                             fillColor={getStatColor(stat.stat.name).color}
-                                            finishColor={colors[0].color}
+                                            finishColor={styles.colors[0].color}
                                             emptyColor={getStatColor(stat.stat.name).dark}
                                             label={stat.stat.name.split('-').join(' ')}
                                         />
