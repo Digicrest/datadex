@@ -143,6 +143,9 @@ function PokemonDetails(props) {
                                 onChange={(evt, val) => setLevel(val)}
                                 defaultValue={1}
                                 valueLabelDisplay="auto"
+                                style={{ 
+                                    color: styles.colors[0].light,
+                                }}
                             />
                         </div>
 
