@@ -34,13 +34,18 @@ function PokemonDetails(props) {
         const species           = await PokeAPI.get(fetched_pokemon.species.url)
         const evolution         = await PokeAPI.get(species.evolution_chain.url)
 
-        fetched_pokemon.description = species.flavor_text_entries.filter(fte => fte.language.name === 'en')[0].flavor_text
-        console.log('pokemon::: ', pokemon)
-        console.log('fetched_pokemon:: ', fetched_pokemon)
         setFetching(false)
+        console.log('setFetching -> ', fetching)
+
         setPokemon(fetched_pokemon)
+        console.log('setPokemon -> ', fetched_pokemon)
+        
         setEvolution(evolution)
+        console.log('setEvolution -> ', evolution)
+        
         setSpecies(species)
+        console.log('setSpecies -> ', species)
+        
     }
 
     useEffect(() => {
@@ -56,7 +61,7 @@ function PokemonDetails(props) {
     }, [])
 
     const _GifCard = () => {
-        if (styles.types) {
+        if (styles.colors) {
             return (
                 <>
                     {/* name */}
@@ -71,7 +76,7 @@ function PokemonDetails(props) {
                         // Gifs Only Available for Pokemon up to X/Y
                         pokemon.id < 720
                             ? <PokeSprite pokemon={pokemon.id} />
-                            : <img src={pokemon.sprites.front_default} />
+                            : <img src={pokemon.sprites ? pokemon.sprites.front_default : pokemon.sprite} />
                     }</div>
     
                     {/* types */}
@@ -124,8 +129,6 @@ function PokemonDetails(props) {
     }
 
     const _FullPokemon = () => {
-        console.log('fullpokemon()')
-    
         return (
             <Container>
                 <div className='section details-overview'>
@@ -179,7 +182,9 @@ function PokemonDetails(props) {
                 {/* 
                 <div className='section details-content'>
                     <div className='details-description'>
-                        <p>{ pokemon.description }</p>
+                        <p>
+                            { species.flavor_text_entries.filter(fte => fte.language.name === 'en')[0].flavor_text }
+                        </p>
                     </div>
 
                     <div className="details-abilities">
