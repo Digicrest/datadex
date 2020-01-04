@@ -33,21 +33,23 @@ export function App() {
                     ))}
                 </List>
 
-                {/* Content */}
-                <Container className='content'>
                     <Route exact path='/'>
-                        <Home />
+                        <Container style={{ marginTop: '10px' }}>
+                            <Home />
+                        </Container>
                     </Route>
 
                     <Route path='/About'>
-                        <About />
+                        <Container style={{ marginTop: '10px' }}>
+                            <About />
+                        </Container>
                     </Route>
 
                     <Route 
                         path='/pokemon/:name' 
                         render={ props => <PokemonDetails name={ props.match.params.name } /> } 
                     />
-                </Container>
+                {/* </Container> */}
             </Router>
         </Container>
     )

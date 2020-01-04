@@ -88,37 +88,17 @@ function PokemonDetails(props) {
         return <Loader />   
     }
 
-    const closeAbility = () => {
-        if (fetchedAbilities.filter(fetched_ability => fetched_ability.name === shownAbility.name).length) {
-            setShownAbility(null)
-        } else {
-            setFetchedAbilities([...fetchedAbilities, cloneDeep(shownAbility)])
-            setShownAbility(null)
-        }
-    }
-
     const showFullAbility = async ability => {
-        console.log('showFullAbility()')
         const already_fetched = fetchedAbilities.filter(fetched_ability => fetched_ability.name === ability.ability.name)
 
         if (already_fetched.length) {
             setShownAbility(already_fetched[0])
         } else {
-            const apiAbility = await PokeAPI.get(ability.ability.url)
+            const fetchedAbility = await PokeAPI.get(ability.ability.url)
 
-            setShownAbility(apiAbility)
-            setFetchedAbilities([...fetchedAbilities, apiAbility])
+            setShownAbility(fetchedAbility)
+            setFetchedAbilities([...fetchedAbilities, fetchedAbility])
         }
-    }
-
-    const addToAllStats = (value) => {
-        setPokemon({
-            ...pokemon,
-            stats: pokemon.stats.map(s => {
-                s.base_stat += 1;
-                return s
-            })
-        })
     }
 
     const _FullPokemon = () => {
@@ -205,13 +185,7 @@ function PokemonDetails(props) {
                             </div> }
                         </Card>
                     </div>
-                    <div className="base-stats">
-                        <div className="stat-toggles">
-                            <button className="toggle">Base Stats</button>
-                            <button className="toggle">Min</button>
-                            <button className="toggle">Max</button>
-                        </div>
-                    </div> 
+                   
                
 
                     {/* moves */}

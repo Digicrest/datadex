@@ -1,31 +1,20 @@
 #home {
-    height: 100vh;
+    height: 95%;
 }
 
 #pokemon-list {
-    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-    border-radius: 15px;
     padding: 20px;
     overflow: auto;
-    margin: 0;
-    border: 1px solid #00000040;
 }
 
-#pokemon-list::-webkit-scrollbar {
+*::-webkit-scrollbar {
     display: none;
 }
 
 #header {
     display: flex;
-    flex-direction: column;
-    padding-left: 20px;
-    border-radius: 15px;
-    border-left: 2px solid red;
-    border-right: 2px solid red;
-    margin-bottom: 10px
 }
 
 #header-top {
@@ -50,8 +39,8 @@
 
     justify-content: flex-end;
     align-items: center;
-    border: 1px solid #00000020;
-    border-radius: 15px
+
+    border: 2px solid red;
 }
 
 .action-button {

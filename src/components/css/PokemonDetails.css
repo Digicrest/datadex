@@ -1,12 +1,14 @@
+#details-pokemon {
+}
 
-    .section {
-        margin: 10px;
-        padding: 20px;
+.section {
+    margin: 10px;
+    padding: 20px;
 
-        border: 1px solid #00000030;
-        border-radius: 10px;
-        background-color: white;
-    }
+    border: 1px solid #00000030;
+    border-radius: 10px;
+    background-color: white;
+}
 
 
 /* OVERVIEW */
