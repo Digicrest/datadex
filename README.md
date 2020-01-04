@@ -1,6 +1,6 @@
 
 ## (In Progress) Preview 
-<img src="https://github.com/Digicrest/datadex/blob/master/preview.gif" width="65%" />
+<img src="https://github.com/Digicrest/datadex/blob/master/preview.gif" width="85%" />
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
