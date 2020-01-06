@@ -44,7 +44,7 @@ function PokemonDetails(props) {
         setFetching(false)
         setPokemon(fetched_pokemon)
         setEvolution(evolution)
-        setSpecies(species)
+        setSpecies(species);
     }
 
     // Equivalent to ComponentDidMount; Runs Once and since it has no Dependencies it will never fire again.
