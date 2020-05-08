@@ -1,0 +1,18 @@
+.Type_container {
+    flex: 1;
+    margin: 5px;
+    border-radius: 5px;
+    transform: skewX(-10deg);
+    box-shadow: 1px 1px 3px #00000060;
+}
+
+.Type_name {
+    font-weight: bold;
+    text-align: center;
+    font-size: .85rem;
+    text-transform: uppercase;
+}
+
+.Type_container:hover {
+    box-shadow: none;
+}

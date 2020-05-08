@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom"
-import { Container, List, ListItem, ListItemIcon, ListItemText, Icon } from '@material-ui/core'
+import { BrowserRouter, Route } from "react-router-dom"
+import { Container } from '@material-ui/core'
 
-import Home from './routes/Home.jsx'
-import About from './routes/About.jsx'
-import PokemonDetails from './components/PokemonDetails.jsx'
+import Home from './routes/Home'
+import About from './routes/About'
 
 import './App.css'
 
@@ -18,39 +17,22 @@ export function App() {
 
     return (
         <Container className='app'>
-            <Router>
-                {/* Navigation Bar */}
-                <List className='sidebar'>
-                    {['', 'About'].map((routeName, index) => (
-                        <Link key={routeName} to={'/' + routeName} className='nav-link'>
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <Icon>{}</Icon>
-                                </ListItemIcon>
-                                <ListItemText primary={routeName || 'Home'} />
-                            </ListItem>
-                        </Link>
-                    ))}
-                </List>
+            <BrowserRouter>
+                <Route exact path='/'>
+                    <Home />
+                </Route>
 
-                    <Route exact path='/'>
-                        <Container style={{ marginTop: '10px' }}>
-                            <Home />
-                        </Container>
-                    </Route>
+                <Route path='/About'>
+                    <About />
+                </Route>
 
-                    <Route path='/About'>
-                        <Container style={{ marginTop: '10px' }}>
-                            <About />
-                        </Container>
-                    </Route>
-
-                    <Route 
-                        path='/pokemon/:name' 
-                        render={ props => <PokemonDetails name={ props.match.params.name } /> } 
-                    />
-                {/* </Container> */}
-            </Router>
+                {/* <Route 
+                    path='/pokemon/:name' 
+                    render={props => (
+                        <PokemonDetails name={ props.match.params.name } />
+                    )} 
+                /> */}
+            </BrowserRouter>
         </Container>
     )
 }
