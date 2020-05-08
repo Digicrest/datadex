@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import './css/Type.css'
 
 import { getTypeColor } from '../../apis/pokemon/PokeHelpers'
-
 function Type(props) {
     const type = props.type
     const {name} = type.type
@@ -26,9 +26,11 @@ function Type(props) {
                 console.log(`[Type] Clicked ${name} - Go To Type Page`)
             }}
         >
-            <p className='Type_name' style={{ color:  textColor }}>
-                {name}
-            </p>
+            <Link to={`/types/${name}`} style={{ textDecoration: 'none' }}>
+                <p className='Type_name' style={{ color:  textColor }}>
+                    {name}
+                </p>
+            </Link>
         </div>
     )
 }
