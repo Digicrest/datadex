@@ -4,11 +4,11 @@ import { getTypeColor, getStatColor } from '../../apis/pokemon/PokeHelpers'
 import { Container, Card, Icon, Slider } from '@material-ui/core'
 import PokeSprite from 'react-poke-sprites'
 import PokeAPI from '../../apis/pokemon/PokeAPI'
-import PokemonCard from '../../containers/Card'
+import PokemonCard from '../../containers/PokemonCard'
 import ProgressBar from '../other/ProgressBar.jsx'
 import Stat from './Stat'
 
-import './css/PokemonDetails.css'
+import './css/Details.css'
 
 
 function PokemonDetails(props) {

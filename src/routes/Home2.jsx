@@ -10,8 +10,9 @@ import { Fab, Icon, Select, MenuItem, Button } from '@material-ui/core'
 import PokeAPI from '../apis/pokemon/PokeAPI'
 import { types, getTypeColor } from '../apis/pokemon/PokeHelpers'
 
-import PokemonCard from '../components/Pokemon/Card.jsx'
-import SearchBar from '../components/SearchBar.jsx'
+import PokemonCard from '../containers/PokemonCard'
+import SearchBar from '../components/SearchBar'
+import GridList from '../components/GridList'
 
 import './css/Home.css'
 
@@ -77,7 +78,13 @@ class Home extends Component {
     }
 
     // by name or id
-    sort = () => { }
+    sort = () => {
+        this.setState({
+            filtered_pokemon: this.state.filtered_pokemon.sort((p1, p2) => {
+                return p1.id > p2.id ? 1 : -1
+            })
+        })
+     }
     filterByID = id => this.setState({ filters: { ...this.state.filters, id } })
     filterByName = name => this.setState({ filters: { ...this.state.filters, name } })
     filterByTypes = types => this.setState({ filters: { ...this.state.filters, types: { ...this.state.types, ...types } } })
@@ -89,12 +96,9 @@ class Home extends Component {
             
             // By Type
             .filter(pokemon => {
-                const types = this.state.filters.types
-                return types.primary
-                        ? types.secondary
-                            ? types.primary === pokemon.types[0].type.name && pokemon.types[1] && types.secondary === pokemon.types[1].type.name
-                            : types.primary === pokemon.types[0].type.name
-                        : true
+                return pokemon.types
+                    .map(t => t.type.name)
+                    .includes(this.state.filters.types.primary)
             })
     }
 
@@ -109,7 +113,7 @@ class Home extends Component {
             <div id='home'>
                 <div id='header'>
                     <div id='header-top'>
-                        <SearchBar onChange={e => this.filterByName(e.target.value)} />
+                        <SearchBar onChange={this.filterByName} />
                     </div>
                     
                     <div className='type-buttons'>
@@ -126,6 +130,15 @@ class Home extends Component {
                                 </button>
                             )
                         })}
+                    </div>
+               
+                    <div id='action-bar'>
+                        <Fab variant="round" className='action-button' style={{ color: '#05F' }} onClick={this.sort}>
+                            <Icon>sort</Icon>
+                        </Fab>
+                        <Fab variant="round" className='action-button' style={{ color: '#F00' }} onClick={this.removeFilters}>
+                            <Icon>delete</Icon>
+                        </Fab>
                     </div>
                 </div>
 
@@ -147,22 +160,12 @@ class Home extends Component {
                         </div>
                         
                         {/* Pokemon Grid */}
-                        { this.state.filtered_pokemon.map(pokemon => {
-                            return (
-                                <div key={pokemon.id} className='list-item'>
-                                    <PokemonCard  pokemon={pokemon} />
-                                </div>
-                            )
-                        })}
-                    </div>
-
-                    <div id='action-bar'>
-                        <Fab variant="round" className='action-button' style={{ color: '#05F' }} onClick={this.sort}>
-                            <Icon>sort</Icon>
-                        </Fab>
-                        <Fab variant="round" className='action-button' style={{ color: '#F00' }} onClick={this.removeFilters}>
-                            <Icon>delete</Icon>
-                        </Fab>
+                        <GridList 
+                            data={this.state.filtered_pokemon}
+                            renderItem={pokemon => (
+                                <PokemonCard pokemon={pokemon} />
+                            )}
+                        />
                     </div>
                 </div>
             </div>

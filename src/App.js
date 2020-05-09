@@ -2,8 +2,10 @@ import React, { useEffect } from 'react'
 import { BrowserRouter, Route } from "react-router-dom"
 import { Container } from '@material-ui/core'
 
+// import Home from './routes/Home2'
 import Home from './routes/Home'
 import About from './routes/About'
+import Pokemon from './routes/Pokemon'
 
 import './App.css'
 
@@ -26,12 +28,12 @@ export function App() {
                     <About />
                 </Route>
 
-                {/* <Route 
+                <Route 
                     path='/pokemon/:name' 
                     render={props => (
-                        <PokemonDetails name={ props.match.params.name } />
+                        <Pokemon name={ props.match.params.name } />
                     )} 
-                /> */}
+                />
             </BrowserRouter>
         </Container>
     )

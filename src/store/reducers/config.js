@@ -2,7 +2,7 @@ import * as Types from '../types/config'
 import cloneDeep from 'lodash.clonedeep'
 
 const init_state = {
-    
+    searchName: ''
 }
 
 const reducer = (state = init_state, action) => {

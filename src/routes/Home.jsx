@@ -1,26 +1,37 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
 import GridList from '../components/GridList'
-import PokemonCard from '../containers/Card'
+import SearchBar from '../components/SearchBar'
+import PokemonCard from '../containers/PokemonCard'
 
-export class Home extends Component {
-    render() {
-        return (
-            <GridList 
-                data={this.props.pokemon}
-                renderItem={pokemon => (
-                    <PokemonCard pokemon={pokemon} />
-                )}
-            />
+function Home(props) {
+    const [searchTerm, setSearchTerm] = useState('')
+    const [listData, setListData] = useState(props.pokemon)
+
+    useEffect(() => {
+        const filtered = props.pokemon.filter(pokemon => 
+            pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
         )
-    }
+        setListData(filtered)
+    }, [searchTerm, props.pokemon])
+
+    return (<>
+        <SearchBar onChange={setSearchTerm} />
+        {/* <SearchBar /> */}
+        <GridList 
+            data={listData}
+            renderItem={pokemon => (
+                <PokemonCard pokemon={pokemon} />
+            )}
+        />
+    </>)
 }
 
 const mapStateToProps = state => {
     return {
         pokemon: state.database.pokemon,
-        search_term: state.config.search_term
+        searchName: state.config.searchName
     }
 }
 
