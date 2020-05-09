@@ -31,7 +31,10 @@ function Pokemon({ name }) {
         fetching
             ? <PokemonLoader name={name} />
             :   pokemon
-                ? <PokemonCard pokemon={pokemon} />
+                ? (<>
+                    <PokemonCard pokemon={pokemon} />
+                    <PokemonDetails pokemon={pokemon} />
+                </>)
                 : <p>Failed</p>
     )
 }

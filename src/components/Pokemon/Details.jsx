@@ -28,7 +28,7 @@ function PokemonDetails(props) {
     const styles = {
         colors: pokemon.types.length > 1
             ? [getTypeColor(pokemon.types[0].type.name), getTypeColor(pokemon.types[1].type.name)]
-            : [getTypeColor(pokemon.types[0].type.name)],
+            :  [getTypeColor(pokemon.types[0].type.name)],
         borderRadius: 10
     };
 

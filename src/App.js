@@ -6,6 +6,7 @@ import { Container } from '@material-ui/core'
 import Home from './routes/Home'
 import About from './routes/About'
 import Pokemon from './routes/Pokemon'
+import Typeing from './routes/Typeing'
 
 import './App.css'
 
@@ -32,6 +33,13 @@ export function App() {
                     path='/pokemon/:name' 
                     render={props => (
                         <Pokemon name={ props.match.params.name } />
+                    )} 
+                />
+
+                <Route 
+                    path='/types/:name' 
+                    render={props => (
+                        <Typeing name={ props.match.params.name } />
                     )} 
                 />
             </BrowserRouter>

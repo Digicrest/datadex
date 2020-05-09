@@ -30,7 +30,7 @@ function Home(props) {
 
 const mapStateToProps = state => {
     return {
-        pokemon: state.database.pokemon,
+        pokemon: state.database.pokemon.slice(0, 10),
         searchName: state.config.searchName
     }
 }
