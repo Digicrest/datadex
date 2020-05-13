@@ -1,4 +1,4 @@
-#home {
+/* #home {
     height: 95%;
 }
 
@@ -58,7 +58,6 @@
 }
 
 .type-buttons {
-    /* display: block; */
     align-self: center;
 }
 
@@ -83,4 +82,11 @@
     line-height: 0;
     font-size: 10pt;
     border-bottom: 1px solid #00000050;
+} */
+
+
+
+
+.Home_filters {
+    display: flex;
 }

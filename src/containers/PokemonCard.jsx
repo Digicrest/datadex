@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { getTypeColor } from '../apis/pokemon/PokeHelpers'
 
+import Pokeball from '../components/Pokeball'
 import Sprite from '../components/Pokemon/Sprite'
 import Type from '../components/Pokemon/Type'
 import Tag from '../components/Pokemon/Tag'
@@ -40,6 +41,7 @@ export class PokemonCard extends Component {
                     </div>
 
                     <Sprite pokemon={pokemon} />
+                    <Pokeball pokemon={pokemon} />
                 </div>
             </Link>
         )

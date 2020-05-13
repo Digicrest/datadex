@@ -36,7 +36,7 @@ class Home extends Component {
     }
 
     temporaryGetMorePokemon = () => {
-        const pokemon_ids = new Array(1).fill(0).map((n, i) => Math.floor(Math.random() * 800) + 1);
+        const pokemon_ids = new Array(90).fill(0).map((n, i) => Math.floor(Math.random() * 800) + 1);
         const cached_ids = this.props.pokemon.map(p => p.id)
         const uncached_ids = pokemon_ids.filter(id => !cached_ids.includes(id))
 
