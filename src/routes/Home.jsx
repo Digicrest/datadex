@@ -20,8 +20,18 @@ function Home({ caughtPokemon }) {
     
     useEffect(() => {
         POKEDEX.getPokemonsList().then(response => {
-            setPokemon(response.results.slice(0, 151))
-            setDisplayedPokemon(response.results.slice(0, 151))
+
+
+            const pokemonPromises = response.results.slice(0, 20).map(p => {
+                return POKEDEX.getPokemonByName(p.name)
+            })
+            Promise.all(pokemonPromises).then(pokemosn => {
+                setPokemon(pokemosn)
+                setDisplayedPokemon(pokemosn)
+            })
+
+            // setPokemon(response.results.slice(0, 151))
+            // setDisplayedPokemon(response.results.slice(0, 151))
         })
     }, [])
 

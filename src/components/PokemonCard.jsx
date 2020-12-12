@@ -15,9 +15,9 @@ export default function PokemonCard({ pokemon, isCaught }) {
     const [nameTextColor, setNameTextColor] = useState(getTypeColor('normal').dark)
     
     //TODO: Turn back on when i've figured out how to make initial list render populated with full api details and not the basic info provided by list pagination results
-    // useEffect(() => {
-    //     getPokemonTypeColors(pokemon)
-    // }, [pokemon])
+    useEffect(() => {
+        getPokemonTypeColors(pokemon)
+    }, [pokemon])
 
     if (!pokemon) {
         return <p>Missing Pokemon Card</p>
@@ -46,9 +46,9 @@ export default function PokemonCard({ pokemon, isCaught }) {
                     <div className={classes.header}>
                         <div className={classes.idContainer}>
                             <Pokeball pokemon={pokemon} isCaught={isCaught} />
-                            {/* <Typography variant='caption' className={classes.id}>
+                            <Typography variant='caption' className={classes.id}>
                                 #{ pokemon.id.toString().padStart(3, 0) }
-                            </Typography> */}
+                            </Typography>
                         </div>
 
                         <Typography variant='body1' className={classes.name} style={{ color: nameTextColor }}>
@@ -56,14 +56,14 @@ export default function PokemonCard({ pokemon, isCaught }) {
                         </Typography>
                     </div>
 
-                    {/* <div className={classes.typesContainer}>
+                    <div className={classes.typesContainer}>
                         { pokemon.types.map((type, i) => 
                             <Type key={i} type={type} />
                         )}
-                    </div> */}
+                    </div>
                 </div>
                 
-                {/* <Sprite pokemon={pokemon} /> */}
+                <Sprite pokemon={pokemon} />
             </div>
         </Link>
     )
