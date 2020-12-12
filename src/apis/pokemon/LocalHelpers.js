@@ -52,3 +52,13 @@ export const statProjection = () => {
 
 }
 
+
+export function getBetterSprite(pokemonID) {
+    if (typeof pokemonID !== "number") {
+       console.error('getBetterSprite() requires a pokemon ID as a number value to be passed.')
+       return;
+    }
+
+   const spriteURL = `https://pokeres.bastionbot.org/images/pokemon/${pokemonID}.png`
+   return spriteURL;
+} 

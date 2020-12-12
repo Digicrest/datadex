@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import POKEDEX from '../apis/pokemon/PokeAPI'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { makeStyles, Typography } from '@material-ui/core'
+import { getBetterSprite } from '../apis/pokemon/LocalHelpers'
+
+const Pokedex = require("pokeapi-js-wrapper")
+const POKEDEX = new Pokedex.Pokedex()
 
 function PokemonDetails({ name }) {
     const classes = useStyles();
@@ -12,10 +15,11 @@ function PokemonDetails({ name }) {
 
     useEffect(() => {
         setFetching(true)
-        POKEDEX.getPokemonDetails(name).then(pokemon => {
+        POKEDEX.getPokemonByName(name.toLowerCase()).then(pokemon => {
             setFetching(false)
-            setMainSpriteURL(pokemon.betterSprite)
-            setPokemon(pokemon.pokemon)
+            console.log(pokemon)
+            setPokemon(pokemon)
+            setMainSpriteURL(getBetterSprite(pokemon.id))
         }, error => {
             setFetching(false)
             console.error('fetch failed:: ', error)

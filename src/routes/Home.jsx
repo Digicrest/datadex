@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-
+import LazyLoad from 'react-lazyload'
 import SearchBar from '../components/SearchBar'
 import PokemonCard from '../components/PokemonCard'
 import { Checkbox, FormControlLabel, makeStyles, GridList, GridListTile, Grid } from '@material-ui/core'
@@ -51,17 +51,20 @@ function Home({ pokemon, caughtPokemon }) {
                 )} />
             </div>
 
-            <GridList 
-                cellHeight='auto'
-                style={{ padding: 10, maxHeight: '70vh' }}
-                spacing={5}
-            >
-                { displayedPokemon.map(pokemon => (
-                    <GridListTile style={{ flex: 1, minWidth: 400 }}>
-                        <PokemonCard pokemon={pokemon} isCaught={caughtMap[pokemon.name] !== undefined} />
-                    </GridListTile>
-                ))}
-            </GridList>
+
+            <LazyLoad height={200} once>
+                <GridList 
+                    cellHeight='auto'
+                    style={{ padding: 10, maxHeight: '70vh' }}
+                    spacing={5}
+                >
+                    { displayedPokemon.map(pokemon => (
+                        <GridListTile style={{ flex: 1, minWidth: 400 }}>
+                            <PokemonCard pokemon={pokemon} isCaught={caughtMap[pokemon.name] !== undefined} />
+                        </GridListTile>
+                    ))}
+                </GridList>
+            </LazyLoad>
         </div>
     )
 }

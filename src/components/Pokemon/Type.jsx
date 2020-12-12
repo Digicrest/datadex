@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core'
-import { getTypeColor } from '../../apis/pokemon/PokeHelpers'
+import { getTypeColor } from '../../apis/pokemon/LocalHelpers'
 
 export default function Type({ type }) {
     const classes = useStyles()

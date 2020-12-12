@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles, Typography } from '@material-ui/core'
 import { Link } from 'react-router-dom'
-import { getTypeColor } from '../apis/pokemon/PokeHelpers'
+import { getTypeColor } from '../apis/pokemon/LocalHelpers'
 
 import Pokeball from './Pokeball'
 import Sprite from './Pokemon/Sprite'
