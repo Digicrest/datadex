@@ -6,23 +6,35 @@ import PokemonCard from '../components/PokemonCard'
 import { Checkbox, FormControlLabel, makeStyles, GridList, GridListTile, Grid } from '@material-ui/core'
 import ProgressBar from '../components/ProgressBar'
 
-function Home({ pokemon, caughtPokemon }) {
+const Pokedex = require('pokeapi-js-wrapper')
+const POKEDEX = new Pokedex.Pokedex()
+
+function Home({ caughtPokemon }) {
     const classes = useStyles()
-    const [displayedPokemon, setDisplayedPokemon] = useState(pokemon)
+    const [pokemon, setPokemon] = useState([])
+    const [displayedPokemon, setDisplayedPokemon] = useState([])
+
     const [searchTerm, setSearchTerm] = useState('')
     const [onlyShowCapturedPokemon, setOnlyShowCapturedPokemon] = useState(false)
     const [caughtMap, setCaughtMap] = useState({})
     
     useEffect(() => {
-        let caughtPokemonIDs = [];
+        POKEDEX.getPokemonsList().then(response => {
+            setPokemon(response.results.slice(0, 151))
+            setDisplayedPokemon(response.results.slice(0, 151))
+        })
+    }, [])
+
+    useEffect(() => {
+        let caughtPokemonNames = [];
 
         if (onlyShowCapturedPokemon) {
-            caughtPokemonIDs = caughtPokemon.map(pokemon => pokemon.id)
+            caughtPokemonNames = caughtPokemon.map(pokemon => pokemon.name)
         }
 
         let filtered = pokemon
             .filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()))
-            .filter(pokemon => !onlyShowCapturedPokemon || caughtPokemonIDs.includes(pokemon.id))
+            .filter(pokemon => !onlyShowCapturedPokemon || caughtPokemonNames.includes(pokemon.name))
             
         setDisplayedPokemon(filtered)
     }, [searchTerm, pokemon, caughtPokemon, onlyShowCapturedPokemon])
@@ -71,7 +83,6 @@ function Home({ pokemon, caughtPokemon }) {
 
 const mapStateToProps = state => {
     return {
-        pokemon: state.database.pokemon,
         caughtPokemon: state.profile.caughtPokemon,
     }
 }
