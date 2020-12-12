@@ -1,11 +1,9 @@
 import React from 'react'
 
-function Typeing({ name }) {
+export default function TypeDetails({ name }) {
     return (
         <div>
             <p>{name}</p>
         </div>
     )
 }
-
-export default Typeing

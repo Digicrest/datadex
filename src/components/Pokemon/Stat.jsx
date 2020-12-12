@@ -1,22 +1,24 @@
-import React from 'react'
+import { makeStyles } from '@material-ui/core'
+import React, { useState, useEffect } from 'react'
 
-export default function Stat(props) {
-    const [value, setValue] = React.useState(props.stat.base_stat)
+export default function Stat({ stat, level }) {
+    const classes = useStyles()
+    const [value, setValue] = useState(stat.base_stat)
 
-    React.useEffect(() => {
-        setValue(props.stat.base_stat + props.level)
-    }, [props.level])
+    useEffect(() => {
+        setValue(stat.base_stat + level)
+    }, [level])
 
     return (
-        <div style={styles.stat}>
-            <p>{props.stat.stat.name}</p>
+        <div className={classes.root}>
+            <p>{stat.stat.name}</p>
             <p>{value}</p>
         </div>
     )
 }
 
-const styles = {
-    stat: {
+const useStyles = makeStyles({
+    root: {
         flex: 1, 
         margin: 10, 
         display: 'flex',
@@ -24,4 +26,4 @@ const styles = {
         textAlign: 'center',
         backgroundColor: 'red'
     }
-}
+})

@@ -1,44 +1,38 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { setConfig } from '../store/actions/config'
-
-import './css/SearchBar.css'
+import React, { useState, useEffect } from 'react'
 import { InputAdornment, TextField, Icon } from '@material-ui/core'
 
-export function SearchBar(props) {
-    function submit(term) {
-        // props.setConfig('searchName',term)
-        props.onChange(term)
+export default function SearchBar({ label = 'Search', placeholder = 'Search...', onChange }) {
+    const [searchTerm, setSearchTerm] = useState('')
+    const [submissionTimeout, setSubmissionTimeout] = useState(null)
+
+    useEffect(() => {
+        clearTimeout(submissionTimeout)
+        console.log('Typing Timeout Interrupted, restarting!')
+
+        setSubmissionTimeout(setTimeout(() => {
+            console.log('Typing Timeout expired, submitting search!')
+            onChange(searchTerm)
+        }, 300))
+    }, [searchTerm])
+
+    const updateSearchTerm = e => {
+        setSearchTerm(e.target.value)
     }
 
-    let stoppedTyping;
-
-  return (
-    <TextField
-        id="search-input"
-        label={props.label || 'Search'}
-        onChange={e => {
-            let term = e.target.value
-            clearTimeout(stoppedTyping)
-            stoppedTyping = setTimeout(() => submit(term), 300)
-        }}
-        autoComplete='off'
-        InputProps={{
-            startAdornment: (
-                <InputAdornment position="start" className='search-icon'>
-                    <Icon>search</Icon>
-                </InputAdornment>
-            )
-        }}
-    />
-  )
+    return (
+        <TextField
+            id="search-input"
+            label={label}
+            placeholder={placeholder}
+            onChange={updateSearchTerm}
+            autoComplete='off'
+            InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start" className='search-icon'>
+                        <Icon>search</Icon>
+                    </InputAdornment>
+                )
+            }}
+        />
+    )
 }
-
-const mapDispatchToProps = dispatch => {
-    return {
-        setConfig: (prop, value) => (
-            dispatch(setConfig(prop, value))
-        )
-    }
-}
-export default connect(null, mapDispatchToProps)(SearchBar)

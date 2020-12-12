@@ -1,23 +1,25 @@
 import React from 'react'
-import './css/Sprite.css'
+import { makeStyles } from '@material-ui/core'
 
 // const images = {
 //     loading: require('../../resources/images/pokemon-silhouette.png') ,
 //     failedToLoad: require('../../resources/images/fainted-pokemon.png')
 // }
 
-function Sprite(props) {
+export default function Sprite({ pokemon }) {
+    const classes = useStyles()
+
     // const [loaded, setLoaded] = useState(false)
-    const uri =props.pokemon.hasOwnProperty('sprites')
-        ?  props.pokemon.sprites.front_default
-        :   props.pokemon.sprite
+    const uri = pokemon.hasOwnProperty('sprites')
+        ? pokemon.sprites.front_default
+        : pokemon.sprite
 
     return (
-        <div className='sprite'>
-            <div className='imageContainer'>
+        <div className={`${classes.sprite} sprite`}>
+            <div className={classes.imageContainer}>
                 <img 
-                    alt={props.pokemon.name} 
-                    className='image'
+                    alt={pokemon.name} 
+                    className={classes.image}
                     src={uri}
                     // src={loaded ? uri : images.loading}
                     // onLoadStart={() => setLoaded(false)}
@@ -29,4 +31,23 @@ function Sprite(props) {
     )
 }
 
-export default Sprite
+const useStyles = makeStyles({
+    sprite: {
+        flex: 1,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    imageContainer: {
+        borderRadius: '50%',
+        backgroundColor: '#00000030',
+        boxShadow: '1px 2px 4px #00000050',
+        padding: 5,
+        maxWidth: '60%',
+        maxHeight: '100%'
+    },
+    image: {
+        width: '100%',
+        height: '100%'
+    }
+})

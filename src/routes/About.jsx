@@ -1,43 +1,43 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-
-import { Button, Icon, Typography, TextField } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { Button, Icon, Typography, Input, makeStyles } from '@material-ui/core'
 
 import PokeAPI from '../apis/pokemon/PokeAPI'
 
-export class About extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            search_result: 'Fetch Result...'
-        }
-    }
-             
-    render() {
-        return (
-            <div>
-                <p>About</p>
+export default function About() {
+    let [search, setSearch] = useState('')
+    let [pokemon, setPokemon] = useState() 
 
-                <Link to='/'>
-                    <p>Home</p>
-                </Link>
-                <Button variant="contained" color="primary" onClick={ this.getPokemon }>
-                   <Icon>link</Icon>
-                   <Typography>Fetch</Typography>
-                </Button>
+    useEffect(() => {
+        console.log('pokemon:', pokemon)
+    }, [pokemon])
 
-                <TextField
-                    label="Multiline"
-                    multiline
-                    rows="4"
-                    value={ this.state.search_result }
-                    margin="normal"
-                    variant="outlined"
-                />
-            </div>
-        )
+    const fetchPokemon = () => {
+        PokeAPI.getPokemonDetails(search).then(details => {
+            setPokemon(details)
+        })
     }
+
+    return (
+        <div>
+            <Input placeholder={'Pokemon Name or ID'} onChange={e => setSearch(e.target.value)}/>
+
+            <Button variant="text" color="primary" onClick={fetchPokemon} style={{ marginLeft: 10 }}>
+                <Icon style={{ marginRight: 5 }}>link</Icon>
+                <Typography>Fetch</Typography>
+            </Button>
+
+            { pokemon && (
+                <div style={{ marginTop: 20,  border: '1px solid black', padding: 5 }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid black', margin: 5 }}>
+                        <h3 style={{ textAlign: 'center' }}>Images</h3>
+                        <div style={{ padding: 10 }}>
+                            <img src={pokemon.pokemon.sprites.front_default} height={150}/>
+                            <img src={pokemon.pokemon.sprites.back_default} height={150}/>
+                            <img src={pokemon.betterSprite} height={300}/>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    )
 }
-
-export default About

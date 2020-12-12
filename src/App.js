@@ -1,50 +1,85 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Route } from "react-router-dom"
-import { Container } from '@material-ui/core'
+import { AppBar, Toolbar, IconButton, makeStyles } from '@material-ui/core'
+import { Menu } from '@material-ui/icons'
 
-// import Home from './routes/Home2'
+import NavigationDrawer from './NavigationDrawer'
 import Home from './routes/Home'
 import About from './routes/About'
-import Pokemon from './routes/Pokemon'
-import Typeing from './routes/Typeing'
+import PokemonDetails from './routes/PokemonDetails'
+import TypeDetails from './routes/TypeDetails'
 
-import './App.css'
+function App() {
+    const classes = useStyles()
+    const [drawerOpen, setDrawerOpen] = useState(false)
 
-export function App() {
-    
     useEffect(() => {
-        // When the App is done loading; remove the loading screen
         document.getElementById('loading-screen').remove()
     }, [])
- 
+   
+
+    const openDrawer = () => setDrawerOpen(true)
+    const closeDrawer = () => setDrawerOpen(false)
 
     return (
-        <Container className='app'>
-            <BrowserRouter>
-                <Route exact path='/'>
-                    <Home />
-                </Route>
+        <div className={classes.appContainer}>
+            <BrowserRouter >
+                <div className={classes.app}>
+                    <NavigationDrawer 
+                        isOpen={drawerOpen} 
+                        openDrawer={openDrawer}
+                        closeDrawer={closeDrawer}
+                    />
 
-                <Route path='/About'>
-                    <About />
-                </Route>
+                    <AppBar position='sticky' >
+                        <Toolbar>
+                            <IconButton onClick={openDrawer}>
+                                <Menu />
+                            </IconButton>
+                        </Toolbar>
+                    </AppBar>
+                    
+                    <div className={classes.pageContent}>
+                        <Route exact path='/'>
+                            <Home />
+                        </Route>
 
-                <Route 
-                    path='/pokemon/:name' 
-                    render={props => (
-                        <Pokemon name={ props.match.params.name } />
-                    )} 
-                />
+                        <Route path='/About'>
+                            <About />
+                        </Route>
 
-                <Route 
-                    path='/types/:name' 
-                    render={props => (
-                        <Typeing name={ props.match.params.name } />
-                    )} 
-                />
+                        <Route path='/pokemon/:name' render={props => (
+                            <PokemonDetails name={props.match.params.name} />
+                        )} />
+
+                        <Route path='/types/:name' render={props => (
+                            <TypeDetails name={props.match.params.name} />
+                        )} /> 
+                    </div>
+                </div>
             </BrowserRouter>
-        </Container>
+        </div>
     )
 }
 
 export default App
+
+const useStyles = makeStyles({
+    appContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        // backgroundColor: '#f00',
+        height: '100vh',
+    },
+    app: {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        // backgroundColor: '#0f0'
+    },
+    pageContent: {
+        flex: 1,
+        // backgroundColor: '#00f',
+        margin: 20
+    }
+})

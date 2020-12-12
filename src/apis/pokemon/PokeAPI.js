@@ -29,20 +29,51 @@ class PokeAPI {
         return results
     }
 
-    getPokemon = async nameOrID => {
+    getPokemon = async (nameOrID = '') => {
+        if (typeof nameOrID === 'string') {
+            nameOrID = nameOrID.toLowerCase()
+        }
+        
         const url = `${this.base_url}/pokemon/${nameOrID}`
-   
         const response = await fetch(url)
 
         if (response.ok) {
             const pokemonJSON = await response.json()
             console.log('[PokeAPI] getPokemon(): ', pokemonJSON)
             return pokemonJSON
-        } else {
-            console.log('[PokeAPI] getPokemon(): Unable to Find Pokemon: ', nameOrID)
         }
 
+        console.log('[PokeAPI] getPokemon(): Unable to Find Resource for URL: ', url)
         return []
+    }
+
+    getBetterSprite = async (pokemonID) => {
+        const spriteURL = `https://pokeres.bastionbot.org/images/pokemon/${pokemonID}.png`
+        const response = await fetch(spriteURL)
+        return response;
+    } 
+
+    getPokemonDetails = async (nameOrID) => {
+        if (typeof nameOrID !== "string") {
+            nameOrID = nameOrID.toLowerCase();
+        }
+
+        const pokemon = await this.getPokemon(nameOrID)
+        const betterSprite = await this.getBetterSprite(pokemon.id)
+        
+        const pokemonDetails = { 
+            pokemon, 
+            betterSprite: betterSprite.url 
+        };
+
+        return pokemonDetails;
+    }
+
+    testFetchNews = () => {
+        const url = 'https://www.pokemon.com/us/pokemon-news/rss'
+        fetch(url).then(response => 
+            console.log(response)
+        )
     }
 }
 

@@ -6,14 +6,14 @@ import { persistStore } from 'redux-persist'
 import './index.css'
 
 import App from './App'
-import PokemonLoader from './components/other/loaders/Pokemon'
+import LoadingSpinner from './components/LoadingSpinner'
 
 import store from './store/store'
 let persistor = persistStore(store)
 
 render (
     <Provider store={ store }>
-        <PersistGate loading={ <PokemonLoader /> } persistor={ persistor }>
+        <PersistGate loading={ <LoadingSpinner /> } persistor={ persistor }>
             <App />
         </PersistGate>
     </Provider>,

@@ -1,38 +1,48 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import './css/Type.css'
-
+import { makeStyles } from '@material-ui/core'
 import { getTypeColor } from '../../apis/pokemon/PokeHelpers'
-function Type(props) {
-    const type = props.type
-    const {name} = type.type
+
+export default function Type({ type }) {
+    const classes = useStyles()
+    const [hovering, setHovering] = useState(false)
+
+    const { name } = type.type
     const color = getTypeColor(name)
 
-    const [textColor, setTextColor] = useState(color.light)
-    const [bgColor, setBGColor] = useState(color.dark)
-
     return (
-        <div className='Type_container' style={{ backgroundColor: bgColor }}
-            onMouseEnter={() => {
-                setTextColor(color.dark)
-                setBGColor(color.light)
-            }}
-            onMouseLeave={() => {
-                setTextColor(color.light)
-                setBGColor(color.dark)
-            }}
-            onClick={e => {
-                e.preventDefault()
-                console.log(`[Type] Clicked ${name} - Go To Type Page`)
+        <Link 
+            to={`/types/${name}`}
+            onMouseEnter={() => setHovering(true)}
+            onMouseLeave={() => setHovering(false)}
+            className={classes.root} 
+            style={{ 
+                backgroundColor: hovering ? color.light : color.dark
             }}
         >
-            <Link to={`/types/${name}`} style={{ textDecoration: 'none' }}>
-                <p className='Type_name' style={{ color:  textColor }}>
-                    {name}
-                </p>
-            </Link>
-        </div>
+            <p className={classes.name} style={{ color: hovering ? color.dark : color.light }}>
+                {name}
+            </p>
+        </Link>
     )
 }
 
-export default Type
+const useStyles = makeStyles({
+    root: {
+        flex: 1,
+        margin: 5,
+        borderRadius: 5,
+        transform: `skewX(-10deg)`,
+        boxShadow: '1px 1px 3px #00000060',
+        textDecoration: 'none',
+        '&:hover': {
+            boxShadow: 'none',
+            opacity: 0.7
+        }
+    },
+    name: {
+        textAlign: 'center',
+        fontSize: '.85rem',
+        textTransform: 'capitalize'
+    }
+})

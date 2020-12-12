@@ -1,61 +1,83 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 
-import GridList from '../components/GridList'
 import SearchBar from '../components/SearchBar'
-import PokemonCard from '../containers/PokemonCard'
-import { Checkbox, InputLabel } from '@material-ui/core'
+import PokemonCard from '../components/PokemonCard'
+import { Checkbox, FormControlLabel, makeStyles, GridList, GridListTile, Grid } from '@material-ui/core'
+import ProgressBar from '../components/ProgressBar'
 
-import './css/Home.css'
-function Home(props) {
+function Home({ pokemon, caughtPokemon }) {
+    const classes = useStyles()
+    const [displayedPokemon, setDisplayedPokemon] = useState(pokemon)
     const [searchTerm, setSearchTerm] = useState('')
-    const [onlyCaught, setOnlyCaught] = useState(false)
-    const [listData, setListData] = useState(props.pokemon)
-
+    const [onlyShowCapturedPokemon, setOnlyShowCapturedPokemon] = useState(false)
+    const [caughtMap, setCaughtMap] = useState({})
+    
     useEffect(() => {
         let caughtPokemonIDs = [];
 
-        if (onlyCaught) {
-            caughtPokemonIDs = props.caughtPokemon.map(pokemon => pokemon.id)
+        if (onlyShowCapturedPokemon) {
+            caughtPokemonIDs = caughtPokemon.map(pokemon => pokemon.id)
         }
 
-        let filtered = props.pokemon
-            .filter(pokemon => 
-                pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
-            ).filter(pokemon => {
-                if (onlyCaught) {
-                    return caughtPokemonIDs.includes(pokemon.id)
-                }
-                return true
-            })
+        let filtered = pokemon
+            .filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()))
+            .filter(pokemon => !onlyShowCapturedPokemon || caughtPokemonIDs.includes(pokemon.id))
             
-        setListData(filtered)
-    }, [searchTerm, props.pokemon, props.caughtPokemon, onlyCaught])
+        setDisplayedPokemon(filtered)
+    }, [searchTerm, pokemon, caughtPokemon, onlyShowCapturedPokemon])
+    
+    useEffect(() => {
+        setCaughtMap(caughtPokemon.reduce((map, p) => {
+            map[p.name] = p
+            return map
+        }, {}))
+    }, [caughtPokemon])
 
-    return (<>
-        <div className='Home_filters'>
-            <SearchBar onChange={setSearchTerm} />
-            <div>
-                Only Caught
-                <Checkbox checked={onlyCaught} onClick={() => setOnlyCaught(!onlyCaught)} />
+    return (
+        <div style={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+            <ProgressBar 
+                emptyColor={'#EEE'}
+                count={caughtPokemon.length}
+                maxCount={pokemon.length}
+                label={'PokeDex Completion'}
+            />
+
+            <div className={classes.filters}>
+                <SearchBar onChange={setSearchTerm} />
+
+                <FormControlLabel label='Only Caught' style={{ marginTop: 10 }} control={(
+                    <Checkbox checked={onlyShowCapturedPokemon} onClick={() => setOnlyShowCapturedPokemon(!onlyShowCapturedPokemon)} />
+                )} />
             </div>
-        </div>
 
-        <GridList 
-            data={listData}
-            renderItem={pokemon => (
-                <PokemonCard pokemon={pokemon} />
-            )}
-        />
-    </>)
+            <GridList 
+                cellHeight='auto'
+                style={{ padding: 10, maxHeight: '70vh' }}
+                spacing={5}
+            >
+                { displayedPokemon.map(pokemon => (
+                    <GridListTile style={{ flex: 1, minWidth: 400 }}>
+                        <PokemonCard pokemon={pokemon} isCaught={caughtMap[pokemon.name] !== undefined} />
+                    </GridListTile>
+                ))}
+            </GridList>
+        </div>
+    )
 }
 
 const mapStateToProps = state => {
     return {
         pokemon: state.database.pokemon,
         caughtPokemon: state.profile.caughtPokemon,
-        searchName: state.config.searchName
     }
 }
 
 export default connect(mapStateToProps)(Home)
+
+
+const useStyles = makeStyles({
+    filters: {
+        margin: 20
+    }
+})

@@ -1,0 +1,24 @@
+.bounceContainer:hover {
+    animation: jump 0.75s infinite;
+}
+
+.bounceContainerPokemonSprite:hover .sprite img {
+    animation: jump 0.75s infinite;
+}
+
+@keyframes jump {
+    0% {
+        transform: translate3d(0, 0, 0);
+        animation-timing-function: ease-in;
+    }
+
+    50% {
+        transform: translate3d(0, -10px, 0);
+        animation-timing-function: ease-out;
+    }
+
+    100% { 
+        transform: translate3d(0, 0, 0);
+        text-shadow: none;
+    }
+}
