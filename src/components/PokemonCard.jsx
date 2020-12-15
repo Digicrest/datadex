@@ -8,62 +8,67 @@ import Sprite from './Pokemon/Sprite'
 import Type from './Pokemon/Type'
 
 import '../animations/bounce.css'
+const Pokedex = require("pokeapi-js-wrapper")
+const POKEDEX = new Pokedex.Pokedex()
 
 export default function PokemonCard({ pokemon, isCaught }) {
     const classes = useStyles()
+    const [fetchedPokemon, setFetchedPokemon] = useState(pokemon)
     const [backgroundColor, setBackgroundColor] = useState(getTypeColor('normal').color)
     const [nameTextColor, setNameTextColor] = useState(getTypeColor('normal').dark)
     
     //TODO: Turn back on when i've figured out how to make initial list render populated with full api details and not the basic info provided by list pagination results
     useEffect(() => {
-        getPokemonTypeColors(pokemon)
-    }, [pokemon])
+        if (fetchedPokemon && fetchedPokemon.types) {
+            const bgColor = fetchedPokemon.types.length > 1
+            ?   `linear-gradient(
+                    ${getTypeColor(fetchedPokemon.types[0].type.name).color}, 
+                    ${getTypeColor(fetchedPokemon.types[1].type.name).color}
+                )`
+            :   getTypeColor(fetchedPokemon.types[0].type.name).color
 
-    if (!pokemon) {
+            setBackgroundColor(bgColor)
+            setNameTextColor(getTypeColor(fetchedPokemon.types[0].type.name).dark)
+        }
+    }, [fetchedPokemon])
+
+    if (!fetchedPokemon || !fetchedPokemon.types) {
+        console.log('fetchedPokemon::: ', fetchedPokemon)
+        if (typeof fetchedPokemon === 'string') {
+            POKEDEX.getPokemonByName(fetchedPokemon.toLowerCase()).then(response => {
+                setFetchedPokemon(response)
+            })
+        }
         return <p>Missing Pokemon Card</p>
     }
 
-    function getPokemonTypeColors(pokemon) {
-        if (pokemon && pokemon.types) {
-            const bgColor = pokemon.types.length > 1
-            ?   `linear-gradient(
-                    ${getTypeColor(pokemon.types[0].type.name).color}, 
-                    ${getTypeColor(pokemon.types[1].type.name).color}
-                )`
-            :   getTypeColor(pokemon.types[0].type.name).color
-
-            setBackgroundColor(bgColor)
-            setNameTextColor(getTypeColor(pokemon.types[0].type.name).dark)
-        }
-    }
-
     return (
-        <Link to={`/pokemon/${pokemon.name}`} style={{ textDecoration: 'none' }}>
+        <Link to={`/pokemon/${fetchedPokemon.name}`} style={{ textDecoration: 'none' }}>
             <div className={`${classes.root} bounceContainerPokemonSprite`} style={{ background: backgroundColor }}>
                 <div className={classes.shine}></div>
 
                 <div style={{ flex: 2 }}>
                     <div className={classes.header}>
                         <div className={classes.idContainer}>
-                            <Pokeball pokemon={pokemon} isCaught={isCaught} />
+                            <Pokeball pokemon={fetchedPokemon} isCaught={isCaught} />
                             <Typography variant='caption' className={classes.id}>
-                                #{ pokemon.id.toString().padStart(3, 0) }
+                                #{ fetchedPokemon.id.toString().padStart(3, 0) }
                             </Typography>
                         </div>
 
                         <Typography variant='body1' className={classes.name} style={{ color: nameTextColor }}>
-                            { pokemon.name }
+                            { fetchedPokemon.name }
                         </Typography>
                     </div>
 
                     <div className={classes.typesContainer}>
-                        { pokemon.types.map((type, i) => 
+                        { fetchedPokemon.types.map((type, i) => 
                             <Type key={i} type={type} />
                         )}
                     </div>
                 </div>
                 
-                <Sprite pokemon={pokemon} />
+                <Sprite pokemon={fetchedPokemon} />
             </div>
         </Link>
     )
