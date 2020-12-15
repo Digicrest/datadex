@@ -7,8 +7,7 @@ const Pokedex = require("pokeapi-js-wrapper")
 const POKEDEX = new Pokedex.Pokedex()
 
 function PokemonDetails({ name }) {
-    const classes = useStyles();
-
+    const classes = useStyles()
     const [fetching, setFetching] = useState(false)
     const [pokemon, setPokemon] = useState({})
     const [mainSpriteURL, setMainSpriteURL] = useState('')
@@ -34,7 +33,7 @@ function PokemonDetails({ name }) {
         <div className={classes.root}>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <Typography className={classes.pokemonName} variant='h4'>{fetching ? 'Fetching Details...' : pokemon.name}</Typography>
-                <img src={mainSpriteURL} style={{ width: 200, height: 200, margin: 10 }}/>
+                <img src={mainSpriteURL} style={{ width: 200, height: 200, margin: 10 }} alt='' />
             </div>
 
             <div style={{

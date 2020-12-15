@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import LazyLoad from 'react-lazyload'
 import SearchBar from '../components/SearchBar'
 import PokemonCard from '../components/PokemonCard'
-import { Checkbox, FormControlLabel, makeStyles, GridList, GridListTile, Grid } from '@material-ui/core'
+import { Checkbox, FormControlLabel, makeStyles, GridList, GridListTile } from '@material-ui/core'
 import ProgressBar from '../components/ProgressBar'
 
 const Pokedex = require('pokeapi-js-wrapper')
@@ -20,14 +20,13 @@ function Home({ caughtPokemon }) {
     
     useEffect(() => {
         POKEDEX.getPokemonsList().then(response => {
-
-
-            const pokemonPromises = response.results.slice(0, 20).map(p => {
+            const pokemonPromises = response.results.slice(0, 26).map(p => {
                 return POKEDEX.getPokemonByName(p.name)
             })
-            Promise.all(pokemonPromises).then(pokemosn => {
-                setPokemon(pokemosn)
-                setDisplayedPokemon(pokemosn)
+
+            Promise.all(pokemonPromises).then(pokemon => {
+                setPokemon(pokemon)
+                setDisplayedPokemon(pokemon)
             })
 
             // setPokemon(response.results.slice(0, 151))
@@ -67,7 +66,6 @@ function Home({ caughtPokemon }) {
 
             <div className={classes.filters}>
                 <SearchBar onChange={setSearchTerm} />
-
                 <FormControlLabel label='Only Caught' style={{ marginTop: 10 }} control={(
                     <Checkbox checked={onlyShowCapturedPokemon} onClick={() => setOnlyShowCapturedPokemon(!onlyShowCapturedPokemon)} />
                 )} />
@@ -81,7 +79,7 @@ function Home({ caughtPokemon }) {
                     spacing={5}
                 >
                     { displayedPokemon.map(pokemon => (
-                        <GridListTile style={{ flex: 1, minWidth: 400 }}>
+                        <GridListTile key={pokemon.id} style={{ flex: 1, minWidth: 400 }}>
                             <PokemonCard pokemon={pokemon} isCaught={caughtMap[pokemon.name] !== undefined} />
                         </GridListTile>
                     ))}

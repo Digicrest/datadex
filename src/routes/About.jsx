@@ -32,8 +32,8 @@ export default function About() {
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid black', margin: 5 }}>
                         <h3 style={{ textAlign: 'center' }}>Images</h3>
                         <div style={{ padding: 10 }}>
-                            <img src={pokemonFromDex.sprites.front_default} height={150}/>
-                            <img src={pokemonFromDex.sprites.back_default} height={150}/>
+                            <img alt='' src={pokemonFromDex.sprites.front_default} height={150}/>
+                            <img alt='' src={pokemonFromDex.sprites.back_default} height={150}/>
                         </div>
                     </div>
                 </div>

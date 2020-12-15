@@ -1,7 +1,7 @@
 import natures from '../../resources/constants/natures'
 import colors from '../../resources/constants/colors'
 
-const getNaturesForStat = statName => {
+export const getNaturesForStat = statName => {
     const stats = ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed']
 
     if (!stats.includes(statName)) {
@@ -12,9 +12,6 @@ const getNaturesForStat = statName => {
     return natures[statName.split('-').join('')]
 }
 
-console.log(getNaturesForStat('attack'))
-
-// Every Pokemon Type
 export const types = [
     'bug', 'dark', 'dragon', 'electric', 'fairy',
     'fighting', 'fire', 'flying', 'ghost', 'grass',
@@ -29,7 +26,6 @@ export const getTypeColor = type => {
 export const getStatColor = stat => {
     return colors.stats[stat]
 }
-
 
 /*
     Maximum IV is 31.
@@ -47,9 +43,7 @@ export const getStatColor = stat => {
 export const statProjection = () => {
     // const gainedFromEV = Math.floor(stat.evs / 4)
     // const gainedFromIV = stat.iv
-
     // const gainedFromNature = getAffectingNatures(stat.name) // -> 
-
 }
 
 

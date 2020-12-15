@@ -7,10 +7,7 @@ export default function SearchBar({ label = 'Search', placeholder = 'Search...',
 
     useEffect(() => {
         clearTimeout(submissionTimeout)
-        console.log('Typing Timeout Interrupted, restarting!')
-
         setSubmissionTimeout(setTimeout(() => {
-            console.log('Typing Timeout expired, submitting search!')
             onChange(searchTerm)
         }, 300))
     }, [searchTerm])
