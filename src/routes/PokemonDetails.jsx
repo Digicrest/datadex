@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { makeStyles, Typography } from '@material-ui/core'
-import { getBetterSprite } from '../apis/pokemon/LocalHelpers'
+import { getBetterSprite, getTypeColor } from '../apis/pokemon/LocalHelpers'
+
+import PokemonAbilities from '../components/PokemonAbilities'
 
 const Pokedex = require("pokeapi-js-wrapper")
 const POKEDEX = new Pokedex.Pokedex()
@@ -9,8 +11,15 @@ const POKEDEX = new Pokedex.Pokedex()
 function PokemonDetails({ name }) {
     const classes = useStyles()
     const [fetching, setFetching] = useState(false)
-    const [pokemon, setPokemon] = useState({})
+    const [pokemon, setPokemon] = useState(null)
+    const [colors, setColors] = useState({ light: '#FFF', dark: '#FFF', color: '#FFF' })
     const [mainSpriteURL, setMainSpriteURL] = useState('')
+
+    useEffect(() => {
+        if (pokemon) {
+            setColors(getTypeColor(pokemon.types[0].type.name))
+        }
+    }, [pokemon])
 
     useEffect(() => {
         setFetching(true)
@@ -25,18 +34,27 @@ function PokemonDetails({ name }) {
         })
     }, [name])
 
-    if (fetching) {
+    if (fetching || !pokemon) {
         return <LoadingSpinner name={name} />
     }
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root} style={{ backgroundColor: colors.light }}>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <Typography className={classes.pokemonName} variant='h4'>{fetching ? 'Fetching Details...' : pokemon.name}</Typography>
+                <Typography style={{ color: colors.dark }} className={classes.pokemonName} variant='h4'>
+                    {pokemon.name}
+                </Typography>
                 <img src={mainSpriteURL} style={{ width: 200, height: 200, margin: 10 }} alt='' />
             </div>
 
-            <div style={{
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Typography variant='h6' className={classes.title} style={{ color: colors.dark }}>
+                    Abilities
+                </Typography>
+                <PokemonAbilities pokemon={pokemon} colors={colors} />
+            </div>
+
+            {/* <div style={{
                 backgroundColor: '#eee',
                 border: '1px solid black',
                 padding: 10,
@@ -48,7 +66,7 @@ function PokemonDetails({ name }) {
                 <Typography variant='body1'>
                     {JSON.stringify(pokemon, 0, 2)}
                 </Typography>
-            </div>
+            </div> */}
         </div>
     )
 }
@@ -58,6 +76,8 @@ export default PokemonDetails
 const useStyles = makeStyles({
     root: {
         flex: 1,
+        height: '100vh',
+        padding: 20
     },
     pokemonName: {
         textTransform: 'capitalize',

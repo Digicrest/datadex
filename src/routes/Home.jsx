@@ -77,6 +77,7 @@ function Home({ caughtPokemon }) {
                     cellHeight='auto'
                     style={{ padding: 10, maxHeight: '70vh' }}
                     spacing={5}
+
                 >
                     { displayedPokemon.map(pokemon => (
                         <GridListTile key={pokemon.id} style={{ flex: 1, minWidth: 400 }}>

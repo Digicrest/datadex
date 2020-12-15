@@ -41,7 +41,9 @@ function App() {
                     
                     <div className={classes.pageContent}>
                         <Route exact path='/'>
-                            <Home />
+                            <div style={{ margin: 20 }}>
+                                <Home />
+                            </div>
                         </Route>
 
                         <Route path='/About'>
@@ -68,18 +70,14 @@ const useStyles = makeStyles({
     appContainer: {
         display: 'flex',
         flexDirection: 'column',
-        // backgroundColor: '#f00',
         height: '100vh',
     },
     app: {
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        // backgroundColor: '#0f0'
     },
     pageContent: {
         flex: 1,
-        // backgroundColor: '#00f',
-        margin: 20
     }
 })
