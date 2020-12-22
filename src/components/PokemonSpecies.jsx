@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { Card, Collapse, makeStyles, Typography, GridList, GridListTile } from '@material-ui/core'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { MenuBookOutlined, Settings, MusicNote } from '@material-ui/icons'
+import { RecordVoiceOver, Settings, MusicNote } from '@material-ui/icons'
 import PokemonCard from './PokemonCard'
 import { connect } from 'react-redux'
 
@@ -90,9 +90,10 @@ function PokemonSpecies({ pokemon, colors }) {
             </Typography>
           </GridListTile>
           <GridListTile className={classes.gridTile}>
-            <div className={`${classes.section} ${classes.bordered}`}>
-              <MenuBookOutlined />
-              <Settings />
+            {/* TODO: Speech Synthesis */}
+            <div className={`${classes.section} ${classes.bordered}`} onClick={() => alert('Speech Synthesis has not been added yet.')} >
+              <RecordVoiceOver style={{ color: colors.color }} />
+              <Settings color='disabled' />
             </div>
             <Typography variant={'caption'} className={classes.label}>
               dataDex Voice
@@ -100,7 +101,7 @@ function PokemonSpecies({ pokemon, colors }) {
           </GridListTile>
           <GridListTile className={classes.gridTile}>
             <div className={`${classes.section} ${classes.bordered}`} onClick={playCry}>
-              <MusicNote />
+              <MusicNote style={{ color: colors.color }} />
               { audioSource !== null && (
                 <audio hidden autoPlay onEnded={() => setAudioSource(null)}>
                   <source src={audioSource} type="audio/mp3" />
