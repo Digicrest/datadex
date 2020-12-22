@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { makeStyles, Typography } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { getTypeColor } from '../apis/pokemon/LocalHelpers'
-
 import Pokeball from './Pokeball'
 import Sprite from './Pokemon/Sprite'
 import Type from './Pokemon/Type'
@@ -82,6 +81,7 @@ const useStyles = makeStyles({
         flexDirection: 'row',
         padding: 10,
         borderTop: '4px solid #00000040',
+        overflow: 'hidden',
         boxShadow:' 2px 2px 4px #00000030',
         '&:hover': {
             boxShadow:' 2px 2px 4px #00000060',

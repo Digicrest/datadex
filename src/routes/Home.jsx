@@ -5,6 +5,7 @@ import SearchBar from '../components/SearchBar'
 import PokemonCard from '../components/PokemonCard'
 import { Checkbox, FormControlLabel, makeStyles, GridList, GridListTile } from '@material-ui/core'
 import ProgressBar from '../components/ProgressBar'
+import LoadingSpinner from '../components/LoadingSpinner'
 
 const Pokedex = require('pokeapi-js-wrapper')
 const POKEDEX = new Pokedex.Pokedex()
@@ -17,20 +18,20 @@ function Home({ caughtPokemon }) {
     const [searchTerm, setSearchTerm] = useState('')
     const [onlyShowCapturedPokemon, setOnlyShowCapturedPokemon] = useState(false)
     const [caughtMap, setCaughtMap] = useState({})
-    
+    const [fetching, setFetching] = useState(false)
+
     useEffect(() => {
+        setFetching(true)
         POKEDEX.getPokemonsList().then(response => {
-            const pokemonPromises = response.results.slice(0, 26).map(p => {
+            const pokemonPromises = response.results.slice(0, 151).map(p => {
                 return POKEDEX.getPokemonByName(p.name)
             })
 
             Promise.all(pokemonPromises).then(pokemon => {
                 setPokemon(pokemon)
                 setDisplayedPokemon(pokemon)
+                setFetching(false)
             })
-
-            // setPokemon(response.results.slice(0, 151))
-            // setDisplayedPokemon(response.results.slice(0, 151))
         })
     }, [])
 
@@ -55,6 +56,10 @@ function Home({ caughtPokemon }) {
         }, {}))
     }, [caughtPokemon])
 
+    if (fetching) {
+        return <LoadingSpinner />
+    }
+    
     return (
         <div style={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
             <ProgressBar 
@@ -71,21 +76,17 @@ function Home({ caughtPokemon }) {
                 )} />
             </div>
 
-
-            <LazyLoad height={200} once>
-                <GridList 
-                    cellHeight='auto'
-                    style={{ padding: 10, maxHeight: '70vh' }}
-                    spacing={5}
-
-                >
-                    { displayedPokemon.map(pokemon => (
-                        <GridListTile key={pokemon.id} style={{ flex: 1, minWidth: 400 }}>
-                            <PokemonCard pokemon={pokemon} isCaught={caughtMap[pokemon.name] !== undefined} />
-                        </GridListTile>
-                    ))}
-                </GridList>
-            </LazyLoad>
+            <GridList 
+                cellHeight='auto'
+                style={{ padding: 10, maxHeight: '70vh' }}
+                spacing={5}
+            >
+                { displayedPokemon.map(pokemon => (
+                    <GridListTile key={pokemon.id} style={{ flex: 1, minWidth: 400 }}>
+                        <PokemonCard pokemon={pokemon} isCaught={caughtMap[pokemon.name] !== undefined} />
+                    </GridListTile>
+                ))}
+            </GridList>
         </div>
     )
 }
@@ -101,6 +102,8 @@ export default connect(mapStateToProps)(Home)
 
 const useStyles = makeStyles({
     filters: {
+        display: 'flex',
+        flexDirection: 'column',
         margin: 20
     }
 })

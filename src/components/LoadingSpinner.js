@@ -23,7 +23,8 @@ export default function LoadingSpinner({ name='MissingNo' }) {
 const useStyles = makeStyles({
     root: {
         display: 'flex',
-        height: '100%',
+        flexDirection: 'column',
+        height: '100vh',
         alignItems: 'center',
         justifyContent: 'center',
     },
