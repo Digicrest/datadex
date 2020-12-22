@@ -17,21 +17,19 @@ function PokemonAbilities(props) {
   const [showPokemonWithSkill, setShowPokemonWithSkill] = useState(false)
 
   useEffect(() => {
-    console.log('pokemon: ', pokemon)
     setAbilities(pokemon.abilities.filter(ability => !ability.is_hidden))
     setHiddenAbilities(pokemon.abilities.filter(ability => ability.is_hidden))
   }, [pokemon])
 
-  useEffect(() => {
-    console.log('colors: ', colors)
-  }, [colors])
+  // useEffect(() => {
+  //   console.log('colors: ', colors)
+  // }, [colors])
   
-  useEffect(() => {
-    console.log('expandedAbility: ', expandedAbility)
-  }, [expandedAbility])
+  // useEffect(() => {
+  //   console.log('expandedAbility: ', expandedAbility)
+  // }, [expandedAbility])
 
   function viewAbility(ability) {
-    console.log('prefetch: ', ability)
     POKEDEX.getAbilityByName(ability.ability.name).then(response => {
       setExpandedAbility(response)
     })

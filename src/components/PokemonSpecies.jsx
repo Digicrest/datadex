@@ -9,18 +9,45 @@ const Pokedex = require("pokeapi-js-wrapper")
 const POKEDEX = new Pokedex.Pokedex()
 
 
-function PokemonSpecies(props) {
-  const { pokemon, colors } = props;
+function PokemonSpecies({ pokemon, colors }) {
   const classes = useStyles();
-  
+  const [species, setSpecies] = useState(null)
+  const [pokedexEntry, setPokedexEntry] = useState(null)
+
+  useEffect(() => {
+    if (pokemon) {
+      console.log('propsPokemon: ', pokemon)
+
+      POKEDEX.getPokemonSpeciesByName(pokemon.name).then(fetchedSpecies => {
+        console.log('fetchedSpecies: ', fetchedSpecies)
+        
+        const entries = fetchedSpecies.flavor_text_entries.filter(entry => entry.language.name === 'en')
+        const chosen_entry = entries[Math.floor(Math.random() * entries.length)]
+        
+        POKEDEX.getVersionByName(chosen_entry.version.name).then(fetchedGameVersion => {
+          console.log('fetchedGameVersion: ', fetchedGameVersion)
+          const realGameName = fetchedGameVersion.name.split('-').map(w => w[0].toUpperCase() + w.substring(1)).join(' ')
+          chosen_entry.version.name = realGameName
+
+          setPokedexEntry(chosen_entry)
+          setSpecies(fetchedSpecies)
+        })
+      })
+    }
+  }, [pokemon])
+
+  if (!species || !pokedexEntry) {
+    return <p>Loading Species...</p>
+  }
+
   return (
     <Card className={classes.root}>
       <div className={classes.entryContainer}>
         <Typography className={`${classes.entryText} ${classes.bordered}`} variant='body2'>
-          There is a plant seed on its back right from the day this pokemon is born. The seed slowly grows larger.
+          {pokedexEntry.flavor_text}
         </Typography>
         <Typography variant='caption' className={classes.label} style={{ fontStyle: 'italic' }}>
-          Pokedex entry (from Pokemon Sword)
+          Pokedex entry (from {pokedexEntry.version.name})
         </Typography>
       </div>
 
@@ -29,7 +56,7 @@ function PokemonSpecies(props) {
           <GridListTile className={classes.gridTile}>
             <div className={`${classes.section} ${classes.bordered}`}>
               <Typography variant={'body2'} className={classes.label}>
-                2'4" (0.71 m)
+                {pokemon.height}ft
               </Typography>
             </div>
             <Typography variant={'caption'} className={classes.label}>
@@ -39,7 +66,7 @@ function PokemonSpecies(props) {
           <GridListTile className={classes.gridTile}>
             <div className={`${classes.section} ${classes.bordered}`}>
               <Typography variant={'body2'} className={classes.label}>
-                15.21 lbs (6.9 kg)
+                {pokemon.weight} lbs <Typography variant='caption' style={{ opacity: 0.7, marginLeft: 5 }}>({(pokemon.weight /  2.205).toFixed(2)} kg)</Typography>
               </Typography>
             </div>
             <Typography variant={'caption'} className={classes.label}>
