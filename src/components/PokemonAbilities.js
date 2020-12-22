@@ -37,9 +37,9 @@ function PokemonAbilities(props) {
     })
   }
 
-  function renderAbility(ability, i) {
-    return (
-      <Fragment>  
+  function Abilities({ abilityList }) {
+    return abilityList.map((ability, i) => (
+      <Fragment key={ability.url + i}>  
         {!!(i > 0) && (
           <Typography>or</Typography>
         )}
@@ -66,21 +66,17 @@ function PokemonAbilities(props) {
           </Typography>
         </div>
       </Fragment>
-    )
+    ))
   }
 
   return (
     <Card className={classes.root}>
       <div className={classes.abilities}>
-        {abilities.map((ability, i) => 
-          renderAbility(ability, i)
-        )}
+        <Abilities abilityList={abilities} />
       </div>
 
       <div className={classes.abilities}>
-        {hiddenAbilities.map((ability, i) => 
-          renderAbility(ability, i)
-        )}
+        <Abilities abilityList={hiddenAbilities} />
       </div>
 
       {!!expandedAbility && (
@@ -90,12 +86,9 @@ function PokemonAbilities(props) {
             Other Pokemon with this skill
           </p>
           <Collapse in={showPokemonWithSkill}>
-            {expandedAbility.pokemon.filter(p => p.is_hidden).map(p => {
-
-              return (
-                <PokemonCard pokemon={p.pokemon.name} isCaught={props.caughtPokemon.map(p => p.name).includes(p.pokemon.name)} />
-              )
-            })}
+            {expandedAbility.pokemon.map(p => (
+              <PokemonCard key={p.pokemon.id} pokemon={p.pokemon.name} isCaught={props.caughtPokemon.map(p => p.name).includes(p.pokemon.name)} />
+            ))}
           </Collapse>
         </div>
       )}

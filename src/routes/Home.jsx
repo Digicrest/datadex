@@ -36,15 +36,16 @@ function Home({ caughtPokemon }) {
     }, [])
 
     useEffect(() => {
-        let caughtPokemonNames = [];
+        let filtered = pokemon
 
-        if (onlyShowCapturedPokemon) {
-            caughtPokemonNames = caughtPokemon.map(pokemon => pokemon.name)
+        if (searchTerm) {
+            filtered = pokemon.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()))
         }
 
-        let filtered = pokemon
-            .filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.toLowerCase()))
-            .filter(pokemon => !onlyShowCapturedPokemon || caughtPokemonNames.includes(pokemon.name))
+        if (onlyShowCapturedPokemon) {
+            let caughtPokemonNames = caughtPokemon.map(pokemon => pokemon.name)
+            filtered = filtered.filter(pokemon => caughtPokemonNames.includes(pokemon.name))
+        }
             
         setDisplayedPokemon(filtered)
     }, [searchTerm, pokemon, caughtPokemon, onlyShowCapturedPokemon])

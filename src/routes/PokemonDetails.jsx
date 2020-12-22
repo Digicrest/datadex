@@ -4,6 +4,7 @@ import { makeStyles, Typography } from '@material-ui/core'
 import { getBetterSprite, getTypeColor } from '../apis/pokemon/LocalHelpers'
 
 import PokemonAbilities from '../components/PokemonAbilities'
+import PokemonSpecies from '../components/PokemonSpecies'
 
 const Pokedex = require("pokeapi-js-wrapper")
 const POKEDEX = new Pokedex.Pokedex()
@@ -49,24 +50,16 @@ function PokemonDetails({ name }) {
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Typography variant='h6' className={classes.title} style={{ color: colors.dark }}>
+                    Species
+                </Typography>
+                <PokemonSpecies pokemon={pokemon} colors={colors} />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Typography variant='h6' className={classes.title} style={{ color: colors.dark }}>
                     Abilities
                 </Typography>
                 <PokemonAbilities pokemon={pokemon} colors={colors} />
             </div>
-
-            {/* <div style={{
-                backgroundColor: '#eee',
-                border: '1px solid black',
-                padding: 10,
-                margin: 10,
-                borderRadius: 5,
-                maxHeight: 300,
-                overflow: 'scroll'
-            }}>
-                <Typography variant='body1'>
-                    {JSON.stringify(pokemon, 0, 2)}
-                </Typography>
-            </div> */}
         </div>
     )
 }

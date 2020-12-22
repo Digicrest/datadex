@@ -14,15 +14,9 @@ function Pokeball({ isCaught, pokemon, catchPokemon, releasePokemon }) {
             ? releasePokemon(pokemon)
             : catchPokemon(pokemon)
     }
-
-    const showCatchStatus = () => {
-        isCaught 
-            ? console.log(`[Pokeball] ${pokemon.name} is Caught!`)
-            : console.log(`[Pokeball] ${pokemon.name} is Wild!`)
-    }
-
+    
     return (
-        <div onClick={toggleCatchStatus} onMouseEnter={showCatchStatus} className={classes.root} style={{ opacity: isCaught ?  .9 : .3 }}>
+        <div onClick={toggleCatchStatus} className={classes.root} style={{ opacity: isCaught ?  .9 : .3 }}>
             <img 
                 src={image} 
                 className={classes.icon} 
