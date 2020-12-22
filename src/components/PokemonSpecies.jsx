@@ -13,6 +13,7 @@ function PokemonSpecies({ pokemon, colors }) {
   const classes = useStyles();
   const [species, setSpecies] = useState(null)
   const [pokedexEntry, setPokedexEntry] = useState(null)
+  const [audioSource, setAudioSource] = useState(null)
 
   useEffect(() => {
     if (pokemon) {
@@ -35,6 +36,21 @@ function PokemonSpecies({ pokemon, colors }) {
       })
     }
   }, [pokemon])
+
+  function playCry() {
+    let audioFile;
+    try {
+      audioFile = require(`../resources/audio/cries/mp3/${pokemon.name}.mp3`)
+    } catch (error) { }
+   
+    // in case we're missing the audio file or the name doesn't match in the directory, just play nothing.
+    if (!audioFile) { 
+      alert('Not all sounds have been added yet, try a pokemon with a name starting with a, b or (maybe) c')
+      console.warn('playCry() Missing Audio File for: ', pokemon.name)
+      return; 
+    }
+    setAudioSource(audioFile)
+  }
 
   if (!species || !pokedexEntry) {
     return <p>Loading Species...</p>
@@ -83,8 +99,13 @@ function PokemonSpecies({ pokemon, colors }) {
             </Typography>
           </GridListTile>
           <GridListTile className={classes.gridTile}>
-            <div className={`${classes.section} ${classes.bordered}`}>
+            <div className={`${classes.section} ${classes.bordered}`} onClick={playCry}>
               <MusicNote />
+              { audioSource !== null && (
+                <audio hidden autoPlay onEnded={() => setAudioSource(null)}>
+                  <source src={audioSource} type="audio/mp3" />
+                </audio>
+              )}
             </div>
             <Typography variant={'caption'} className={classes.label}>
               Cry
