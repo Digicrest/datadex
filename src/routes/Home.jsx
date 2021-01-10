@@ -1,38 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import LazyLoad from 'react-lazyload'
 import SearchBar from '../components/SearchBar'
 import PokemonCard from '../components/PokemonCard'
 import { Checkbox, FormControlLabel, makeStyles, GridList, GridListTile } from '@material-ui/core'
 import ProgressBar from '../components/ProgressBar'
-import LoadingSpinner from '../components/LoadingSpinner'
 
-const Pokedex = require('pokeapi-js-wrapper')
-const POKEDEX = new Pokedex.Pokedex()
-
-function Home({ caughtPokemon }) {
+function Home({ pokemon, caughtPokemon }) {
     const classes = useStyles()
-    const [pokemon, setPokemon] = useState([])
     const [displayedPokemon, setDisplayedPokemon] = useState([])
-
     const [searchTerm, setSearchTerm] = useState('')
     const [onlyShowCapturedPokemon, setOnlyShowCapturedPokemon] = useState(false)
     const [caughtMap, setCaughtMap] = useState({})
-    const [fetching, setFetching] = useState(false)
 
     useEffect(() => {
-        setFetching(true)
-        POKEDEX.getPokemonsList().then(response => {
-            const pokemonPromises = response.results.slice(0, 151).map(p => {
-                return POKEDEX.getPokemonByName(p.name)
-            })
-
-            Promise.all(pokemonPromises).then(pokemon => {
-                setPokemon(pokemon)
-                setDisplayedPokemon(pokemon)
-                setFetching(false)
-            })
-        })
+        setDisplayedPokemon(pokemon)
     }, [])
 
     useEffect(() => {
@@ -56,10 +37,6 @@ function Home({ caughtPokemon }) {
             return map
         }, {}))
     }, [caughtPokemon])
-
-    if (fetching) {
-        return <LoadingSpinner />
-    }
     
     return (
         <div style={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
