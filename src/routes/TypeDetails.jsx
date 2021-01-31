@@ -19,7 +19,6 @@ export default function TypeDetails({ name }) {
         setColors(getTypeColor(name))
 
         POKEDEX.getTypeByName(name).then(details => {
-            console.log(details)
             setDetails(details)
         })
     }, [name])

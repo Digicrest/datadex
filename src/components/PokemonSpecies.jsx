@@ -17,19 +17,13 @@ function PokemonSpecies({ pokemon, colors }) {
 
   useEffect(() => {
     if (pokemon) {
-      console.log('propsPokemon: ', pokemon)
-
       POKEDEX.getPokemonSpeciesByName(pokemon.name).then(fetchedSpecies => {
-        console.log('fetchedSpecies: ', fetchedSpecies)
-        
         const entries = fetchedSpecies.flavor_text_entries.filter(entry => entry.language.name === 'en')
         const chosen_entry = entries[Math.floor(Math.random() * entries.length)]
         
         POKEDEX.getVersionByName(chosen_entry.version.name).then(fetchedGameVersion => {
-          console.log('fetchedGameVersion: ', fetchedGameVersion)
           const realGameName = fetchedGameVersion.name.split('-').map(w => w[0].toUpperCase() + w.substring(1)).join(' ')
           chosen_entry.version.name = realGameName
-
           setPokedexEntry(chosen_entry)
           setSpecies(fetchedSpecies)
         })

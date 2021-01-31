@@ -19,8 +19,12 @@ export const types = [
     'rock', 'steel', 'water'
 ];
 
+
 export const getTypeColor = type => {
     return colors.types[type]
+}
+export const getDamageClassColor = damageClass => {
+    return colors.damage_class[damageClass]
 }
 
 export const getStatColor = stat => {

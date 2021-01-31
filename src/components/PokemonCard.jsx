@@ -32,7 +32,6 @@ export default function PokemonCard({ pokemon, isCaught }) {
     }, [fetchedPokemon])
 
     if (!fetchedPokemon || !fetchedPokemon.types) {
-        console.log('fetchedPokemon::: ', fetchedPokemon)
         if (typeof fetchedPokemon === 'string') {
             POKEDEX.getPokemonByName(fetchedPokemon.toLowerCase()).then(response => {
                 setFetchedPokemon(response)

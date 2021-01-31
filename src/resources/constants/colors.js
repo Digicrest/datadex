@@ -20,7 +20,6 @@ const colors = {
         steel: { color: '#B8B8D0', light: '#D1D1E0', dark: '#787887' },
         water: { color: '#6890F0', light: '#9DB7F5', dark: '#445E9C' }
     },
-
     stats: {
         'hp': { color: '#32E36D', dark: '#1d803e' },
         'attack': { color: '#E32727', dark: '#7d1414' },
@@ -28,6 +27,11 @@ const colors = {
         'defense': { color: '#4387E0', dark: '#234878' },
         'special-attack': { color: '#E35627', dark: '#752c14' },
         'special-defense': { color: '#5E43E0', dark: '#2f226b' }
+    },
+    damage_class: {
+        'status': { color: '#98D8D8', light: '#BCE6E6', dark: '#638D8D' },
+        'physical': { color: '#F08030', light: '#F5AC78', dark: '#9C531F' },
+        'special': { color: '#B8B8D0', light: '#D1D1E0', dark: '#787887' },
     }
 }
 

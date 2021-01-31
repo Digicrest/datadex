@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core'
 import { getTypeColor } from '../../apis/pokemon/LocalHelpers'
@@ -6,8 +6,7 @@ import { getTypeColor } from '../../apis/pokemon/LocalHelpers'
 export default function Type({ type }) {
     const classes = useStyles()
     const [hovering, setHovering] = useState(false)
-
-    const { name } = type.type
+    const [name, setName] = useState(typeof type === 'string' ? type : type.type.name)
     const color = getTypeColor(name)
 
     return (
@@ -27,17 +26,17 @@ export default function Type({ type }) {
     )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     root: {
         flex: 1,
-        margin: 5,
-        borderRadius: 5,
+        margin: theme.spacing(1),
+        borderRadius: theme.shape.borderRadius,
         transform: `skewX(-10deg)`,
-        boxShadow: '1px 1px 3px #00000060',
+        boxShadow: theme.shadows[2],
         textDecoration: 'none',
         '&:hover': {
             boxShadow: 'none',
-            opacity: 0.7
+            opacity: 0.9
         }
     },
     name: {
@@ -45,4 +44,4 @@ const useStyles = makeStyles({
         fontSize: '.85rem',
         textTransform: 'capitalize'
     }
-})
+}))
