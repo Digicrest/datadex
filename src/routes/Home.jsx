@@ -4,6 +4,7 @@ import SearchBar from '../components/SearchBar'
 import PokemonCard from '../components/PokemonCard'
 import { Checkbox, FormControlLabel, makeStyles, GridList, GridListTile } from '@material-ui/core'
 import ProgressBar from '../components/ProgressBar'
+import theme from '../theme'
 
 function Home({ pokemon, caughtPokemon }) {
     const classes = useStyles()
@@ -41,7 +42,8 @@ function Home({ pokemon, caughtPokemon }) {
     return (
         <div style={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
             <ProgressBar 
-                emptyColor={'#EEE'}
+                emptyColor={theme.palette.primary.light}
+                fillColor={theme.palette.primary.dark}
                 count={caughtPokemon.length}
                 maxCount={pokemon.length}
                 label={'PokeDex Completion'}

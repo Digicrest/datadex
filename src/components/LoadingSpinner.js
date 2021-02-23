@@ -14,7 +14,6 @@ export default function LoadingSpinner({ name='MissingNo' }) {
                     alt={''}
                 />
             </div>
-            <Typography variant='h3'>A wild {name.substr(0, 1).toUpperCase() + name.slice(1)} appeared!</Typography>
         </div>
         
     )

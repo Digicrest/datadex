@@ -24,7 +24,7 @@ function App() {
 
         setFetching(true)
         POKEDEX.getPokemonsList().then(response => {
-            const pokemonPromises = response.results.slice(0, 151).map(p => {
+            const pokemonPromises = response.results.slice(0, 10).map(p => {
                 return POKEDEX.getPokemonByName(p.name)
             })
 
@@ -59,7 +59,7 @@ function App() {
                     
                     <div className={classes.pageContent}>
                         { fetching ? <LoadingSpinner /> : (
-                            <Fragment>
+                            <div className={"fade-in"}>
                                 <Route exact path='/'>
                                     <div style={{ margin: 20 }}>
                                         <Home pokemon={pokemon} />
@@ -77,7 +77,7 @@ function App() {
                                 <Route path='/types/:name' render={props => (
                                     <TypeDetails name={props.match.params.name} />
                                 )} /> 
-                            </Fragment>
+                            </div>
                         )}
                     </div>
                 </div>
