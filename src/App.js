@@ -1,7 +1,8 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Route } from "react-router-dom"
 import { AppBar, Toolbar, IconButton, makeStyles } from '@material-ui/core'
 import { Menu } from '@material-ui/icons'
+import { connect } from 'react-redux'
 
 import NavigationDrawer from './NavigationDrawer'
 import Home from './routes/Home'
@@ -12,7 +13,7 @@ import LoadingSpinner from './components/LoadingSpinner'
 const Pokedex = require('pokeapi-js-wrapper')
 const POKEDEX = new Pokedex.Pokedex()
 
-function App() {
+function App(props) {
     const classes = useStyles()
     const [drawerOpen, setDrawerOpen] = useState(false)
 
@@ -24,7 +25,7 @@ function App() {
 
         setFetching(true)
         POKEDEX.getPokemonsList().then(response => {
-            const pokemonPromises = response.results.slice(0, 10).map(p => {
+            const pokemonPromises = response.results.slice(0, 151).map(p => {
                 return POKEDEX.getPokemonByName(p.name)
             })
 
@@ -49,7 +50,9 @@ function App() {
                         closeDrawer={closeDrawer}
                     />
 
-                    <AppBar position='sticky' >
+                    <AppBar position='sticky' style={{
+                        backgroundColor: props.toolbarColor
+                    }}>
                         <Toolbar>
                             <IconButton onClick={openDrawer}>
                                 <Menu />
@@ -86,7 +89,13 @@ function App() {
     )
 }
 
-export default App
+const mapStateToProps = state => {
+    return {
+        toolbarColor: state.config.toolbarColor
+    }
+}
+
+export default connect(mapStateToProps)(App)
 
 const useStyles = makeStyles({
     appContainer: {

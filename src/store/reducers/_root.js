@@ -8,7 +8,11 @@ import configReducer from './config'
 import profileReducer from './profile'
 
 const persistedDatabaseReducer = persistReducer({ key: 'database', storage: storage }, databaseReducer)
-const persistedConfigReducer = persistReducer({ key: 'config', storage: storage }, configReducer)
+const persistedConfigReducer = persistReducer({ 
+    key: 'config', 
+    storage: storage,
+    blacklist: ["toolbarColor"]
+}, configReducer)
 const persistedProfileReducer = persistReducer({ key: 'profile', storage: storage }, profileReducer)
 
 

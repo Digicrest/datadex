@@ -1,8 +1,9 @@
 import * as Types from '../types/config'
 import cloneDeep from 'lodash.clonedeep'
+import theme from '../../theme'
 
 const init_state = {
-    searchName: ''
+    toolbarColor: theme.palette.primary.main
 }
 
 const reducer = (state = init_state, action) => {

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import LoadingSpinner from '../components/LoadingSpinner'
+import { connect } from 'react-redux'
 import { makeStyles, Typography } from '@material-ui/core'
 import { getBetterSprite, getTypeColor } from '../apis/pokemon/LocalHelpers'
-
+import { setConfig } from '../store/actions/config'
 import PokemonAbilities from '../components/PokemonAbilities'
 import PokemonSpecies from '../components/PokemonSpecies'
 import PokemonMoves from '../components/PokemonMoves'
@@ -11,7 +12,7 @@ import MoveCategories from '../components/MoveCategories'
 const Pokedex = require("pokeapi-js-wrapper")
 const POKEDEX = new Pokedex.Pokedex()
 
-function PokemonDetails({ name }) {
+function PokemonDetails({ name, setToolbarColor }) {
     const classes = useStyles()
     const [fetching, setFetching] = useState(false)
     const [pokemon, setPokemon] = useState(null)
@@ -21,9 +22,11 @@ function PokemonDetails({ name }) {
 
     useEffect(() => {
         if (pokemon) {
-            setColors(getTypeColor(pokemon.types[0].type.name))
+            const pokemonColors = getTypeColor(pokemon.types[0].type.name)
+            setToolbarColor(pokemonColors.color);
+            setColors(pokemonColors)
         }
-    }, [pokemon])
+    }, [pokemon, setToolbarColor])
 
     useEffect(() => {
         setFetching(true)
@@ -83,7 +86,15 @@ function PokemonDetails({ name }) {
     )
 }
 
-export default PokemonDetails
+const mapDispatchToProps = dispatch => {
+    return {
+        setToolbarColor: color => {
+            dispatch(setConfig("toolbarColor", color))
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(PokemonDetails)
 
 const useStyles = makeStyles(theme => ({
     root: {

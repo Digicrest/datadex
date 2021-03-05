@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { setConfig } from '../store/actions/config'
 import SearchBar from '../components/SearchBar'
 import PokemonCard from '../components/PokemonCard'
 import { Checkbox, FormControlLabel, makeStyles, GridList, GridListTile } from '@material-ui/core'
 import ProgressBar from '../components/ProgressBar'
 import theme from '../theme'
 
-function Home({ pokemon, caughtPokemon }) {
+function Home({ pokemon, caughtPokemon, setToolbarColor }) {
     const classes = useStyles()
     const [displayedPokemon, setDisplayedPokemon] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
@@ -15,6 +16,7 @@ function Home({ pokemon, caughtPokemon }) {
 
     useEffect(() => {
         setDisplayedPokemon(pokemon)
+        setToolbarColor(theme.palette.primary.main)
     }, [])
 
     useEffect(() => {
@@ -76,8 +78,15 @@ const mapStateToProps = state => {
         caughtPokemon: state.profile.caughtPokemon,
     }
 }
+const mapDispatchToProps = dispatch => {
+    return {
+        setToolbarColor: color => {
+            dispatch(setConfig("toolbarColor", color))
+        }
+    }
+}
 
-export default connect(mapStateToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
 
 
 const useStyles = makeStyles({
