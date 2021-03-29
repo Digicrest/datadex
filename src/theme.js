@@ -1,7 +1,5 @@
 import { createMuiTheme } from '@material-ui/core'
 
-
-
 const pokemonLogo = {
   yellow: "#ffcb05",
   lightBlue: "#2a75bb"
@@ -14,16 +12,21 @@ const theme = createMuiTheme({
       secondary: '#FFFFFF'
     },
     primary: {
-      main: pokemonLogo.yellow
+      main: pokemonLogo.lightBlue
     },
     secondary: {
-      main: '#000000',
+      main: pokemonLogo.yellow
     },
   },
   typography: {
     fontFamily: 'Quicksand, sans-serif',
   },
   overrides: {
+    MuiButton: {
+      root: {
+        margin: 5
+      }
+    },
     MuiLink: {
       root: {
         color: '#f00',

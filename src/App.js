@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter, Route } from "react-router-dom"
-import { AppBar, Toolbar, IconButton, makeStyles } from '@material-ui/core'
-import { Menu } from '@material-ui/icons'
+import { BrowserRouter, Link, Route } from "react-router-dom"
+import { AppBar, Toolbar, IconButton, makeStyles, Button } from '@material-ui/core'
+import { Menu, HomeOutlined, HomeRounded } from '@material-ui/icons'
 import { connect } from 'react-redux'
 
 import NavigationDrawer from './NavigationDrawer'
 import Home from './routes/Home'
+import Characters from './routes/Characters'
+import PokeList from './routes/PokeList'
 import About from './routes/About'
 import PokemonDetails from './routes/PokemonDetails'
 import TypeDetails from './routes/TypeDetails'
@@ -50,13 +52,38 @@ function App(props) {
                         closeDrawer={closeDrawer}
                     />
 
-                    <AppBar position='sticky' style={{
-                        backgroundColor: props.toolbarColor
-                    }}>
-                        <Toolbar>
+                    <AppBar position='sticky' 
+                        className={classes.appBar}
+                        style={{
+                            backgroundColor: props.toolbarColor,
+                        }}>
+                        <Toolbar style={{
+                            display: 'flex',
+                            justifyContent: 'space-between'
+                        }}>
                             <IconButton onClick={openDrawer}>
                                 <Menu />
                             </IconButton>
+
+                            <div>
+                                <Link to={'/pokemon'} className={classes.simpleLink}>
+                                    <Button color='secondary' variant="contained">
+                                        Pokemon
+                                    </Button>
+                                </Link>
+                                <Link to={'/characters'} className={classes.simpleLink}>
+                                    <Button color='secondary' variant="contained">
+                                        Characters
+                                    </Button>
+                                </Link>
+                                <Link to={'/'} className={classes.simpleLink}>
+                                    <IconButton color='secondary' style={{
+                                        backgroundColor:'#FFF'
+                                    }}>
+                                        <HomeRounded />
+                                    </IconButton>
+                                </Link>
+                            </div>
                         </Toolbar>
                     </AppBar>
                     
@@ -64,9 +91,14 @@ function App(props) {
                         { fetching ? <LoadingSpinner /> : (
                             <div className={"fade-in"}>
                                 <Route exact path='/'>
-                                    <div style={{ margin: 20 }}>
-                                        <Home pokemon={pokemon} />
-                                    </div>
+                                    <Home />
+                                </Route>
+
+                                <Route exact path='/pokemon'>
+                                    <PokeList pokemon={pokemon} />
+                                </Route>
+                                <Route path='/characters'>
+                                    <Characters />
                                 </Route>
 
                                 <Route path='/About'>
@@ -97,11 +129,14 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps)(App)
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     appContainer: {
         display: 'flex',
         flexDirection: 'column',
         height: '100vh',
+    },
+    appBar: {
+        boxShadow: theme.shadows[0]
     },
     app: {
         flex: 1,
@@ -109,6 +144,9 @@ const useStyles = makeStyles({
         flexDirection: 'column',
     },
     pageContent: {
-        flex: 1,
+        flex: 1
+    },
+    simpleLink: {
+        textDecoration: 'none'
     }
-})
+}))
