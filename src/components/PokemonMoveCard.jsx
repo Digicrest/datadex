@@ -4,7 +4,6 @@ import { getDamageClassColor } from '../apis/pokemon/LocalHelpers';
 import Type from './Pokemon/Type';
 function PokemonMoveCard({ move }) {
   const classes = useStyles();
-  console.log('[PokemonMoveCard] move: ', move)
   
   function showMoveDetails() {
     console.log('Show Move Details: ', move)
@@ -67,6 +66,9 @@ function getTopleftComponent(move) {
   const moveDetails = move.version_group_details[0]
   switch (moveDetails.move_learn_method.name) {
     case 'level-up': {
+      return <Typography>{moveDetails.level_learned_at}</Typography>
+    }
+    case 'machine': {
       return <Typography>{moveDetails.level_learned_at}</Typography>
     }
     default: {

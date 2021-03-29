@@ -25,6 +25,7 @@ function PokemonDetails({ name, setToolbarColor }) {
             const pokemonColors = getTypeColor(pokemon.types[0].type.name)
             setToolbarColor(pokemonColors.color);
             setColors(pokemonColors)
+            console.log('pokemon: ', pokemon)
         }
     }, [pokemon, setToolbarColor])
 
@@ -78,7 +79,7 @@ function PokemonDetails({ name, setToolbarColor }) {
                     <Typography variant='h6' className={classes.title} style={{ color: colors.dark }}>
                         Moves
                     </Typography>
-                    <MoveCategories onChanged={handleMoveCategoryChanged} />
+                    <MoveCategories switchMoveCategory={handleMoveCategoryChanged} />
                     <PokemonMoves filter={moveCategory} moves={pokemon.moves} />
                 </div>
             </div>
