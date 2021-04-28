@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { Card, Collapse, makeStyles, Typography } from '@material-ui/core'
+import { Card, CircularProgress, Collapse, makeStyles, Typography } from '@material-ui/core'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { RemoveRedEye, InfoOutlined } from '@material-ui/icons'
 import PokemonCard from './PokemonCard'
@@ -34,6 +34,23 @@ function PokemonAbilities(props) {
       setExpandedAbility(response)
     })
   }
+
+
+
+  if (!abilities) {
+    return (
+      <Card className={classes.root} style={{
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <Typography variant='caption' style={{ marginBottom: 10, opacity: 0.5 }}>
+          Loading Abilities...
+        </Typography>
+        <CircularProgress style={{ color: colors.color }} />
+      </Card>
+    )
+  }
+
 
   function Abilities({ abilityList }) {
     return abilityList.map((ability, i) => (

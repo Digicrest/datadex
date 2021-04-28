@@ -12,6 +12,7 @@ import About from './routes/About'
 import PokemonDetails from './routes/PokemonDetails'
 import TypeDetails from './routes/TypeDetails'
 import LoadingSpinner from './components/LoadingSpinner'
+import theme from './theme'
 const Pokedex = require('pokeapi-js-wrapper')
 const POKEDEX = new Pokedex.Pokedex()
 
@@ -66,19 +67,21 @@ function App(props) {
                             </IconButton>
 
                             <div>
-                                <Link to={'/pokemon'} className={classes.simpleLink}>
-                                    <Button color='secondary' variant="contained">
-                                        Pokemon
-                                    </Button>
-                                </Link>
-                                <Link to={'/characters'} className={classes.simpleLink}>
-                                    <Button color='secondary' variant="contained">
-                                        Characters
-                                    </Button>
-                                </Link>
+                                {/* 
+                                    <Link to={'/pokemon'} className={classes.simpleLink}>
+                                        <Button color='secondary' variant="contained">
+                                            Pokemon
+                                        </Button>
+                                    </Link>
+                                    <Link to={'/characters'} className={classes.simpleLink}>
+                                        <Button color='secondary' variant="contained">
+                                            Characters
+                                        </Button>
+                                    </Link> 
+                                */}
                                 <Link to={'/'} className={classes.simpleLink}>
-                                    <IconButton color='secondary' style={{
-                                        backgroundColor:'#FFF'
+                                    <IconButton color='primary' style={{
+                                        backgroundColor: theme.palette.secondary.main,
                                     }}>
                                         <HomeRounded />
                                     </IconButton>

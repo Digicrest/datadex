@@ -6,6 +6,7 @@ const icons = {
   misty: require('../resources/images/characters/icons/misty.png'),
   brock: require('../resources/images/characters/icons/brock.png'),
 }
+
 const characters = {
   misty: {
     name: {
@@ -76,10 +77,18 @@ function Characters() {
         <img src={icons.ash} data-character="ash" alt='' className={classes.image} onClick={switchCharacter} />
         <img src={icons.misty} data-character="misty" alt='' className={classes.image} onClick={switchCharacter} />
         <img src={icons.brock} data-character="brock" alt='' className={classes.image} onClick={switchCharacter} />
+        <img src={icons.ash} data-character="ash" alt='' className={classes.image} onClick={switchCharacter} />
+        <img src={icons.misty} data-character="misty" alt='' className={classes.image} onClick={switchCharacter} />
+        <img src={icons.brock} data-character="brock" alt='' className={classes.image} onClick={switchCharacter} />
+        <img src={icons.ash} data-character="ash" alt='' className={classes.image} onClick={switchCharacter} />
+        <img src={icons.misty} data-character="misty" alt='' className={classes.image} onClick={switchCharacter} />
+        <img src={icons.brock} data-character="brock" alt='' className={classes.image} onClick={switchCharacter} />
+        <img src={icons.ash} data-character="ash" alt='' className={classes.image} onClick={switchCharacter} />
+        <img src={icons.misty} data-character="misty" alt='' className={classes.image} onClick={switchCharacter} />
+        <img src={icons.brock} data-character="brock" alt='' className={classes.image} onClick={switchCharacter} />
       </div>
 
-      <div>
-        
+      <div className={classes.characterProfile}>
         <div>
           <Typography variant='h4'>
             {character.name.english}
@@ -91,14 +100,12 @@ function Characters() {
             ({character.name.romaji})
           </Typography>
         </div>
-
-        <div>
-          <Typography className={classes.description}>
+        
+        <div className={classes.descriptionContainer}>
+          <Typography className={classes.descriptionText}>
             {character.description}
           </Typography>
         </div>
-
-        <img src={character.portrait} alt='' className={classes.fullSizeImage}  />
       </div>
     </div>
   )
@@ -108,25 +115,20 @@ export default Characters
 
 const useStyles = makeStyles(theme => ({
   root: {
+    padding: theme.spacing(2),
+    margin: 'auto',
     display: 'flex',
     flexDirection: 'column',
-  },
-  image: {
-    margin: theme.spacing(2),
-    minWidth: 125,
-    height: 125,
-    borderRadius: "50%",
-    border: `1px solid ${theme.palette.primary.light}`,
-    "&:hover": {
-      boxShadow: theme.shadows[3]
-    },
-    backgroundColor: '#FFF'
+    alignItems: 'center',
+    textAlign: 'center',
+    width: '70%',
   },
   fullSizeImage: {
     height: '80vh',
     width: "20vw"
   },
   characters: {
+    border: "3px solid red",
     margin: theme.spacing(2),
     borderRadius: theme.shape.borderRadius,
     alignSelf: 'center',
@@ -136,8 +138,35 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-between',
     overflowX: 'scroll',
   },
-  description: {
-    opacity: 0.3,
+  image: {
+    margin: theme.spacing(2),
+    minWidth: 125,
+    height: 125,
+    boxSizing: "border-box",
+    border: `3px solid ${theme.palette.primary.light}`,
+    "&:hover": {
+      transition: "all 0.1s",
+      boxShadow: "2px 2px 4px #00000030",
+    },
+    backgroundColor: '#FFF'
+  },
+
+  characterProfile: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: theme.spacing(1),
+    border: '2px solid red'
+  },
+  descriptionContainer: {
+    maxHeight: 400,
+    width: '70%',
+    overflow: 'scroll',
+    padding: theme.spacing(1),
+    border: '2px solid red'
+  },
+  descriptionText: {
+    opacity: 0.7,
     fontStyle: 'italic'
   }
 }))

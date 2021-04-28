@@ -28,3 +28,11 @@ body {
     opacity: 1;
   }
 }
+
+.clipped-container-for-shadow {
+  filter: drop-shadow(15px 5px 10px #00000070);
+}
+.clipped {
+  clip-path: polygon(0% 0%, 100% 0, 25% 17%, 85% 100%, 0% 100%);
+  
+}

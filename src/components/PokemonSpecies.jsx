@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react'
-import { Card, Collapse, makeStyles, Typography, GridList, GridListTile } from '@material-ui/core'
+import { Card, Collapse, makeStyles, Typography, GridList, GridListTile, CircularProgress } from '@material-ui/core'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { RecordVoiceOver, Settings, MusicNote } from '@material-ui/icons'
 import PokemonCard from './PokemonCard'
@@ -47,7 +47,17 @@ function PokemonSpecies({ pokemon, colors }) {
   }
 
   if (!species || !pokedexEntry) {
-    return <p>Loading Species...</p>
+    return (
+      <Card className={classes.root} style={{
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <Typography variant='caption' style={{ marginBottom: 10, opacity: 0.5 }}>
+          Loading Species...
+        </Typography>
+        <CircularProgress style={{ color: colors.color }} />
+      </Card>
+    )
   }
 
   return (
