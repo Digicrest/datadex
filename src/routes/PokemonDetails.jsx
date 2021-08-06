@@ -50,7 +50,7 @@ function PokemonDetails({ name, setToolbarColor }) {
     }
 
     return (
-        <div className={classes.root} style={{ backgroundColor: colors.light }}>
+        <div className={classes.root}>
             <div className={classes.section}>
                 <Typography style={{ color: colors.dark }} className={classes.pokemonName} variant='h4'>
                     {pokemon.name}

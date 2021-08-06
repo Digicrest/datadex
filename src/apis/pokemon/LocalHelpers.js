@@ -57,6 +57,6 @@ export function getBetterSprite(pokemonID) {
        return;
     }
 
-   const spriteURL = `https://pokeres.bastionbot.org/images/pokemon/${pokemonID}.png`
-   return spriteURL;
+    const spriteURL = `https://www.pokencyclopedia.info/sprites/artworks/art-hd_anime/art-hd_anime_${pokemonID.toString().padStart(3, '0')}.png`
+    return spriteURL;
 } 
