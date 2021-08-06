@@ -51,30 +51,29 @@ function PokemonDetails({ name, setToolbarColor }) {
 
     return (
         <div className={classes.root}>
-            <div className={classes.section}>
-                <Typography style={{ color: colors.dark }} className={classes.pokemonName} variant='h4'>
-                    {pokemon.name}
-                </Typography>
-                <img src={mainSpriteURL} style={{ width: 200, height: 200 }} alt='' />
-            </div>
-
-            <div className={classes.section}>
-                <Typography variant='h6' className={classes.title} style={{ color: colors.dark }}>
-                    Species
-                </Typography>
-                <PokemonSpecies pokemon={pokemon} colors={colors} />
-            </div>
-
-            <div style={{ 
-                display: 'flex', 
-                justifyContent: 'space-evenly',
-            }}>
+            <div>
+                <div className={classes.section}>
+                    <Typography style={{ color: colors.dark }} className={classes.pokemonName} variant='h4'>
+                        {pokemon.name}
+                    </Typography>
+                    <img src={mainSpriteURL} style={{ width: 200, height: 200 }} alt='' />
+                </div>
                 <div className={classes.section}>
                     <Typography variant='h6' className={classes.title} style={{ color: colors.dark }}>
-                        Abilities
+                        Species
                     </Typography>
+                    <PokemonSpecies pokemon={pokemon} colors={colors} />
+                </div>
+                <div className={classes.section}>
+                    {/* <Typography variant='h6' className={classes.title} style={{ color: colors.dark }}>
+                        Abilities
+                    </Typography> */}
                     <PokemonAbilities pokemon={pokemon} colors={colors} />
                 </div>
+            </div>
+            
+            <div className="details">
+      
                 <div className={classes.section}>
                     <Typography variant='h6' className={classes.title} style={{ color: colors.dark }}>
                         Moves
@@ -101,16 +100,22 @@ const useStyles = makeStyles(theme => ({
     root: {
         flex: 1,
         height: '100vh',
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
     },
     pokemonName: {
         textTransform: 'capitalize',
         fontWeight: 'bold',
     },
+    details: {
+        flex: 'row'
+    },
     section: {
         display: 'flex', 
         flexDirection: 'column', 
         alignItems: 'center',
-        margin: theme.spacing(2)
+        margin: theme.spacing(1)
     }
 }))

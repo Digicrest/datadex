@@ -85,14 +85,17 @@ function PokemonAbilities(props) {
   }
 
   return (
-    <Card className={classes.root}>
-      <div className={classes.abilities}>
-        <Abilities abilityList={abilities} />
-      </div>
+    <Fragment>
+      <Card className={classes.root}>
+        <div className={classes.abilities}>
+          <Abilities abilityList={abilities} />
+        </div>
 
-      <div className={classes.abilities}>
-        <Abilities abilityList={hiddenAbilities} />
-      </div>
+        <div className={classes.abilities}>
+          <Abilities abilityList={hiddenAbilities} />
+        </div>
+
+      </Card>
 
       {!!expandedAbility && (
         <div>
@@ -107,7 +110,7 @@ function PokemonAbilities(props) {
           </Collapse>
         </div>
       )}
-    </Card>
+    </Fragment>
   )
 }
 
@@ -124,7 +127,6 @@ const useStyles = makeStyles({
   root: {
     flex: 1,
     display: 'flex',
-    flexDirection: 'column',
     width: '30vw',
     minWidth: 350,
     margin: 5,
@@ -135,6 +137,7 @@ const useStyles = makeStyles({
     fontFamily: 'sans'
   },
   abilities: {
+    flex: 1,
     display: 'flex',
     justifyContent: 'space-evenly'
   },

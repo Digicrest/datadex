@@ -11,10 +11,18 @@ function MoveCategories({ switchMoveCategory }) {
 
   return (
     <div className={classes.root}>
-      <Typography onClick={filterLevel}>Level Up</Typography>
-      <Typography onClick={filterTMTR}>TM / TR</Typography>
-      <Typography onClick={filterEgg}>Egg</Typography>
-      <Typography onClick={filterTutor}>Tutor</Typography>
+      <div className={classes.category}>
+        <Typography onClick={filterLevel}>Level Up</Typography>
+      </div>
+      <div className={classes.category}>
+        <Typography onClick={filterTMTR}>TM / TR</Typography>
+      </div>
+      <div className={classes.category}>
+        <Typography onClick={filterEgg}>Egg</Typography>
+      </div>
+      <div className={classes.category}>
+        <Typography onClick={filterTutor}>Tutor</Typography>
+      </div>
     </div>
   )
 }
@@ -23,6 +31,12 @@ export default MoveCategories
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: 'red'
+    padding: theme.spacing(2),
+    border:  '1px solid red',
+    display: 'flex'
+  },
+  category: {
+    margin: theme.spacing(1),
+    padding: theme.spacing(1),
   }
 }))
